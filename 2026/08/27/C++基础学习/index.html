@@ -954,16 +954,212 @@
 <blockquote>
 <p>讲师演示中 reset 后再访问该指针会崩溃（地址已变为 0），但只要还有其他持有者，内存本身还在，其他指针仍能正常读出值 5。</p>
 </blockquote>
+<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><h3 id="字符串的本质"><a href="#字符串的本质" class="headerlink" title="字符串的本质"></a>字符串的本质</h3><p><strong>字符串 &#x3D; 一串字符，在内存中连续存储。</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&quot;hello&quot; 在内存中：</span><br><span class="line">┌────┬────┬────┬────┬────┬────┐</span><br><span class="line">│ h  │ e  │ l  │ l  │ o  │ \0 │</span><br><span class="line">└────┴────┴────┴────┴────┴────┘</span><br><span class="line"> 72  101  108  108  111   0     ← 实际存的是 ASCII 码值（数字）</span><br></pre></td></tr></table></figure>
+
+<p>为什么必须以 <code>\0</code>（零）结尾？</p>
+<p>内存里全是数字，如果你不标记 “字符串到这里结束”，程序就不知道该读到哪里 —— 会把后面不属于这个字符串的内存也一起读出来，导致<strong>越界访问和乱码</strong>。</p>
+<blockquote>
+<p>讲师说的 “杠铃” 就是 <code>\0</code>，空字符（null terminator），ASCII 值为 0。</p>
+</blockquote>
+<hr>
+<h3 id="字符的两种类型"><a href="#字符的两种类型" class="headerlink" title="字符的两种类型"></a>字符的两种类型</h3><p>表格</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>大小</th>
+<th>用途</th>
+<th>编码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>char</code></td>
+<td>1 字节</td>
+<td>单字节字符（英文）</td>
+<td>ASCII &#x2F; GBK 等</td>
+</tr>
+<tr>
+<td><code>wchar_t</code></td>
+<td>2 字节（Windows）&#x2F; 4 字节（Linux）</td>
+<td>宽字节字符（统一处理中英文）</td>
+<td>Unicode（UTF-16 &#x2F; UTF-32）</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="字符串的三种声明方式（char-版）"><a href="#字符串的三种声明方式（char-版）" class="headerlink" title="字符串的三种声明方式（char 版）"></a>字符串的三种声明方式（char 版）</h3><ul>
+<li>方式 1：数组逐个字符初始化（繁琐，不推荐）</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">char str[] = &#123;&#x27;h&#x27;, &#x27;e&#x27;, &#x27;l&#x27;, &#x27;l&#x27;, &#x27;o&#x27;, &#x27;\0&#x27;&#125;;</span><br><span class="line">// 或者用 ASCII 码值（等价）</span><br><span class="line">char str2[] = &#123;0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x00&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>方式 2：数组 + 字符串字面量（推荐）</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">char str[] = &quot;hello&quot;;  // 编译器自动补 &#x27;\0&#x27;，实际占 6 字节</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>&quot;hello&quot;</code> 的本质是 <code>const char[6]</code>，编译器帮你把每个字符填好并自动加 <code>\0</code>。</p>
+</blockquote>
+<ul>
+<li>方式 3：指针指向字符串字面量</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// ⚠️ 严格来说应该是 const char*，因为字符串字面量是只读的</span><br><span class="line">const char* str = &quot;hello&quot;;</span><br><span class="line"></span><br><span class="line">// 讲师演示的 char* str = &quot;hello&quot;; 在 C++11 以后是 deprecated（不推荐）</span><br><span class="line">// 编译会警告，某些编译器直接报错</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>方式 4：动态申请（new）</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">char* str = new char[6]&#123;&#x27;h&#x27;, &#x27;e&#x27;, &#x27;l&#x27;, &#x27;l&#x27;, &#x27;o&#x27;, &#x27;\0&#x27;&#125;;</span><br><span class="line">// 用完要 delete[] str;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="数组方式-vs-指针方式的本质区别（讲师没讲）"><a href="#数组方式-vs-指针方式的本质区别（讲师没讲）" class="headerlink" title="数组方式 vs 指针方式的本质区别（讲师没讲）"></a>数组方式 vs 指针方式的本质区别（讲师没讲）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">char  arr[] = &quot;hello&quot;;   // 数组在栈上，内容可修改</span><br><span class="line">const char* ptr = &quot;hello&quot;; // 指针指向只读数据段，内容不可修改</span><br><span class="line"></span><br><span class="line">arr[0] = &#x27;H&#x27;;   // ✅ 可以</span><br><span class="line">ptr[0] = &#x27;H&#x27;;   // ❌ 运行时崩溃！写入只读内存</span><br></pre></td></tr></table></figure>
+
+<p>表格</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>char arr[] = &quot;hello&quot;</code></th>
+<th><code>const char* ptr = &quot;hello&quot;</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>存储位置</td>
+<td>栈（可读写）</td>
+<td>只读数据段</td>
+</tr>
+<tr>
+<td>能否修改内容</td>
+<td>✅ 可以</td>
+<td>❌ 不可以</td>
+</tr>
+<tr>
+<td>大小</td>
+<td>6 字节（含 <code>\0</code>）</td>
+<td>指针 8 字节 + 字面量 6 字节</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="中文在内存中的表现（GBK-编码）"><a href="#中文在内存中的表现（GBK-编码）" class="headerlink" title="中文在内存中的表现（GBK 编码）"></a>中文在内存中的表现（GBK 编码）</h3><p>中文操作系统默认使用 <strong>GBK 编码</strong>（代码页 936），每个中文字符占 <strong>2 字节</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&quot;hello张三&quot; 在 GBK 下的内存布局（小端序，低位在前）：</span><br><span class="line">┌────┬────┬────┬────┬────┬──────┬──────┬────┐</span><br><span class="line">│ h  │ e  │ l  │ l  │ o  │  张  │  三  │ \0 │</span><br><span class="line">└────┴────┴────┴────┴────┴──────┴──────┴────┘</span><br><span class="line"> 0x48 0x65 0x6C 0x6C 0x6F D5 C5 C8 FD  00</span><br><span class="line">                      └─张─┘ └─三─┘</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>英文：1 字节 &#x2F; 字符</li>
+<li>中文：2 字节 &#x2F; 字符</li>
+<li>结尾：1 字节的 <code>\0</code></li>
+</ul>
+<blockquote>
+<p>这就是老程序员常说的 “中文两个字节，英文一个字节，两个英文顶一个中文”。</p>
+</blockquote>
+<hr>
+<h3 id="宽字节字符串（wchar-t）"><a href="#宽字节字符串（wchar-t）" class="headerlink" title="宽字节字符串（wchar_t）"></a>宽字节字符串（wchar_t）</h3><p><code>wchar_t</code> 统一用 <strong>2 字节</strong>表示一个字符（Windows 下 UTF-16），中英文都是 2 字节。</p>
+<p>声明</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 必须加 L 前缀，表示宽字节字符串字面量</span><br><span class="line">wchar_t wstr[] = L&quot;hello张三&quot;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="内存布局（UTF-16，小端序）"><a href="#内存布局（UTF-16，小端序）" class="headerlink" title="内存布局（UTF-16，小端序）"></a>内存布局（UTF-16，小端序）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">L&quot;hello张三&quot;：</span><br><span class="line">┌──────┬──────┬──────┬──────┬──────┬──────┬──────┬──────┐</span><br><span class="line">│  h   │  e   │  l   │  l   │  o   │  张  │  三  │ \0   │</span><br><span class="line">└──────┴──────┴──────┴──────┴──────┴──────┴──────┴──────┘</span><br><span class="line"> 0048   0065   006C   006C   006F   5F20   4E09   0000</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>每个字符固定 2 字节</li>
+<li><code>\0</code> 也是 2 字节：<code>0x0000</code></li>
+<li>中文使用 <strong>Unicode 码点</strong>，不是 GBK</li>
+</ul>
+<h3 id="显示：用-wcout，不是-cout"><a href="#显示：用-wcout，不是-cout" class="headerlink" title="显示：用 wcout，不是 cout"></a>显示：用 <code>wcout</code>，不是 <code>cout</code></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;locale&gt;   // 必须包含</span><br><span class="line"></span><br><span class="line">using namespace std;</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line">    wchar_t wstr[] = L&quot;hello张三&quot;;</span><br><span class="line">    </span><br><span class="line">    // ⚠️ 必须设置本地化，否则中文显示不出来</span><br><span class="line">    wcout.imbue(locale(&quot;zh_CN.UTF-8&quot;));  // Linux</span><br><span class="line">    // Windows 下用：setlocale(LC_ALL, &quot;chs&quot;);</span><br><span class="line">    </span><br><span class="line">    wcout &lt;&lt; wstr &lt;&lt; endl;  // 用 wcout 输出宽字节</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>讲师演示中 “hello 出来了，张三没出来”，就是因为控制台默认用 GBK 解码 UTF-16 的数据，对不上就显示不出来。设置 <code>locale</code> 后告诉控制台 “用 Unicode 解码”，就能正常显示了。</p>
+</blockquote>
+<hr>
+<h3 id="编码表的核心概念（为什么会乱码）"><a href="#编码表的核心概念（为什么会乱码）" class="headerlink" title="编码表的核心概念（为什么会乱码）"></a>编码表的核心概念（为什么会乱码）</h3><p><strong>文字 ↔ 数字 的映射由编码表决定。</strong> 同一段数字，用不同的表翻译，结果完全不同。</p>
+<p>表格</p>
+<table>
+<thead>
+<tr>
+<th>编码表</th>
+<th>“张” 的编码</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GBK</td>
+<td><code>D5 C5</code>（2 字节）</td>
+<td>中文 Windows 简体中文</td>
+</tr>
+<tr>
+<td>Unicode (UTF-16)</td>
+<td><code>5F 20</code>（2 字节）</td>
+<td>跨语言、Windows 宽字符</td>
+</tr>
+<tr>
+<td>UTF-8</td>
+<td><code>E5 BC A0</code>（3 字节）</td>
+<td>Linux、网页、现代程序</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">数字：D5 C5</span><br><span class="line">  ├─ 用 GBK 表翻译 → &quot;张&quot; ✅</span><br><span class="line">  └─ 用 Shift-JIS（日文）表翻译 → 某个日文汉字 ❌（乱码）</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>乱码的本质</strong>：写入时用的编码表 ≠ 读取时用的编码表。</p>
+</blockquote>
+<hr>
+<h3 id="char-vs-wchar-t-对比总表"><a href="#char-vs-wchar-t-对比总表" class="headerlink" title="char vs wchar_t 对比总表"></a>char vs wchar_t 对比总表</h3><p>表格</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>char</code> 字符串</th>
+<th><code>wchar_t</code> 宽字符串</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>类型</td>
+<td><code>char[]</code> &#x2F; <code>char*</code></td>
+<td><code>wchar_t[]</code> &#x2F; <code>wchar_t*</code></td>
+</tr>
+<tr>
+<td>字面量前缀</td>
+<td>无 <code>&quot;hello&quot;</code></td>
+<td><code>L&quot;hello&quot;</code></td>
+</tr>
+<tr>
+<td>英文字节数</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td>中文字节数</td>
+<td>2（GBK）</td>
+<td>2（UTF-16）</td>
+</tr>
+<tr>
+<td>结束符</td>
+<td><code>\0</code>（1 字节，<code>0x00</code>）</td>
+<td><code>L&#39;\0&#39;</code>（2 字节，<code>0x0000</code>）</td>
+</tr>
+<tr>
+<td>输出</td>
+<td><code>cout</code></td>
+<td><code>wcout</code></td>
+</tr>
+<tr>
+<td>编码</td>
+<td>取决于系统代码页（GBK）</td>
+<td>Unicode（UTF-16）</td>
+</tr>
+<tr>
+<td>常见问题</td>
+<td>跨平台乱码</td>
+<td>需设置 locale 才能正确显示</td>
+</tr>
+</tbody></table>
 </div><div class="article_tags"><span> <i class="yufont icon-tag"></i> 标签: </span></div></article><div class="article-copyright"><p>标题: <a href="/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">C++</a></p><p> 链接: <a href="/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">http://example.com/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/</a></p><p> 版权声明: 若无特殊标注皆为 FY 原创版权, 转载请以链接形式注明作者及原始出处</p><p>最后编辑时间: 2026-08-28</p></div><div class="page_turning"><a class="page_up" href="/2026/08/27/hello-world/"
-  style="background-image:url(/assets/images/random/28.jpg)">
+  style="background-image:url(/assets/images/random/25.jpg)">
   <div class="inner"><span>上一篇:</span>
     <p>Hello World</p>
   </div>
 </a>
 <a class="page_down" href="javascript:;"
-style="background-image:url(/assets/images/random/21.jpg)">
+style="background-image:url(/assets/images/random/19.jpg)">
 <div class="inner"><span>下一篇:</span>
   <p>已经没有下一篇了</p>
 </div>
 </a>
-</div></div></div><div class="article_sidebar left"><div class="author_sidebar sidebar_container"><div class="author_info"><div class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/></div><div class="author_name"><h3><a href="/about">FY</a></h3><p>不断学习，不断提升！</p></div></div><div class="author_data"><ul><li> <div> <span>2</span><p>文章</p></div></li><li> <div> <span>0</span><p>分类</p></div></li><li> <div> <span>0</span><p>标签</p></div></li></ul></div></div><div class="catalogue sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-feiji"></i>目录</h3><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#c-%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-number">1.</span> <span class="toc-text">c++运算符优先级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7%E5%86%B3%E5%AE%9A%E4%BA%86%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%AD%E5%90%84%E4%B8%AA%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F%EF%BC%8C%E4%BC%98%E5%85%88%E7%BA%A7%E9%AB%98%E7%9A%84%E5%85%88%E7%AE%97%E3%80%82%E6%88%91%E7%BB%99%E4%BD%A0%E6%95%B4%E7%90%86%E4%B8%80%E4%BB%BD%E5%AE%8C%E6%95%B4%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7%E8%A1%A8%EF%BC%8C%E9%87%8D%E7%82%B9%E6%A0%87%E6%B3%A8%E4%BD%A0%E5%85%B3%E5%BF%83%E7%9A%84%E7%AE%97%E6%9C%AF%E3%80%81%E4%BD%8D%E7%A7%BB%E3%80%81%E6%8C%87%E9%92%88%E7%9B%B8%E5%85%B3%E8%BF%90%E7%AE%97%E7%AC%A6%E3%80%82"><span class="toc-number">2.</span> <span class="toc-text">运算符优先级决定了表达式中各个运算符的执行顺序，优先级高的先算。我给你整理一份完整的优先级表，重点标注你关心的算术、位移、指针相关运算符。</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E4%BC%98%E5%85%88%E7%BA%A7%E8%A1%A8%EF%BC%88%E4%BB%8E%E9%AB%98%E5%88%B0%E4%BD%8E%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">完整优先级表（从高到低）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E5%A4%84%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">字符处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Switch%E8%AF%AD%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">Switch语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E5%8F%A5%E5%9D%97%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F"><span class="toc-number">4.1.</span> <span class="toc-text">语句块中的变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#goto"><span class="toc-number">4.2.</span> <span class="toc-text">goto</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%95%B0%E7%BB%84%E7%9A%84%E5%BE%AA%E7%8E%AF"><span class="toc-number">4.3.</span> <span class="toc-text">基于数组的循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#std-vector%E5%87%A0%E4%B8%AA%E6%96%B0%E7%94%A8%E6%B3%95"><span class="toc-number">4.4.</span> <span class="toc-text">std::vector几个新用法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#vector%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-number">4.4.1.</span> <span class="toc-text">vector的扩容机制</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88"><span class="toc-number">5.</span> <span class="toc-text">指针</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%8A%A01%E5%86%85%E5%AD%98%E7%9A%84%E4%BD%8D%E7%A7%BB%E9%87%8F"><span class="toc-number">5.1.</span> <span class="toc-text">指针加1内存的位移量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E9%87%8F%E6%8C%87%E9%92%88vs%E6%8C%87%E9%92%88%E5%B8%B8%E9%87%8F"><span class="toc-number">5.2.</span> <span class="toc-text">常量指针vs指针常量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%92%8C%E6%95%B0%E7%BB%84"><span class="toc-number">5.3.</span> <span class="toc-text">指针和数组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="toc-number">5.4.</span> <span class="toc-text">动态内存分配</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E8%AF%AD%E8%A8%80%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%87%BD%E6%95%B0%EF%BC%88%EF%BC%89"><span class="toc-number">5.4.1.</span> <span class="toc-text">C 语言动态内存函数（&lt;stdlib.h&gt;）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98-new-delete"><span class="toc-number">5.4.2.</span> <span class="toc-text">C++ 动态内存 new &#x2F;delete</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-vs-C-%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%AF%B9%E6%AF%94"><span class="toc-number">5.4.3.</span> <span class="toc-text">C vs C++ 动态内存对比</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#memset%E4%B8%8Ememcpy"><span class="toc-number">5.4.4.</span> <span class="toc-text">memset与memcpy</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E9%A3%8E%E9%99%A9"><span class="toc-number">5.4.5.</span> <span class="toc-text">C++动态内存风险</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88"><span class="toc-number">6.</span> <span class="toc-text">智能指针</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88std-unique-ptr%E5%92%8Cstd-shared-ptr"><span class="toc-number">6.1.</span> <span class="toc-text">智能指针std::unique_ptr和std::shared_ptr</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shared-ptr-vs-unique-ptr-%E6%A0%B8%E5%BF%83%E5%8C%BA%E5%88%AB"><span class="toc-number">6.2.</span> <span class="toc-text">shared_ptr vs unique_ptr 核心区别</span></a></li></ol></li></ol></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-24gl-folderOpen"></i>分类</h3><div class="archive_lists"><ul class="category-list"></ul></div></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-tag"></i>标签</h3></div></div></div><footer class="footer"> <div class="footer_bottom"><div class="footer_box"><div class="copy"><span>主题</span><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn">Hexo</a><span>模板</span><a href="/">Hexo</a></div><div class="copy"><span>© 2022<a href="/">Hexo</a>鲁ICP备2022003990号</span></div></div></div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"> </script><script src="/assets/lib/prettify/prettify.js"> </script><script src="/assets/lib/fancybox/fancybox.js"> </script><script src="/assets/js/app.js"> </script></div></body></html>
+</div></div></div><div class="article_sidebar left"><div class="author_sidebar sidebar_container"><div class="author_info"><div class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/></div><div class="author_name"><h3><a href="/about">FY</a></h3><p>不断学习，不断提升！</p></div></div><div class="author_data"><ul><li> <div> <span>2</span><p>文章</p></div></li><li> <div> <span>0</span><p>分类</p></div></li><li> <div> <span>0</span><p>标签</p></div></li></ul></div></div><div class="catalogue sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-feiji"></i>目录</h3><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#c-%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-number">1.</span> <span class="toc-text">c++运算符优先级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7%E5%86%B3%E5%AE%9A%E4%BA%86%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%AD%E5%90%84%E4%B8%AA%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F%EF%BC%8C%E4%BC%98%E5%85%88%E7%BA%A7%E9%AB%98%E7%9A%84%E5%85%88%E7%AE%97%E3%80%82%E6%88%91%E7%BB%99%E4%BD%A0%E6%95%B4%E7%90%86%E4%B8%80%E4%BB%BD%E5%AE%8C%E6%95%B4%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7%E8%A1%A8%EF%BC%8C%E9%87%8D%E7%82%B9%E6%A0%87%E6%B3%A8%E4%BD%A0%E5%85%B3%E5%BF%83%E7%9A%84%E7%AE%97%E6%9C%AF%E3%80%81%E4%BD%8D%E7%A7%BB%E3%80%81%E6%8C%87%E9%92%88%E7%9B%B8%E5%85%B3%E8%BF%90%E7%AE%97%E7%AC%A6%E3%80%82"><span class="toc-number">2.</span> <span class="toc-text">运算符优先级决定了表达式中各个运算符的执行顺序，优先级高的先算。我给你整理一份完整的优先级表，重点标注你关心的算术、位移、指针相关运算符。</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E4%BC%98%E5%85%88%E7%BA%A7%E8%A1%A8%EF%BC%88%E4%BB%8E%E9%AB%98%E5%88%B0%E4%BD%8E%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">完整优先级表（从高到低）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E5%A4%84%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">字符处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Switch%E8%AF%AD%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">Switch语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E5%8F%A5%E5%9D%97%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F"><span class="toc-number">4.1.</span> <span class="toc-text">语句块中的变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#goto"><span class="toc-number">4.2.</span> <span class="toc-text">goto</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%95%B0%E7%BB%84%E7%9A%84%E5%BE%AA%E7%8E%AF"><span class="toc-number">4.3.</span> <span class="toc-text">基于数组的循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#std-vector%E5%87%A0%E4%B8%AA%E6%96%B0%E7%94%A8%E6%B3%95"><span class="toc-number">4.4.</span> <span class="toc-text">std::vector几个新用法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#vector%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-number">4.4.1.</span> <span class="toc-text">vector的扩容机制</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88"><span class="toc-number">5.</span> <span class="toc-text">指针</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%8A%A01%E5%86%85%E5%AD%98%E7%9A%84%E4%BD%8D%E7%A7%BB%E9%87%8F"><span class="toc-number">5.1.</span> <span class="toc-text">指针加1内存的位移量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E9%87%8F%E6%8C%87%E9%92%88vs%E6%8C%87%E9%92%88%E5%B8%B8%E9%87%8F"><span class="toc-number">5.2.</span> <span class="toc-text">常量指针vs指针常量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%92%8C%E6%95%B0%E7%BB%84"><span class="toc-number">5.3.</span> <span class="toc-text">指针和数组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="toc-number">5.4.</span> <span class="toc-text">动态内存分配</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E8%AF%AD%E8%A8%80%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%87%BD%E6%95%B0%EF%BC%88%EF%BC%89"><span class="toc-number">5.4.1.</span> <span class="toc-text">C 语言动态内存函数（&lt;stdlib.h&gt;）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98-new-delete"><span class="toc-number">5.4.2.</span> <span class="toc-text">C++ 动态内存 new &#x2F;delete</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-vs-C-%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%AF%B9%E6%AF%94"><span class="toc-number">5.4.3.</span> <span class="toc-text">C vs C++ 动态内存对比</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#memset%E4%B8%8Ememcpy"><span class="toc-number">5.4.4.</span> <span class="toc-text">memset与memcpy</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E9%A3%8E%E9%99%A9"><span class="toc-number">5.4.5.</span> <span class="toc-text">C++动态内存风险</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88"><span class="toc-number">6.</span> <span class="toc-text">智能指针</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88std-unique-ptr%E5%92%8Cstd-shared-ptr"><span class="toc-number">6.1.</span> <span class="toc-text">智能指针std::unique_ptr和std::shared_ptr</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#shared-ptr-vs-unique-ptr-%E6%A0%B8%E5%BF%83%E5%8C%BA%E5%88%AB"><span class="toc-number">6.2.</span> <span class="toc-text">shared_ptr vs unique_ptr 核心区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">7.</span> <span class="toc-text">字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E6%9C%AC%E8%B4%A8"><span class="toc-number">7.1.</span> <span class="toc-text">字符串的本质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E7%9A%84%E4%B8%A4%E7%A7%8D%E7%B1%BB%E5%9E%8B"><span class="toc-number">7.2.</span> <span class="toc-text">字符的两种类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E4%B8%89%E7%A7%8D%E5%A3%B0%E6%98%8E%E6%96%B9%E5%BC%8F%EF%BC%88char-%E7%89%88%EF%BC%89"><span class="toc-number">7.3.</span> <span class="toc-text">字符串的三种声明方式（char 版）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E6%96%B9%E5%BC%8F-vs-%E6%8C%87%E9%92%88%E6%96%B9%E5%BC%8F%E7%9A%84%E6%9C%AC%E8%B4%A8%E5%8C%BA%E5%88%AB%EF%BC%88%E8%AE%B2%E5%B8%88%E6%B2%A1%E8%AE%B2%EF%BC%89"><span class="toc-number">7.4.</span> <span class="toc-text">数组方式 vs 指针方式的本质区别（讲师没讲）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E6%96%87%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84%E8%A1%A8%E7%8E%B0%EF%BC%88GBK-%E7%BC%96%E7%A0%81%EF%BC%89"><span class="toc-number">7.5.</span> <span class="toc-text">中文在内存中的表现（GBK 编码）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%BD%E5%AD%97%E8%8A%82%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%88wchar-t%EF%BC%89"><span class="toc-number">7.6.</span> <span class="toc-text">宽字节字符串（wchar_t）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80%EF%BC%88UTF-16%EF%BC%8C%E5%B0%8F%E7%AB%AF%E5%BA%8F%EF%BC%89"><span class="toc-number">7.7.</span> <span class="toc-text">内存布局（UTF-16，小端序）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%EF%BC%9A%E7%94%A8-wcout%EF%BC%8C%E4%B8%8D%E6%98%AF-cout"><span class="toc-number">7.8.</span> <span class="toc-text">显示：用 wcout，不是 cout</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E8%A1%A8%E7%9A%84%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%EF%BC%88%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E4%B9%B1%E7%A0%81%EF%BC%89"><span class="toc-number">7.9.</span> <span class="toc-text">编码表的核心概念（为什么会乱码）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#char-vs-wchar-t-%E5%AF%B9%E6%AF%94%E6%80%BB%E8%A1%A8"><span class="toc-number">7.10.</span> <span class="toc-text">char vs wchar_t 对比总表</span></a></li></ol></li></ol></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-24gl-folderOpen"></i>分类</h3><div class="archive_lists"><ul class="category-list"></ul></div></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-tag"></i>标签</h3></div></div></div><footer class="footer"> <div class="footer_bottom"><div class="footer_box"><div class="copy"><span>主题</span><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn">Hexo</a><span>模板</span><a href="/">Hexo</a></div><div class="copy"><span>© 2022<a href="/">Hexo</a>鲁ICP备2022003990号</span></div></div></div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"> </script><script src="/assets/lib/prettify/prettify.js"> </script><script src="/assets/lib/fancybox/fancybox.js"> </script><script src="/assets/js/app.js"> </script></div></body></html>
