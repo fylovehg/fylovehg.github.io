@@ -563,16 +563,90 @@
 <li><strong>new [] 对应 delete，或者 new 对应 delete []</strong>：配对错误。</li>
 <li>C 语言不要指望变长数组<code>int arr[n]</code>做动态数组，可移植性差。</li>
 </ol>
+<h4 id="memset与memcpy"><a href="#memset与memcpy" class="headerlink" title="memset与memcpy"></a>memset与memcpy</h4><p> memset函数原型</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span>   <span class="comment">// C 语言</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstring&gt;</span>    <span class="comment">// C++</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span>* <span class="title">memset</span><span class="params">(<span class="type">void</span>* ptr, <span class="type">int</span> value, <span class="type">size_t</span> num)</span></span>;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>表格</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ptr</code></td>
+<td><code>void*</code></td>
+<td>要设置的内存起始地址</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td><code>int</code></td>
+<td>要填充的值（虽然是 int，但实际只取<strong>低 8 位</strong>，即 0-255）</td>
+</tr>
+<tr>
+<td><code>num</code></td>
+<td><code>size_t</code></td>
+<td>要设置的<strong>字节数</strong></td>
+</tr>
+</tbody></table>
+<p>返回值：</p>
+<ul>
+<li>返回 <code>ptr</code>（内存起始地址）</li>
+</ul>
+<p>作用：</p>
+<ul>
+<li>把 <code>ptr</code> 指向的内存块的前 <code>num</code> 个字节，全部设置为 <code>value</code> 的低 8 位值。</li>
+</ul>
+<hr>
+<ul>
+<li>memcpy函数原型</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span>   <span class="comment">// C 语言</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstring&gt;</span>    <span class="comment">// C++</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span>* <span class="title">memcpy</span><span class="params">(<span class="type">void</span>* dest, <span class="type">const</span> <span class="type">void</span>* src, <span class="type">size_t</span> num)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>参数说明：</p>
+<p>表格</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>dest</code></td>
+<td><code>void*</code></td>
+<td>目标内存起始地址</td>
+</tr>
+<tr>
+<td><code>src</code></td>
+<td><code>const void*</code></td>
+<td>源内存起始地址（加 const 表示不修改源）</td>
+</tr>
+<tr>
+<td><code>num</code></td>
+<td><code>size_t</code></td>
+<td>要拷贝的<strong>字节数</strong></td>
+</tr>
+</tbody></table>
+<p>返回值：</p>
+<ul>
+<li>返回 <code>dest</code>（目标内存起始地址）</li>
+</ul>
+<p>作用：</p>
+<p>把 <code>src</code> 指向的内存块的前 <code>num</code> 个字节，原样拷贝到 <code>dest</code> 指向的内存块。</p>
 </div><div class="article_tags"><span> <i class="yufont icon-tag"></i> 标签: </span></div></article><div class="article-copyright"><p>标题: <a href="/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">C++</a></p><p> 链接: <a href="/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">http://example.com/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/</a></p><p> 版权声明: 若无特殊标注皆为 FY 原创版权, 转载请以链接形式注明作者及原始出处</p><p>最后编辑时间: 2026-08-28</p></div><div class="page_turning"><a class="page_up" href="/2026/08/27/hello-world/"
-  style="background-image:url(/assets/images/random/24.jpg)">
+  style="background-image:url(/assets/images/random/17.jpg)">
   <div class="inner"><span>上一篇:</span>
     <p>Hello World</p>
   </div>
 </a>
 <a class="page_down" href="javascript:;"
-style="background-image:url(/assets/images/random/30.jpg)">
+style="background-image:url(/assets/images/random/9.jpg)">
 <div class="inner"><span>下一篇:</span>
   <p>已经没有下一篇了</p>
 </div>
 </a>
-</div></div></div><div class="article_sidebar left"><div class="author_sidebar sidebar_container"><div class="author_info"><div class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/></div><div class="author_name"><h3><a href="/about">FY</a></h3><p>不断学习，不断提升！</p></div></div><div class="author_data"><ul><li> <div> <span>2</span><p>文章</p></div></li><li> <div> <span>0</span><p>分类</p></div></li><li> <div> <span>0</span><p>标签</p></div></li></ul></div></div><div class="catalogue sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-feiji"></i>目录</h3><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#c-%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-number">1.</span> <span class="toc-text">c++运算符优先级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7%E5%86%B3%E5%AE%9A%E4%BA%86%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%AD%E5%90%84%E4%B8%AA%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F%EF%BC%8C%E4%BC%98%E5%85%88%E7%BA%A7%E9%AB%98%E7%9A%84%E5%85%88%E7%AE%97%E3%80%82%E6%88%91%E7%BB%99%E4%BD%A0%E6%95%B4%E7%90%86%E4%B8%80%E4%BB%BD%E5%AE%8C%E6%95%B4%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7%E8%A1%A8%EF%BC%8C%E9%87%8D%E7%82%B9%E6%A0%87%E6%B3%A8%E4%BD%A0%E5%85%B3%E5%BF%83%E7%9A%84%E7%AE%97%E6%9C%AF%E3%80%81%E4%BD%8D%E7%A7%BB%E3%80%81%E6%8C%87%E9%92%88%E7%9B%B8%E5%85%B3%E8%BF%90%E7%AE%97%E7%AC%A6%E3%80%82"><span class="toc-number">2.</span> <span class="toc-text">运算符优先级决定了表达式中各个运算符的执行顺序，优先级高的先算。我给你整理一份完整的优先级表，重点标注你关心的算术、位移、指针相关运算符。</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E4%BC%98%E5%85%88%E7%BA%A7%E8%A1%A8%EF%BC%88%E4%BB%8E%E9%AB%98%E5%88%B0%E4%BD%8E%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">完整优先级表（从高到低）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E5%A4%84%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">字符处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Switch%E8%AF%AD%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">Switch语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E5%8F%A5%E5%9D%97%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F"><span class="toc-number">4.1.</span> <span class="toc-text">语句块中的变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#goto"><span class="toc-number">4.2.</span> <span class="toc-text">goto</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%95%B0%E7%BB%84%E7%9A%84%E5%BE%AA%E7%8E%AF"><span class="toc-number">4.3.</span> <span class="toc-text">基于数组的循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#std-vector%E5%87%A0%E4%B8%AA%E6%96%B0%E7%94%A8%E6%B3%95"><span class="toc-number">4.4.</span> <span class="toc-text">std::vector几个新用法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#vector%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-number">4.4.1.</span> <span class="toc-text">vector的扩容机制</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88"><span class="toc-number">5.</span> <span class="toc-text">指针</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%8A%A01%E5%86%85%E5%AD%98%E7%9A%84%E4%BD%8D%E7%A7%BB%E9%87%8F"><span class="toc-number">5.1.</span> <span class="toc-text">指针加1内存的位移量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E9%87%8F%E6%8C%87%E9%92%88vs%E6%8C%87%E9%92%88%E5%B8%B8%E9%87%8F"><span class="toc-number">5.2.</span> <span class="toc-text">常量指针vs指针常量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%92%8C%E6%95%B0%E7%BB%84"><span class="toc-number">5.3.</span> <span class="toc-text">指针和数组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="toc-number">5.4.</span> <span class="toc-text">动态内存分配</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E8%AF%AD%E8%A8%80%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%87%BD%E6%95%B0%EF%BC%88%EF%BC%89"><span class="toc-number">5.4.1.</span> <span class="toc-text">C 语言动态内存函数（&lt;stdlib.h&gt;）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98-new-delete"><span class="toc-number">5.4.2.</span> <span class="toc-text">C++ 动态内存 new &#x2F;delete</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-vs-C-%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%AF%B9%E6%AF%94"><span class="toc-number">5.4.3.</span> <span class="toc-text">C vs C++ 动态内存对比</span></a></li></ol></li></ol></li></ol></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-24gl-folderOpen"></i>分类</h3><div class="archive_lists"><ul class="category-list"></ul></div></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-tag"></i>标签</h3></div></div></div><footer class="footer"> <div class="footer_bottom"><div class="footer_box"><div class="copy"><span>主题</span><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn">Hexo</a><span>模板</span><a href="/">Hexo</a></div><div class="copy"><span>© 2022<a href="/">Hexo</a>鲁ICP备2022003990号</span></div></div></div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"> </script><script src="/assets/lib/prettify/prettify.js"> </script><script src="/assets/lib/fancybox/fancybox.js"> </script><script src="/assets/js/app.js"> </script></div></body></html>
+</div></div></div><div class="article_sidebar left"><div class="author_sidebar sidebar_container"><div class="author_info"><div class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/></div><div class="author_name"><h3><a href="/about">FY</a></h3><p>不断学习，不断提升！</p></div></div><div class="author_data"><ul><li> <div> <span>2</span><p>文章</p></div></li><li> <div> <span>0</span><p>分类</p></div></li><li> <div> <span>0</span><p>标签</p></div></li></ul></div></div><div class="catalogue sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-feiji"></i>目录</h3><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#c-%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-number">1.</span> <span class="toc-text">c++运算符优先级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7%E5%86%B3%E5%AE%9A%E4%BA%86%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%AD%E5%90%84%E4%B8%AA%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F%EF%BC%8C%E4%BC%98%E5%85%88%E7%BA%A7%E9%AB%98%E7%9A%84%E5%85%88%E7%AE%97%E3%80%82%E6%88%91%E7%BB%99%E4%BD%A0%E6%95%B4%E7%90%86%E4%B8%80%E4%BB%BD%E5%AE%8C%E6%95%B4%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7%E8%A1%A8%EF%BC%8C%E9%87%8D%E7%82%B9%E6%A0%87%E6%B3%A8%E4%BD%A0%E5%85%B3%E5%BF%83%E7%9A%84%E7%AE%97%E6%9C%AF%E3%80%81%E4%BD%8D%E7%A7%BB%E3%80%81%E6%8C%87%E9%92%88%E7%9B%B8%E5%85%B3%E8%BF%90%E7%AE%97%E7%AC%A6%E3%80%82"><span class="toc-number">2.</span> <span class="toc-text">运算符优先级决定了表达式中各个运算符的执行顺序，优先级高的先算。我给你整理一份完整的优先级表，重点标注你关心的算术、位移、指针相关运算符。</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E4%BC%98%E5%85%88%E7%BA%A7%E8%A1%A8%EF%BC%88%E4%BB%8E%E9%AB%98%E5%88%B0%E4%BD%8E%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">完整优先级表（从高到低）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E5%A4%84%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">字符处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Switch%E8%AF%AD%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">Switch语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E5%8F%A5%E5%9D%97%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F"><span class="toc-number">4.1.</span> <span class="toc-text">语句块中的变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#goto"><span class="toc-number">4.2.</span> <span class="toc-text">goto</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%95%B0%E7%BB%84%E7%9A%84%E5%BE%AA%E7%8E%AF"><span class="toc-number">4.3.</span> <span class="toc-text">基于数组的循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#std-vector%E5%87%A0%E4%B8%AA%E6%96%B0%E7%94%A8%E6%B3%95"><span class="toc-number">4.4.</span> <span class="toc-text">std::vector几个新用法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#vector%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-number">4.4.1.</span> <span class="toc-text">vector的扩容机制</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88"><span class="toc-number">5.</span> <span class="toc-text">指针</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%8A%A01%E5%86%85%E5%AD%98%E7%9A%84%E4%BD%8D%E7%A7%BB%E9%87%8F"><span class="toc-number">5.1.</span> <span class="toc-text">指针加1内存的位移量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E9%87%8F%E6%8C%87%E9%92%88vs%E6%8C%87%E9%92%88%E5%B8%B8%E9%87%8F"><span class="toc-number">5.2.</span> <span class="toc-text">常量指针vs指针常量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%92%8C%E6%95%B0%E7%BB%84"><span class="toc-number">5.3.</span> <span class="toc-text">指针和数组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="toc-number">5.4.</span> <span class="toc-text">动态内存分配</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E8%AF%AD%E8%A8%80%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%87%BD%E6%95%B0%EF%BC%88%EF%BC%89"><span class="toc-number">5.4.1.</span> <span class="toc-text">C 语言动态内存函数（&lt;stdlib.h&gt;）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98-new-delete"><span class="toc-number">5.4.2.</span> <span class="toc-text">C++ 动态内存 new &#x2F;delete</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-vs-C-%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%AF%B9%E6%AF%94"><span class="toc-number">5.4.3.</span> <span class="toc-text">C vs C++ 动态内存对比</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#memset%E4%B8%8Ememcpy"><span class="toc-number">5.4.4.</span> <span class="toc-text">memset与memcpy</span></a></li></ol></li></ol></li></ol></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-24gl-folderOpen"></i>分类</h3><div class="archive_lists"><ul class="category-list"></ul></div></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-tag"></i>标签</h3></div></div></div><footer class="footer"> <div class="footer_bottom"><div class="footer_box"><div class="copy"><span>主题</span><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn">Hexo</a><span>模板</span><a href="/">Hexo</a></div><div class="copy"><span>© 2022<a href="/">Hexo</a>鲁ICP备2022003990号</span></div></div></div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"> </script><script src="/assets/lib/prettify/prettify.js"> </script><script src="/assets/lib/fancybox/fancybox.js"> </script><script src="/assets/js/app.js"> </script></div></body></html>
