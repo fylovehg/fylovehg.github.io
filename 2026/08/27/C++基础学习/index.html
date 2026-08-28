@@ -229,16 +229,192 @@
 <li>（1）要操作的内存地址</li>
 <li>（2）要操作的内存大小<br>指针的语法：</li>
 </ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">数据类型*变量名称;</span><br><span class="line"><span class="type">int</span>*a;</span><br></pre></td></tr></table></figure></div><div class="article_tags"><span> <i class="yufont icon-tag"></i> 标签: </span></div></article><div class="article-copyright"><p>标题: <a href="/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">C++</a></p><p> 链接: <a href="/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">http://example.com/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/</a></p><p> 版权声明: 若无特殊标注皆为 FY 原创版权, 转载请以链接形式注明作者及原始出处</p><p>最后编辑时间: 2026-08-28</p></div><div class="page_turning"><a class="page_up" href="/2026/08/27/hello-world/"
-  style="background-image:url(/assets/images/random/19.jpg)">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">数据类型*变量名称;</span><br><span class="line"><span class="type">int</span>*a;</span><br></pre></td></tr></table></figure>
+<h3 id="指针加1内存的位移量"><a href="#指针加1内存的位移量" class="headerlink" title="指针加1内存的位移量"></a>指针加1内存的位移量</h3><h2 id="核心结论：指针加一，地址增加的不是-1-字节，而是-sizeof-指向的类型-字节。"><a href="#核心结论：指针加一，地址增加的不是-1-字节，而是-sizeof-指向的类型-字节。" class="headerlink" title="核心结论：指针加一，地址增加的不是 1 字节，而是 sizeof(指向的类型) 字节。"></a>核心结论：<strong>指针加一，地址增加的不是 1 字节，而是 <code>sizeof(指向的类型)</code> 字节。</strong></h2><p>原理：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">T* p;</span><br><span class="line">p + <span class="number">1</span>;  <span class="comment">// 实际地址增加 sizeof(T) 字节，不是 1 字节</span></span><br></pre></td></tr></table></figure>
+
+<p>指针的类型决定了它的 “步长”—— 加一时跳过多少字节。这样设计是为了让 <code>p+1</code> 自然地指向下一个同类型元素。</p>
+<h3 id="常量指针vs指针常量"><a href="#常量指针vs指针常量" class="headerlink" title="常量指针vs指针常量"></a>常量指针vs指针常量</h3><p>这是 C&#x2F;C++ 指针部分最经典、最容易搞混的考点。核心就一句话：<strong>看 <code>const</code> 在 <code>*</code> 的左边还是右边</strong>。</p>
+<hr>
+<ul>
+<li><strong>两个概念的本质区别</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>英文</th>
+<th>写法</th>
+<th>本质</th>
+<th>指针本身能改吗？</th>
+<th>指向的值能改吗？</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>常量指针</strong></td>
+<td>pointer to const</td>
+<td><code>const int* p</code> &#x2F; <code>int const* p</code></td>
+<td>指向 “常量” 的指针</td>
+<td>✅ 能改指向</td>
+<td>❌ 不能改值</td>
+</tr>
+<tr>
+<td><strong>指针常量</strong></td>
+<td>const pointer</td>
+<td><code>int* const p</code></td>
+<td>指针本身是 “常量”</td>
+<td>❌ 不能改指向</td>
+<td>✅ 能改值</td>
+</tr>
+<tr>
+<td><strong>都常量</strong></td>
+<td>const pointer to const</td>
+<td><code>const int* const p</code></td>
+<td>指向常量的常量指针</td>
+<td>❌ 不能改指向</td>
+<td>❌ 不能改值</td>
+</tr>
+</tbody></table>
+<h3 id="指针和数组"><a href="#指针和数组" class="headerlink" title="指针和数组"></a>指针和数组</h3><p>在 C&#x2F;C++ 底层，根本没有 “数组” 这个东西，只有指针和连续内存。数组是编译器为了方便人类理解，在指针基础上包装出来的语法糖。</p>
+<hr>
+<ol>
+<li>数组访问的底层原理：起始地址 + 偏移量</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int a[5] = &#123;10, 20, 30, 40, 50&#125;;</span><br><span class="line"></span><br><span class="line">a[0]  // 等价于 *(a + 0)  → 起始地址偏移 0×4 字节</span><br><span class="line">a[1]  // 等价于 *(a + 1)  → 起始地址偏移 1×4 字节</span><br><span class="line">a[2]  // 等价于 *(a + 2)  → 起始地址偏移 2×4 字节</span><br></pre></td></tr></table></figure>
+
+<p><strong>公式</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a[i] 的地址 = a 的首地址 + i × sizeof(元素类型)</span><br></pre></td></tr></table></figure>
+
+<p>这就是为什么视频里通过汇编分析，访问 <code>a[1]</code> 时是在 <code>a[0]</code> 地址基础上偏移了 4 字节（int 占 4 字节）。</p>
+<hr>
+<ol start="2">
+<li>数组名本质上是一个指针（指向首元素）</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">int a[5] = &#123;1, 2, 3, 4, 5&#125;;</span><br><span class="line">int* p = a;  // ✅ 数组名可以直接赋给指针</span><br><span class="line"></span><br><span class="line">cout &lt;&lt; *a &lt;&lt; endl;    // 1，等价于 a[0]</span><br><span class="line">cout &lt;&lt; *(a+1) &lt;&lt; endl;// 2，等价于 a[1]</span><br><span class="line">cout &lt;&lt; a[2] &lt;&lt; endl;  // 3</span><br><span class="line">cout &lt;&lt; p[2] &lt;&lt; endl;  // 3，指针也可以用下标！</span><br></pre></td></tr></table></figure>
+
+<p><strong>关键结论</strong>：</p>
+<ul>
+<li>数组名 <code>a</code> 的值就是首元素 <code>a[0]</code> 的地址</li>
+<li><code>a[i]</code> 和 <code>*(a+i)</code> 完全等价</li>
+<li>指针 <code>p</code> 也可以用 <code>p[i]</code> 的写法，和 <code>*(p+i)</code> 等价</li>
+</ul>
+<hr>
+<ol start="3">
+<li>⚠️ 数组名和普通指针的区别（重点！）</li>
+</ol>
+<p>虽然数组名本质上是指针，但它和普通指针<strong>不完全一样</strong>：</p>
+<p>表格</p>
+<table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>数组名 <code>a</code></th>
+<th>普通指针 <code>p</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>本质</td>
+<td>首元素地址（常量指针）</td>
+<td>指针变量</td>
+</tr>
+<tr>
+<td><code>sizeof</code></td>
+<td>整个数组的大小（如 <code>int a[5]</code> → 20 字节）</td>
+<td>指针本身的大小（8 字节 &#x2F; 64 位）</td>
+</tr>
+<tr>
+<td>能否改指向</td>
+<td>❌ 不能，<code>a = &amp;x</code> 编译错误</td>
+<td>✅ 可以，<code>p = &amp;x</code></td>
+</tr>
+<tr>
+<td>能否自增</td>
+<td>❌ 不能，<code>a++</code> 编译错误</td>
+<td>✅ 可以，<code>p++</code></td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">int a[5] = &#123;1,2,3,4,5&#125;;</span><br><span class="line">int* p = a;</span><br><span class="line"></span><br><span class="line">cout &lt;&lt; sizeof(a) &lt;&lt; endl;  // 20（5×4），整个数组大小</span><br><span class="line">cout &lt;&lt; sizeof(p) &lt;&lt; endl;  // 8（64位），指针本身大小</span><br><span class="line"></span><br><span class="line">// a++;  // ❌ 错误！数组名是常量，不能自增</span><br><span class="line">p++;    // ✅ 可以，指针移动到下一个元素</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>💡 视频里提到的 <code>sizeof(a) = 20</code> 而 <code>sizeof(p) = 8</code>，就是这个原因。数组名虽然值是地址，但它的 “类型” 是数组类型，不是指针类型。</p>
+</blockquote>
+<hr>
+<ol start="4">
+<li>多维数组的本质：也是一维连续内存</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int a[2][5] = &#123;</span><br><span class="line">    &#123;1, 2, 3, 4, 5&#125;,</span><br><span class="line">    &#123;6, 7, 8, 9, 10&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>内存实际布局</strong>（连续的，不是两行分开的）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">地址从低到高：1 2 3 4 5 6 7 8 9 10</span><br></pre></td></tr></table></figure>
+
+<p>所谓的 “两行五列” 只是<strong>逻辑上的划分</strong>，内存里就是 10 个 int 连续排列。</p>
+<p><strong>访问公式</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a[i][j] 的地址 = 首地址 + (i × 列数 + j) × sizeof(int)</span><br></pre></td></tr></table></figure>
+
+<p>所以 <code>a[1][2]</code> &#x3D; 首地址 + (1×5 + 2)×4 &#x3D; 首地址 + 28 字节，对应值是 8。</p>
+<hr>
+<ol start="5">
+<li>数组指针（指向数组的指针）—— 本节课难点</li>
+</ol>
+<p>这是视频后半段的重点，也是最容易搞混的概念。</p>
+<p> 语法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int (*p)[5];  // 数组指针：指向一个含5个int的数组</span><br></pre></td></tr></table></figure>
+
+<p> 和指针数组的区别（高频混淆！）：</p>
+<p>表格</p>
+<table>
+<thead>
+<tr>
+<th>写法</th>
+<th>名称</th>
+<th>本质</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>int (*p)[5]</code></td>
+<td><strong>数组指针</strong></td>
+<td>指针，指向一个含 5 个 int 的数组</td>
+</tr>
+<tr>
+<td><code>int* p[5]</code></td>
+<td><strong>指针数组</strong></td>
+<td>数组，含 5 个 int * 指针</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>💡 记忆方法：看 <code>*</code> 和 <code>[]</code> 谁先和变量名结合</p>
+<ul>
+<li><code>(*p)[5]</code>：p 先和 <code>*</code> 结合 → 是指针 → 数组指针</li>
+<li><code>*p[5]</code>：p 先和 <code>[5]</code> 结合 → 是数组 → 指针数组</li>
+</ul>
+</blockquote>
+<p> 数组指针的关键特性：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">int a[2][5] = &#123;&#123;1,2,3,4,5&#125;, &#123;6,7,8,9,10&#125;&#125;;</span><br><span class="line">int (*p)[5] = a;  // p 指向第一行（含5个int的数组）</span><br><span class="line"></span><br><span class="line">cout &lt;&lt; (*p)[0] &lt;&lt; endl;  // 1，第一行第0个</span><br><span class="line">cout &lt;&lt; (*p)[2] &lt;&lt; endl;  // 3，第一行第2个</span><br><span class="line"></span><br><span class="line">p++;  // ⚠️ 关键！数组指针加一跳过一整行！</span><br><span class="line">// p 现在指向第二行</span><br><span class="line"></span><br><span class="line">cout &lt;&lt; (*p)[0] &lt;&lt; endl;  // 6，第二行第0个</span><br></pre></td></tr></table></figure>
+
+<p> ⚠️ 数组指针加一的位移量（视频重点强调的易错点！）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int (*p)[5];  // 指向含5个int的数组</span><br><span class="line"></span><br><span class="line">p++;  // 地址增加多少？</span><br><span class="line">      // 不是 +4 字节！</span><br><span class="line">      // 而是 +5×4 = 20 字节！跳过一整行！</span><br></pre></td></tr></table></figure>
+
+<p><strong>公式</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">数组指针 p 加一的位移量 = 1 × sizeof(指向的数组类型)</span><br><span class="line">                       = 1 × (数组长度 × 元素类型大小)</span><br></pre></td></tr></table></figure>
+
+<p>视频里的例子：<code>int (*p)[6]</code>，<code>p++</code> 地址增加了 24 字节（6×4），不是 4 字节！这是很多人容易搞错的地方。</p>
+<hr>
+<ol start="6">
+<li>二维数组名的本质：数组指针</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">int a[2][5];</span><br><span class="line"></span><br><span class="line">// a 的本质是什么？</span><br><span class="line">// a 是指向&quot;含5个int的数组&quot;的指针！</span><br><span class="line">// 即 a 的类型等价于 int (*)[5]</span><br><span class="line"></span><br><span class="line">int (*p)[5] = a;  // ✅ 可以直接赋值，类型匹配</span><br></pre></td></tr></table></figure>
+
+<p>这就是为什么二维数组名 <code>a</code> 加一会跳过一整行（5 个 int），而不是一个 int：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a + 1;  // 地址增加 5×4 = 20 字节，跳到第二行</span><br></pre></td></tr></table></figure></div><div class="article_tags"><span> <i class="yufont icon-tag"></i> 标签: </span></div></article><div class="article-copyright"><p>标题: <a href="/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">C++</a></p><p> 链接: <a href="/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">http://example.com/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/</a></p><p> 版权声明: 若无特殊标注皆为 FY 原创版权, 转载请以链接形式注明作者及原始出处</p><p>最后编辑时间: 2026-08-28</p></div><div class="page_turning"><a class="page_up" href="/2026/08/27/hello-world/"
+  style="background-image:url(/assets/images/random/14.jpg)">
   <div class="inner"><span>上一篇:</span>
     <p>Hello World</p>
   </div>
 </a>
 <a class="page_down" href="javascript:;"
-style="background-image:url(/assets/images/random/25.jpg)">
+style="background-image:url(/assets/images/random/22.jpg)">
 <div class="inner"><span>下一篇:</span>
   <p>已经没有下一篇了</p>
 </div>
 </a>
-</div></div></div><div class="article_sidebar left"><div class="author_sidebar sidebar_container"><div class="author_info"><div class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/></div><div class="author_name"><h3><a href="/about">FY</a></h3><p>不断学习，不断提升！</p></div></div><div class="author_data"><ul><li> <div> <span>2</span><p>文章</p></div></li><li> <div> <span>0</span><p>分类</p></div></li><li> <div> <span>0</span><p>标签</p></div></li></ul></div></div><div class="catalogue sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-feiji"></i>目录</h3><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#c-%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-number">1.</span> <span class="toc-text">c++运算符优先级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7%E5%86%B3%E5%AE%9A%E4%BA%86%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%AD%E5%90%84%E4%B8%AA%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F%EF%BC%8C%E4%BC%98%E5%85%88%E7%BA%A7%E9%AB%98%E7%9A%84%E5%85%88%E7%AE%97%E3%80%82%E6%88%91%E7%BB%99%E4%BD%A0%E6%95%B4%E7%90%86%E4%B8%80%E4%BB%BD%E5%AE%8C%E6%95%B4%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7%E8%A1%A8%EF%BC%8C%E9%87%8D%E7%82%B9%E6%A0%87%E6%B3%A8%E4%BD%A0%E5%85%B3%E5%BF%83%E7%9A%84%E7%AE%97%E6%9C%AF%E3%80%81%E4%BD%8D%E7%A7%BB%E3%80%81%E6%8C%87%E9%92%88%E7%9B%B8%E5%85%B3%E8%BF%90%E7%AE%97%E7%AC%A6%E3%80%82"><span class="toc-number">2.</span> <span class="toc-text">运算符优先级决定了表达式中各个运算符的执行顺序，优先级高的先算。我给你整理一份完整的优先级表，重点标注你关心的算术、位移、指针相关运算符。</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E4%BC%98%E5%85%88%E7%BA%A7%E8%A1%A8%EF%BC%88%E4%BB%8E%E9%AB%98%E5%88%B0%E4%BD%8E%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">完整优先级表（从高到低）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E5%A4%84%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">字符处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Switch%E8%AF%AD%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">Switch语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E5%8F%A5%E5%9D%97%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F"><span class="toc-number">4.1.</span> <span class="toc-text">语句块中的变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#goto"><span class="toc-number">4.2.</span> <span class="toc-text">goto</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%95%B0%E7%BB%84%E7%9A%84%E5%BE%AA%E7%8E%AF"><span class="toc-number">4.3.</span> <span class="toc-text">基于数组的循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#std-vector%E5%87%A0%E4%B8%AA%E6%96%B0%E7%94%A8%E6%B3%95"><span class="toc-number">4.4.</span> <span class="toc-text">std::vector几个新用法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#vector%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-number">4.4.1.</span> <span class="toc-text">vector的扩容机制</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88"><span class="toc-number">5.</span> <span class="toc-text">指针</span></a></li></ol></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-24gl-folderOpen"></i>分类</h3><div class="archive_lists"><ul class="category-list"></ul></div></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-tag"></i>标签</h3></div></div></div><footer class="footer"> <div class="footer_bottom"><div class="footer_box"><div class="copy"><span>主题</span><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn">Hexo</a><span>模板</span><a href="/">Hexo</a></div><div class="copy"><span>© 2022<a href="/">Hexo</a>鲁ICP备2022003990号</span></div></div></div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"> </script><script src="/assets/lib/prettify/prettify.js"> </script><script src="/assets/lib/fancybox/fancybox.js"> </script><script src="/assets/js/app.js"> </script></div></body></html>
+</div></div></div><div class="article_sidebar left"><div class="author_sidebar sidebar_container"><div class="author_info"><div class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/></div><div class="author_name"><h3><a href="/about">FY</a></h3><p>不断学习，不断提升！</p></div></div><div class="author_data"><ul><li> <div> <span>2</span><p>文章</p></div></li><li> <div> <span>0</span><p>分类</p></div></li><li> <div> <span>0</span><p>标签</p></div></li></ul></div></div><div class="catalogue sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-feiji"></i>目录</h3><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#c-%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-number">1.</span> <span class="toc-text">c++运算符优先级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7%E5%86%B3%E5%AE%9A%E4%BA%86%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%AD%E5%90%84%E4%B8%AA%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F%EF%BC%8C%E4%BC%98%E5%85%88%E7%BA%A7%E9%AB%98%E7%9A%84%E5%85%88%E7%AE%97%E3%80%82%E6%88%91%E7%BB%99%E4%BD%A0%E6%95%B4%E7%90%86%E4%B8%80%E4%BB%BD%E5%AE%8C%E6%95%B4%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7%E8%A1%A8%EF%BC%8C%E9%87%8D%E7%82%B9%E6%A0%87%E6%B3%A8%E4%BD%A0%E5%85%B3%E5%BF%83%E7%9A%84%E7%AE%97%E6%9C%AF%E3%80%81%E4%BD%8D%E7%A7%BB%E3%80%81%E6%8C%87%E9%92%88%E7%9B%B8%E5%85%B3%E8%BF%90%E7%AE%97%E7%AC%A6%E3%80%82"><span class="toc-number">2.</span> <span class="toc-text">运算符优先级决定了表达式中各个运算符的执行顺序，优先级高的先算。我给你整理一份完整的优先级表，重点标注你关心的算术、位移、指针相关运算符。</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E4%BC%98%E5%85%88%E7%BA%A7%E8%A1%A8%EF%BC%88%E4%BB%8E%E9%AB%98%E5%88%B0%E4%BD%8E%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">完整优先级表（从高到低）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E5%A4%84%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">字符处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Switch%E8%AF%AD%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">Switch语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E5%8F%A5%E5%9D%97%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F"><span class="toc-number">4.1.</span> <span class="toc-text">语句块中的变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#goto"><span class="toc-number">4.2.</span> <span class="toc-text">goto</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%95%B0%E7%BB%84%E7%9A%84%E5%BE%AA%E7%8E%AF"><span class="toc-number">4.3.</span> <span class="toc-text">基于数组的循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#std-vector%E5%87%A0%E4%B8%AA%E6%96%B0%E7%94%A8%E6%B3%95"><span class="toc-number">4.4.</span> <span class="toc-text">std::vector几个新用法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#vector%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-number">4.4.1.</span> <span class="toc-text">vector的扩容机制</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88"><span class="toc-number">5.</span> <span class="toc-text">指针</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%8A%A01%E5%86%85%E5%AD%98%E7%9A%84%E4%BD%8D%E7%A7%BB%E9%87%8F"><span class="toc-number">5.1.</span> <span class="toc-text">指针加1内存的位移量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E7%BB%93%E8%AE%BA%EF%BC%9A%E6%8C%87%E9%92%88%E5%8A%A0%E4%B8%80%EF%BC%8C%E5%9C%B0%E5%9D%80%E5%A2%9E%E5%8A%A0%E7%9A%84%E4%B8%8D%E6%98%AF-1-%E5%AD%97%E8%8A%82%EF%BC%8C%E8%80%8C%E6%98%AF-sizeof-%E6%8C%87%E5%90%91%E7%9A%84%E7%B1%BB%E5%9E%8B-%E5%AD%97%E8%8A%82%E3%80%82"><span class="toc-number">6.</span> <span class="toc-text">核心结论：指针加一，地址增加的不是 1 字节，而是 sizeof(指向的类型) 字节。</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E9%87%8F%E6%8C%87%E9%92%88vs%E6%8C%87%E9%92%88%E5%B8%B8%E9%87%8F"><span class="toc-number">6.1.</span> <span class="toc-text">常量指针vs指针常量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%92%8C%E6%95%B0%E7%BB%84"><span class="toc-number">6.2.</span> <span class="toc-text">指针和数组</span></a></li></ol></li></ol></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-24gl-folderOpen"></i>分类</h3><div class="archive_lists"><ul class="category-list"></ul></div></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-tag"></i>标签</h3></div></div></div><footer class="footer"> <div class="footer_bottom"><div class="footer_box"><div class="copy"><span>主题</span><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn">Hexo</a><span>模板</span><a href="/">Hexo</a></div><div class="copy"><span>© 2022<a href="/">Hexo</a>鲁ICP备2022003990号</span></div></div></div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"> </script><script src="/assets/lib/prettify/prettify.js"> </script><script src="/assets/lib/fancybox/fancybox.js"> </script><script src="/assets/js/app.js"> </script></div></body></html>
