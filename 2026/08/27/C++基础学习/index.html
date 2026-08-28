@@ -403,22 +403,172 @@
 
 <p>视频里的例子：<code>int (*p)[6]</code>，<code>p++</code> 地址增加了 24 字节（6×4），不是 4 字节！这是很多人容易搞错的地方。</p>
 <hr>
-<ol start="6">
-<li>二维数组名的本质：数组指针</li>
-</ol>
+<p> ⚠️ 6. 二维数组名的本质：数组指针</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">int a[2][5];</span><br><span class="line"></span><br><span class="line">// a 的本质是什么？</span><br><span class="line">// a 是指向&quot;含5个int的数组&quot;的指针！</span><br><span class="line">// 即 a 的类型等价于 int (*)[5]</span><br><span class="line"></span><br><span class="line">int (*p)[5] = a;  // ✅ 可以直接赋值，类型匹配</span><br></pre></td></tr></table></figure>
 
 <p>这就是为什么二维数组名 <code>a</code> 加一会跳过一整行（5 个 int），而不是一个 int：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a + 1;  // 地址增加 5×4 = 20 字节，跳到第二行</span><br></pre></td></tr></table></figure></div><div class="article_tags"><span> <i class="yufont icon-tag"></i> 标签: </span></div></article><div class="article-copyright"><p>标题: <a href="/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">C++</a></p><p> 链接: <a href="/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">http://example.com/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/</a></p><p> 版权声明: 若无特殊标注皆为 FY 原创版权, 转载请以链接形式注明作者及原始出处</p><p>最后编辑时间: 2026-08-28</p></div><div class="page_turning"><a class="page_up" href="/2026/08/27/hello-world/"
-  style="background-image:url(/assets/images/random/30.jpg)">
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a + 1;  // 地址增加 5×4 = 20 字节，跳到第二行</span><br></pre></td></tr></table></figure>
+<h3 id="动态内存分配"><a href="#动态内存分配" class="headerlink" title="动态内存分配"></a>动态内存分配</h3><h2 id="动态内存本质：向操作系统申请一块内存，操作系统只返回起始地址；怎么解读这块内存，由代码里的指针类型决定。"><a href="#动态内存本质：向操作系统申请一块内存，操作系统只返回起始地址；怎么解读这块内存，由代码里的指针类型决定。" class="headerlink" title="动态内存本质：向操作系统申请一块内存，操作系统只返回起始地址；怎么解读这块内存，由代码里的指针类型决定。"></a><strong>动态内存本质</strong>：向操作系统申请一块内存，操作系统只返回起始地址；<strong>怎么解读这块内存，由代码里的指针类型决定</strong>。</h2><p>为什么需要动态内存？</p>
+<p>普通数组<code>int arr[100]</code>是<strong>静态数组</strong>：编译期就要确定常量大小，提前把内存占住。</p>
+<ul>
+<li>缺点：空间浪费；如果需求数量不确定（游戏副本随机刷 100‑10000 个怪物），直接定义超大数组会耗尽内存。</li>
+<li>动态内存：<strong>运行时需要多少就申请多少，用完归还</strong>，更智能。</li>
+</ul>
+<blockquote>
+<p>类比分房：静态数组直接一次性分 100 套房，住不住都占着；动态内存需要多少套申请多少，退房还给物业。</p>
+</blockquote>
+<blockquote>
+<p>⚠️边界：操作系统返回仅仅是起始地址，不能越界访问；访问分配以外的内存，程序异常崩溃。</p>
+</blockquote>
+<hr>
+<h4 id="C-语言动态内存函数（）"><a href="#C-语言动态内存函数（）" class="headerlink" title="C 语言动态内存函数（&lt;stdlib.h&gt;）"></a>C 语言动态内存函数（<code>&lt;stdlib.h&gt;</code>）</h4><ol>
+<li><code>malloc(size_t size)</code></li>
+</ol>
+<ul>
+<li>参数：<code>size_t</code>无符号整数，<strong>需要分配的字节总大小</strong></li>
+<li>返回值：<code>void*</code>空类型指针，只保存地址，没有绑定类型；分配失败返回<code>NULL(0)</code>。</li>
+<li>使用：需要强制转换成对应类型指针；<strong>不会初始化内存，里面是残留垃圾值</strong>。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int* p = (int*)malloc( x * sizeof(int) );</span><br><span class="line">if(p == NULL)&#123; //必须判断分配失败</span><br><span class="line">    //内存不足处理</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：变长数组<code>int arr[x]</code>部分编译器支持，但不是标准 C，有坑，优先动态内存。</p>
+</blockquote>
+<ol start="2">
+<li><code>calloc(size_t num, size_t size)</code></li>
+</ol>
+<ul>
+<li>参数：<code>num</code>元素个数，<code>size</code>单个元素字节大小，内部自动计算总字节<code>num*size</code></li>
+<li>返回：<code>void*</code>，失败返回<code>NULL</code></li>
+<li>和<code>malloc</code>最大区别：<strong>分配完自动把整块内存全部清零</strong></li>
+<li>代价：清零操作消耗 CPU，效率略低于<code>malloc</code></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int* p = (int*)calloc(x, sizeof(int));</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><code>realloc(void* ptr, size_t new_size)</code> 重新扩容 &#x2F; 缩容</li>
+</ol>
+<p>对已经分配好的内存调整大小。<br>两种工作场景：</p>
+<ol>
+<li><strong>原内存后方有空闲内存</strong>：直接原地扩容，<strong>指针地址不变，原有数据保留</strong>。</li>
+<li><strong>后方被占用</strong>：操作系统在内存别的地方开辟一块全新内存，<strong>把旧内存的数据拷贝过来，返回全新地址，旧内存自动回收</strong>。</li>
+</ol>
+<blockquote>
+<p>⚠️不要直接写 <code>p = realloc(p, new_size);</code>，如果分配失败返回 NULL，会直接把原来有效内存地址覆盖丢失。<br>规范写法：先用临时指针接收返回值。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">int* tmp = (int*)realloc(p, new_size * sizeof(int));</span><br><span class="line">if(tmp != NULL)&#123;</span><br><span class="line">    p = tmp;</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    //扩容失败，原p依然有效</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><code>free(void* ptr)</code> —— 释放内存</li>
+</ol>
+<blockquote>
+<p>有借有还，用完动态内存必须 free，否则造成<strong>内存泄漏</strong>。</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">free(p);</span><br></pre></td></tr></table></figure>
+
+<p>⚠️重点坑点：</p>
+<ol>
+<li><code>free</code>只归还内存给操作系统，<strong>指针变量本身的值不会自动置 0</strong>，变成<strong>悬挂指针</strong>：指针保存旧地址，但这块内存已经不属于程序。后续访问悬挂指针程序崩溃。<ul>
+<li>最佳实践：<code>free(p); p = NULL;</code></li>
+</ul>
+</li>
+<li><strong>不能重复 free 同一个指针</strong>，程序直接异常。</li>
+<li>free 只能释放 malloc&#x2F;calloc&#x2F;realloc 返回的地址，不能释放普通栈上变量地址。</li>
+</ol>
+<hr>
+<p> C 语言小结</p>
+<p>表格</p>
+<table>
+<thead>
+<tr>
+<th>函数</th>
+<th>作用</th>
+<th>内存初始值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>malloc</td>
+<td>分配 size 字节</td>
+<td>垃圾随机值</td>
+</tr>
+<tr>
+<td>calloc</td>
+<td>分配 num 个、每个 size 字节</td>
+<td>全部置 0</td>
+</tr>
+<tr>
+<td>realloc</td>
+<td>调整已有内存大小</td>
+<td>旧数据保留，新增部分 malloc 行为</td>
+</tr>
+<tr>
+<td>free</td>
+<td>释放动态内存</td>
+<td>‑</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>必须检查返回值是否 NULL；用完必须 free；防止悬挂指针。</p>
+</blockquote>
+<hr>
+<h4 id="三、C-动态内存-new-delete"><a href="#三、C-动态内存-new-delete" class="headerlink" title="三、C++ 动态内存 new &#x2F;delete"></a>三、C++ 动态内存 new &#x2F;delete</h4><p>底层本质：C++ 的<code>new/delete</code>底层封装调用 C 的<code>malloc/free</code>。</p>
+<p> 1️⃣ new</p>
+<ol>
+<li>分配单个对象</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int* p = new int;   //分配1个int大小内存</span><br><span class="line">*p = 100;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>分配数组（运行时动态数量）</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int* p = new int[x]; //分配x个int数组</span><br></pre></td></tr></table></figure>
+
+<p> 2️⃣ delete（释放，必须配对！）</p>
+<blockquote>
+<p>✅配对规则：</p>
+</blockquote>
+<ul>
+<li><code>new 类型</code> → <code>delete p;</code></li>
+<li><code>new 类型[数量]</code> → <code>delete[] p;</code></li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int* p1 = new int;</span><br><span class="line">delete p1;       //单个不用[]</span><br><span class="line"></span><br><span class="line">int* p2 = new int[x];</span><br><span class="line">delete[] p2;     //数组必须加[]</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>❗错配会引发未定义行为，程序崩溃。</p>
+</blockquote>
+<blockquote>
+<p>C++17 推荐空指针字面量<code>nullptr</code>，代替 0；C 语言只能使用 0 代表空指针。</p>
+</blockquote>
+<h4 id="C-vs-C-动态内存对比"><a href="#C-vs-C-动态内存对比" class="headerlink" title="C vs C++ 动态内存对比"></a>C vs C++ 动态内存对比</h4><ol>
+<li>C：<code>malloc/calloc/realloc/free</code>，返回<code>void*</code>，需要手动强制类型转换。</li>
+<li>C++：<code>new/delete</code>，自动匹配类型，不用强制转换；数组释放必须带<code>[]</code>。</li>
+</ol>
+<blockquote>
+<p>注意：不要混用！<code>malloc</code>出来的内存不能用<code>delete</code>释放；<code>new</code>出来的内存不能用<code>free</code>释放。</p>
+</blockquote>
+<hr>
+<ul>
+<li>常见坑汇总</li>
+</ul>
+<ol>
+<li><strong>内存分配不判 NULL</strong>：内存耗尽得到空指针，解引用直接崩溃。</li>
+<li><strong>越界访问动态内存</strong>：读写超出申请字节，破坏其他内存，程序异常。</li>
+<li><strong>内存泄漏</strong>：malloc&#x2F;new 申请内存，忘记 free&#x2F;delete，程序长期运行内存越来越高。</li>
+<li><strong>悬挂指针</strong>：free&#x2F;delete 之后继续使用旧指针；建议释放后立刻置空。</li>
+<li><strong>重复释放</strong>：多次 free 同一个指针，未定义行为。</li>
+<li><strong>new [] 对应 delete，或者 new 对应 delete []</strong>：配对错误。</li>
+<li>C 语言不要指望变长数组<code>int arr[n]</code>做动态数组，可移植性差。</li>
+</ol>
+</div><div class="article_tags"><span> <i class="yufont icon-tag"></i> 标签: </span></div></article><div class="article-copyright"><p>标题: <a href="/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">C++</a></p><p> 链接: <a href="/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">http://example.com/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/</a></p><p> 版权声明: 若无特殊标注皆为 FY 原创版权, 转载请以链接形式注明作者及原始出处</p><p>最后编辑时间: 2026-08-28</p></div><div class="page_turning"><a class="page_up" href="/2026/08/27/hello-world/"
+  style="background-image:url(/assets/images/random/9.jpg)">
   <div class="inner"><span>上一篇:</span>
     <p>Hello World</p>
   </div>
 </a>
 <a class="page_down" href="javascript:;"
-style="background-image:url(/assets/images/random/15.jpg)">
+style="background-image:url(/assets/images/random/33.jpg)">
 <div class="inner"><span>下一篇:</span>
   <p>已经没有下一篇了</p>
 </div>
 </a>
-</div></div></div><div class="article_sidebar left"><div class="author_sidebar sidebar_container"><div class="author_info"><div class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/></div><div class="author_name"><h3><a href="/about">FY</a></h3><p>不断学习，不断提升！</p></div></div><div class="author_data"><ul><li> <div> <span>2</span><p>文章</p></div></li><li> <div> <span>0</span><p>分类</p></div></li><li> <div> <span>0</span><p>标签</p></div></li></ul></div></div><div class="catalogue sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-feiji"></i>目录</h3><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#c-%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-number">1.</span> <span class="toc-text">c++运算符优先级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7%E5%86%B3%E5%AE%9A%E4%BA%86%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%AD%E5%90%84%E4%B8%AA%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F%EF%BC%8C%E4%BC%98%E5%85%88%E7%BA%A7%E9%AB%98%E7%9A%84%E5%85%88%E7%AE%97%E3%80%82%E6%88%91%E7%BB%99%E4%BD%A0%E6%95%B4%E7%90%86%E4%B8%80%E4%BB%BD%E5%AE%8C%E6%95%B4%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7%E8%A1%A8%EF%BC%8C%E9%87%8D%E7%82%B9%E6%A0%87%E6%B3%A8%E4%BD%A0%E5%85%B3%E5%BF%83%E7%9A%84%E7%AE%97%E6%9C%AF%E3%80%81%E4%BD%8D%E7%A7%BB%E3%80%81%E6%8C%87%E9%92%88%E7%9B%B8%E5%85%B3%E8%BF%90%E7%AE%97%E7%AC%A6%E3%80%82"><span class="toc-number">2.</span> <span class="toc-text">运算符优先级决定了表达式中各个运算符的执行顺序，优先级高的先算。我给你整理一份完整的优先级表，重点标注你关心的算术、位移、指针相关运算符。</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E4%BC%98%E5%85%88%E7%BA%A7%E8%A1%A8%EF%BC%88%E4%BB%8E%E9%AB%98%E5%88%B0%E4%BD%8E%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">完整优先级表（从高到低）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E5%A4%84%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">字符处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Switch%E8%AF%AD%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">Switch语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E5%8F%A5%E5%9D%97%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F"><span class="toc-number">4.1.</span> <span class="toc-text">语句块中的变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#goto"><span class="toc-number">4.2.</span> <span class="toc-text">goto</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%95%B0%E7%BB%84%E7%9A%84%E5%BE%AA%E7%8E%AF"><span class="toc-number">4.3.</span> <span class="toc-text">基于数组的循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#std-vector%E5%87%A0%E4%B8%AA%E6%96%B0%E7%94%A8%E6%B3%95"><span class="toc-number">4.4.</span> <span class="toc-text">std::vector几个新用法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#vector%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-number">4.4.1.</span> <span class="toc-text">vector的扩容机制</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88"><span class="toc-number">5.</span> <span class="toc-text">指针</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%8A%A01%E5%86%85%E5%AD%98%E7%9A%84%E4%BD%8D%E7%A7%BB%E9%87%8F"><span class="toc-number">5.1.</span> <span class="toc-text">指针加1内存的位移量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E9%87%8F%E6%8C%87%E9%92%88vs%E6%8C%87%E9%92%88%E5%B8%B8%E9%87%8F"><span class="toc-number">5.2.</span> <span class="toc-text">常量指针vs指针常量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%92%8C%E6%95%B0%E7%BB%84"><span class="toc-number">5.3.</span> <span class="toc-text">指针和数组</span></a></li></ol></li></ol></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-24gl-folderOpen"></i>分类</h3><div class="archive_lists"><ul class="category-list"></ul></div></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-tag"></i>标签</h3></div></div></div><footer class="footer"> <div class="footer_bottom"><div class="footer_box"><div class="copy"><span>主题</span><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn">Hexo</a><span>模板</span><a href="/">Hexo</a></div><div class="copy"><span>© 2022<a href="/">Hexo</a>鲁ICP备2022003990号</span></div></div></div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"> </script><script src="/assets/lib/prettify/prettify.js"> </script><script src="/assets/lib/fancybox/fancybox.js"> </script><script src="/assets/js/app.js"> </script></div></body></html>
+</div></div></div><div class="article_sidebar left"><div class="author_sidebar sidebar_container"><div class="author_info"><div class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/></div><div class="author_name"><h3><a href="/about">FY</a></h3><p>不断学习，不断提升！</p></div></div><div class="author_data"><ul><li> <div> <span>2</span><p>文章</p></div></li><li> <div> <span>0</span><p>分类</p></div></li><li> <div> <span>0</span><p>标签</p></div></li></ul></div></div><div class="catalogue sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-feiji"></i>目录</h3><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#c-%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-number">1.</span> <span class="toc-text">c++运算符优先级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7%E5%86%B3%E5%AE%9A%E4%BA%86%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%AD%E5%90%84%E4%B8%AA%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F%EF%BC%8C%E4%BC%98%E5%85%88%E7%BA%A7%E9%AB%98%E7%9A%84%E5%85%88%E7%AE%97%E3%80%82%E6%88%91%E7%BB%99%E4%BD%A0%E6%95%B4%E7%90%86%E4%B8%80%E4%BB%BD%E5%AE%8C%E6%95%B4%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7%E8%A1%A8%EF%BC%8C%E9%87%8D%E7%82%B9%E6%A0%87%E6%B3%A8%E4%BD%A0%E5%85%B3%E5%BF%83%E7%9A%84%E7%AE%97%E6%9C%AF%E3%80%81%E4%BD%8D%E7%A7%BB%E3%80%81%E6%8C%87%E9%92%88%E7%9B%B8%E5%85%B3%E8%BF%90%E7%AE%97%E7%AC%A6%E3%80%82"><span class="toc-number">2.</span> <span class="toc-text">运算符优先级决定了表达式中各个运算符的执行顺序，优先级高的先算。我给你整理一份完整的优先级表，重点标注你关心的算术、位移、指针相关运算符。</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E4%BC%98%E5%85%88%E7%BA%A7%E8%A1%A8%EF%BC%88%E4%BB%8E%E9%AB%98%E5%88%B0%E4%BD%8E%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">完整优先级表（从高到低）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E5%A4%84%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">字符处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Switch%E8%AF%AD%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">Switch语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E5%8F%A5%E5%9D%97%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F"><span class="toc-number">4.1.</span> <span class="toc-text">语句块中的变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#goto"><span class="toc-number">4.2.</span> <span class="toc-text">goto</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%95%B0%E7%BB%84%E7%9A%84%E5%BE%AA%E7%8E%AF"><span class="toc-number">4.3.</span> <span class="toc-text">基于数组的循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#std-vector%E5%87%A0%E4%B8%AA%E6%96%B0%E7%94%A8%E6%B3%95"><span class="toc-number">4.4.</span> <span class="toc-text">std::vector几个新用法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#vector%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-number">4.4.1.</span> <span class="toc-text">vector的扩容机制</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88"><span class="toc-number">5.</span> <span class="toc-text">指针</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%8A%A01%E5%86%85%E5%AD%98%E7%9A%84%E4%BD%8D%E7%A7%BB%E9%87%8F"><span class="toc-number">5.1.</span> <span class="toc-text">指针加1内存的位移量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E9%87%8F%E6%8C%87%E9%92%88vs%E6%8C%87%E9%92%88%E5%B8%B8%E9%87%8F"><span class="toc-number">5.2.</span> <span class="toc-text">常量指针vs指针常量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%92%8C%E6%95%B0%E7%BB%84"><span class="toc-number">5.3.</span> <span class="toc-text">指针和数组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="toc-number">5.4.</span> <span class="toc-text">动态内存分配</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E6%9C%AC%E8%B4%A8%EF%BC%9A%E5%90%91%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%94%B3%E8%AF%B7%E4%B8%80%E5%9D%97%E5%86%85%E5%AD%98%EF%BC%8C%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%8F%AA%E8%BF%94%E5%9B%9E%E8%B5%B7%E5%A7%8B%E5%9C%B0%E5%9D%80%EF%BC%9B%E6%80%8E%E4%B9%88%E8%A7%A3%E8%AF%BB%E8%BF%99%E5%9D%97%E5%86%85%E5%AD%98%EF%BC%8C%E7%94%B1%E4%BB%A3%E7%A0%81%E9%87%8C%E7%9A%84%E6%8C%87%E9%92%88%E7%B1%BB%E5%9E%8B%E5%86%B3%E5%AE%9A%E3%80%82"><span class="toc-number">6.</span> <span class="toc-text">动态内存本质：向操作系统申请一块内存，操作系统只返回起始地址；怎么解读这块内存，由代码里的指针类型决定。</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E8%AF%AD%E8%A8%80%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%87%BD%E6%95%B0%EF%BC%88%EF%BC%89"><span class="toc-number">6.1.</span> <span class="toc-text">C 语言动态内存函数（&lt;stdlib.h&gt;）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89%E3%80%81C-%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98-new-delete"><span class="toc-number">6.2.</span> <span class="toc-text">三、C++ 动态内存 new &#x2F;delete</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-vs-C-%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%AF%B9%E6%AF%94"><span class="toc-number">6.3.</span> <span class="toc-text">C vs C++ 动态内存对比</span></a></li></ol></li></ol></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-24gl-folderOpen"></i>分类</h3><div class="archive_lists"><ul class="category-list"></ul></div></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-tag"></i>标签</h3></div></div></div><footer class="footer"> <div class="footer_bottom"><div class="footer_box"><div class="copy"><span>主题</span><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn">Hexo</a><span>模板</span><a href="/">Hexo</a></div><div class="copy"><span>© 2022<a href="/">Hexo</a>鲁ICP备2022003990号</span></div></div></div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"> </script><script src="/assets/lib/prettify/prettify.js"> </script><script src="/assets/lib/fancybox/fancybox.js"> </script><script src="/assets/js/app.js"> </script></div></body></html>
