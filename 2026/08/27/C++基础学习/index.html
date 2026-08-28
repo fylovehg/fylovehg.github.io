@@ -1,4 +1,167 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><link rel="shortcut icon" href="/assets/imgs/favicon.ico" type="image/x-icon"><title>C++ | Hexo</title><meta name="keywords" content=""><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"><link rel="stylesheet" href="https://at.alicdn.com/t/c/font_3435803_wadmwlqwhps.css"><link rel="stylesheet" href="/style/index.css"><link rel="stylesheet" href="/assets/lib/prettify/prettify.css"><link rel="stylesheet" href="/assets/lib/fancybox/fancybox.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="app"><header class="header yu13_p_30" id="header"><div class="header_left"><h1 class="yu13_logo"><a id="logo" href="/">Hexo</a></h1></div><div class="header_right"><div class="header_search yu13_cursor yu13_hover" id="search"><i class="yufont icon-sousuo"></i></div><div class="line yu13_p_10"></div><nav class="header_nav"><ul class="nav"><li class="menu_nav"><a href="/"><i class="fas"></i><span> 首页</span></a></li><li class="menu_nav"><a href="/archives"><i class="fas"></i><span> 归档</span></a></li><li class="menu_nav"><a href="/categorys"><i class="fas"></i><span> 分类</span></a></li><li class="menu_nav"><a href="/tags"><i class="fas"></i><span> 标签</span></a></li><li class="menu_nav"><a href="/links"><i class="fas"></i><span> 友情链接</span></a></li></ul></nav></div></header><div class="article_topbg" style="background-image: url('/assets/imgs/top_bg.jpg')"><div class="topbg_container"><h1 class="title">C++</h1><div class="info"><div class="article_meta"><div class="left"><span class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/><a href="/about">FY</a></span><span><i class="yufont icon-yingyong"></i><span>暂无分类</span></span><span><i class="yufont icon-rili"></i>2026-8-27</span></div></div></div></div></div><div class="container log_container clearfix"><div class="article_content left"> <div class="article_main"><article class="content"><div class="content_text article_text"> <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><link rel="shortcut icon" href="/assets/imgs/favicon.ico" type="image/x-icon"><title>C++ | Hexo</title><meta name="keywords" content=""><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"><link rel="stylesheet" href="https://at.alicdn.com/t/c/font_3435803_wadmwlqwhps.css"><link rel="stylesheet" href="/style/index.css"><link rel="stylesheet" href="/assets/lib/prettify/prettify.css"><link rel="stylesheet" href="/assets/lib/fancybox/fancybox.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="app"><header class="header yu13_p_30" id="header"><div class="header_left"><h1 class="yu13_logo"><a id="logo" href="/">Hexo</a></h1></div><div class="header_right"><div class="header_search yu13_cursor yu13_hover" id="search"><i class="yufont icon-sousuo"></i></div><div class="line yu13_p_10"></div><nav class="header_nav"><ul class="nav"><li class="menu_nav"><a href="/"><i class="fas"></i><span> 首页</span></a></li><li class="menu_nav"><a href="/archives"><i class="fas"></i><span> 归档</span></a></li><li class="menu_nav"><a href="/categorys"><i class="fas"></i><span> 分类</span></a></li><li class="menu_nav"><a href="/tags"><i class="fas"></i><span> 标签</span></a></li><li class="menu_nav"><a href="/links"><i class="fas"></i><span> 友情链接</span></a></li></ul></nav></div></header><div class="article_topbg" style="background-image: url('/assets/imgs/top_bg.jpg')"><div class="topbg_container"><h1 class="title">C++</h1><div class="info"><div class="article_meta"><div class="left"><span class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/><a href="/about">FY</a></span><span><i class="yufont icon-yingyong"></i><span>暂无分类</span></span><span><i class="yufont icon-rili"></i>2026-8-28</span></div></div></div></div></div><div class="container log_container clearfix"><div class="article_content left"> <div class="article_main"><article class="content"><div class="content_text article_text"> <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="c-运算符优先级"><a href="#c-运算符优先级" class="headerlink" title="c++运算符优先级"></a>c++运算符优先级</h2><p>运算符优先级决定了表达式中各个运算符的执行顺序，优先级高的先算。我给你整理一份完整的优先级表，重点标注你关心的算术、位移、指针相关运算符。</p>
+<hr>
+<h2 id="一、完整优先级表（从高到低）"><a href="#一、完整优先级表（从高到低）" class="headerlink" title="一、完整优先级表（从高到低）"></a>一、完整优先级表（从高到低）</h2><p>表格</p>
+<table>
+<thead>
+<tr>
+<th align="center">优先级</th>
+<th align="center">运算符</th>
+<th align="center">名称 &#x2F; 含义</th>
+<th align="center">结合性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>1</strong>（最高）</td>
+<td align="center"><code>::</code></td>
+<td align="center">作用域解析</td>
+<td align="center">左→右</td>
+</tr>
+<tr>
+<td align="center"><strong>2</strong></td>
+<td align="center"><code>()</code> <code>[]</code> <code>-&gt;</code> <code>.</code></td>
+<td align="center">函数调用、数组下标、成员访问（指针）、成员访问（对象）</td>
+<td align="center">左→右</td>
+</tr>
+<tr>
+<td align="center"><strong>2</strong></td>
+<td align="center"><code>++</code> <code>--</code></td>
+<td align="center">后置自增、后置自减</td>
+<td align="center">左→右</td>
+</tr>
+<tr>
+<td align="center"><strong>3</strong></td>
+<td align="center"><code>++</code> <code>--</code></td>
+<td align="center">前置自增、前置自减</td>
+<td align="center">右→左</td>
+</tr>
+<tr>
+<td align="center"><strong>3</strong></td>
+<td align="center"><code>+</code> <code>-</code></td>
+<td align="center">一元正、一元负</td>
+<td align="center">右→左</td>
+</tr>
+<tr>
+<td align="center"><strong>3</strong></td>
+<td align="center"><code>!</code> <code>~</code></td>
+<td align="center">逻辑非、按位取反</td>
+<td align="center">右→左</td>
+</tr>
+<tr>
+<td align="center"><strong>3</strong></td>
+<td align="center"><code>*</code> <code>&amp;</code></td>
+<td align="center">解引用、取地址</td>
+<td align="center">右→左</td>
+</tr>
+<tr>
+<td align="center"><strong>3</strong></td>
+<td align="center"><code>(类型)</code></td>
+<td align="center">强制类型转换</td>
+<td align="center">右→左</td>
+</tr>
+<tr>
+<td align="center"><strong>3</strong></td>
+<td align="center"><code>sizeof</code></td>
+<td align="center">求大小</td>
+<td align="center">右→左</td>
+</tr>
+<tr>
+<td align="center"><strong>3</strong></td>
+<td align="center"><code>new</code> <code>delete</code></td>
+<td align="center">动态分配、释放</td>
+<td align="center">右→左</td>
+</tr>
+<tr>
+<td align="center"><strong>4</strong></td>
+<td align="center"><code>.*</code> <code>-&gt;*</code></td>
+<td align="center">成员指针访问</td>
+<td align="center">左→右</td>
+</tr>
+<tr>
+<td align="center"><strong>5</strong></td>
+<td align="center"><code>*</code> <code>/</code> <code>%</code></td>
+<td align="center">乘法、除法、取余</td>
+<td align="center">左→右</td>
+</tr>
+<tr>
+<td align="center"><strong>6</strong></td>
+<td align="center"><code>+</code> <code>-</code></td>
+<td align="center">加法、减法</td>
+<td align="center">左→右</td>
+</tr>
+<tr>
+<td align="center"><strong>7</strong></td>
+<td align="center"><code>&lt;&lt;</code> <code>&gt;&gt;</code></td>
+<td align="center">左移、右移</td>
+<td align="center">左→右</td>
+</tr>
+<tr>
+<td align="center"><strong>8</strong></td>
+<td align="center"><code>&lt;</code> <code>&lt;=</code> <code>&gt;</code> <code>&gt;=</code></td>
+<td align="center">小于、小于等于、大于、大于等于</td>
+<td align="center">左→右</td>
+</tr>
+<tr>
+<td align="center"><strong>9</strong></td>
+<td align="center"><code>==</code> <code>!=</code></td>
+<td align="center">等于、不等于</td>
+<td align="center">左→右</td>
+</tr>
+<tr>
+<td align="center"><strong>10</strong></td>
+<td align="center"><code>&amp;</code></td>
+<td align="center">按位与</td>
+<td align="center">左→右</td>
+</tr>
+<tr>
+<td align="center"><strong>11</strong></td>
+<td align="center"><code>^</code></td>
+<td align="center">按位异或</td>
+<td align="center">左→右</td>
+</tr>
+<tr>
+<td align="center"><strong>12</strong></td>
+<td align="center"><code>|</code></td>
+<td align="center">按位或</td>
+<td align="center">左→右</td>
+</tr>
+<tr>
+<td align="center"><strong>13</strong></td>
+<td align="center"><code>&amp;&amp;</code></td>
+<td align="center">逻辑与</td>
+<td align="center">左→右</td>
+</tr>
+<tr>
+<td align="center"><strong>14</strong></td>
+<td align="center"><code>||</code></td>
+<td align="center">逻辑或</td>
+<td align="center">左→右</td>
+</tr>
+<tr>
+<td align="center"><strong>15</strong></td>
+<td align="center"><code>?:</code></td>
+<td align="center">三目运算符（条件运算）</td>
+<td align="center">右→左</td>
+</tr>
+<tr>
+<td align="center"><strong>16</strong></td>
+<td align="center"><code>=</code> <code>+=</code> <code>-=</code> <code>*=</code> <code>/=</code> <code>%=</code></td>
+<td align="center">赋值、复合赋值</td>
+<td align="center">右→左</td>
+</tr>
+<tr>
+<td align="center"><strong>16</strong></td>
+<td align="center"><code>&lt;&lt;=</code> <code>&gt;&gt;=</code> <code>&amp;=</code> <code>^=</code> <code>|=</code></td>
+<td align="center">位移赋值、位运算赋值</td>
+<td align="center">右→左</td>
+</tr>
+<tr>
+<td align="center"><strong>17</strong>（最低）</td>
+<td align="center"><code>,</code></td>
+<td align="center">逗号运算符</td>
+<td align="center">左→右</td>
+</tr>
+</tbody></table>
 <h2 id="字符处理"><a href="#字符处理" class="headerlink" title="字符处理"></a>字符处理</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">isupper</span><span class="params">(<span class="type">int</span> c)</span></span>;	<span class="comment">//判断字符是否为大写字母（A-Z）	若为大写字母返回非零值，否则返回 0</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">islower</span><span class="params">(<span class="type">int</span> c)</span></span>;	<span class="comment">//判断字符是否为小写字母（a-z）	若为小写字母返回非零值，否则返回 0</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">isalpha</span><span class="params">(<span class="type">int</span> c)</span></span>;	<span class="comment">//判断字符是否为字母（A-Z 或 a-z）	若为字母返回非零值，否则返回 0</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">isdigit</span><span class="params">(<span class="type">int</span> c)</span></span>;	<span class="comment">//判断字符是否为十进制数字（0-9）	若为数字返回非零值，否则返回 0</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">isalnum</span><span class="params">(<span class="type">int</span> c)</span></span>;	<span class="comment">//判断字符是否为字母或数字（isalpha || isdigit）	若为字母或数字返回非零值，否则返回 0</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">isspace</span><span class="params">(<span class="type">int</span> c)</span></span>;	<span class="comment">//判断字符是否为空白字符（空格、换页、换行、回车、水平制表、垂直制表）	若为空白字符返回非零值，否则返回 0</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">isblank</span><span class="params">(<span class="type">int</span> c)</span></span>;	<span class="comment">//判断字符是否为空格或水平制表符（Tab）	若为空格或水平制表符返回非零值，否则返回 0</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">ispunct</span><span class="params">(<span class="type">int</span> c)</span></span>;	<span class="comment">//判断字符是否为标点符号（既不是字母数字，也不是空白字符的可打印字符）	若为标点符号返回非零值，否则返回 0</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">isprint</span><span class="params">(<span class="type">int</span> c)</span></span>;	<span class="comment">//判断字符是否为可打印字符（包括空格）	若为可打印字符返回非零值，否则返回 0</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">iscntrl</span><span class="params">(<span class="type">int</span> c)</span></span>;	<span class="comment">//判断字符是否为控制字符（ASCII 码 0x00-0x1F 及 0x7F）	若为控制字符返回非零值，否则返回 0</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">isgraph</span><span class="params">(<span class="type">int</span> c)</span></span>;	<span class="comment">//判断字符是否为图形字符（除空格外的可打印字符，即 isprint &amp;&amp; !isspace）	若为图形字符返回非零值，否则返回 0</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">tolower</span><span class="params">(<span class="type">int</span> c)</span></span>;	<span class="comment">//将大写字母转换为对应的小写字母	若参数为大写字母，返回对应的小写字母；否则返回原参数</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">toupper</span><span class="params">(<span class="type">int</span> c)</span></span>;	<span class="comment">//将小写字母转换为对应的大写字母	若参数为小写字母，返回对应的大写字母；否则返回原参数</span></span><br></pre></td></tr></table></figure>
 <h2 id="Switch语法"><a href="#Switch语法" class="headerlink" title="Switch语法"></a>Switch语法</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (表达式) &#123;</span><br><span class="line">    <span class="keyword">case</span> 常量<span class="number">1</span>:</span><br><span class="line">        语句<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">case</span> 常量<span class="number">2</span>:</span><br><span class="line">        [[fallthrough]];<span class="comment">//贯穿到下面，不用谢break c++17标准</span></span><br><span class="line">    <span class="comment">// ... 可以有任意多个 case</span></span><br><span class="line">    <span class="keyword">default</span>:</span><br><span class="line">        默认语句;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h3 id="语句块中的变量"><a href="#语句块中的变量" class="headerlink" title="语句块中的变量"></a>语句块中的变量</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(变量声明;条件)</span><br><span class="line">&#123;&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>()</span><br><span class="line">&#123;</span><br><span class="line">    变量声明</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    变量声明</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">switch</span>(变量声明;条件)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">case</span> 条件:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -28,32 +191,8 @@
 <td><code>_M_end_of_storage</code></td>
 <td>指向整块分配内存的末尾（容量的边界）</td>
 </tr>
-<tr>
-<td>┌───┬───┬───┬───┬───┬───┬───┬───┐</td>
-<td></td>
-</tr>
-<tr>
-<td>│ 1 │ 2 │ 3 │ 4 │   │   │   │   │</td>
-<td></td>
-</tr>
-<tr>
-<td>└───┴───┴───┴───┴───┴───┴───┴───┘</td>
-<td></td>
-</tr>
-<tr>
-<td>▲           ▲                       ▲</td>
-<td></td>
-</tr>
-<tr>
-<td>│           │                       │</td>
-<td></td>
-</tr>
-<tr>
-<td>start      finish              end_of_storage</td>
-<td></td>
-</tr>
 </tbody></table>
-<p>  ◄── size &#x3D; 4 ──►<br>  ◄────── capacity &#x3D; 8 ──────►</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">┌───┬───┬───┬───┬───┬───┬───┬───┐</span><br><span class="line">│ <span class="number">1</span> │ <span class="number">2</span> │ <span class="number">3</span> │ <span class="number">4</span> │   │   │   │   │</span><br><span class="line">└───┴───┴───┴───┴───┴───┴───┴───┘</span><br><span class="line">  ▲           ▲                       ▲</span><br><span class="line">  │           │                       │</span><br><span class="line">start      finish              end_of_storage</span><br><span class="line"></span><br><span class="line">  ◄── size = <span class="number">4</span> ──►</span><br><span class="line">  ◄────── capacity = <span class="number">8</span> ──────►</span><br></pre></td></tr></table></figure>
 <ul>
 <li><p><strong>size（大小）</strong>：当前已经存了多少个元素 &#x3D; <code>finish - start</code></p>
 </li>
@@ -92,16 +231,16 @@
 <li>（1）要操作的内存地址</li>
 <li>（2）要操作的内存大小<br>指针的语法：</li>
 </ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">数据类型*变量名称;</span><br><span class="line"><span class="type">int</span>*a;</span><br></pre></td></tr></table></figure></div><div class="article_tags"><span> <i class="yufont icon-tag"></i> 标签: </span></div></article><div class="article-copyright"><p>标题: <a href="/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">C++</a></p><p> 链接: <a href="/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">http://example.com/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/</a></p><p> 版权声明: 若无特殊标注皆为 FY 原创版权, 转载请以链接形式注明作者及原始出处</p><p>最后编辑时间: 2026-08-27</p></div><div class="page_turning"><a class="page_up" href="/2026/08/27/hello-world/"
-  style="background-image:url(/assets/images/random/1.jpg)">
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">数据类型*变量名称;</span><br><span class="line"><span class="type">int</span>*a;</span><br></pre></td></tr></table></figure></div><div class="article_tags"><span> <i class="yufont icon-tag"></i> 标签: </span></div></article><div class="article-copyright"><p>标题: <a href="/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">C++</a></p><p> 链接: <a href="/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">http://example.com/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/</a></p><p> 版权声明: 若无特殊标注皆为 FY 原创版权, 转载请以链接形式注明作者及原始出处</p><p>最后编辑时间: 2026-08-28</p></div><div class="page_turning"><a class="page_up" href="/2026/08/27/hello-world/"
+  style="background-image:url(/assets/images/random/32.jpg)">
   <div class="inner"><span>上一篇:</span>
     <p>Hello World</p>
   </div>
 </a>
 <a class="page_down" href="javascript:;"
-style="background-image:url(/assets/images/random/21.jpg)">
+style="background-image:url(/assets/images/random/33.jpg)">
 <div class="inner"><span>下一篇:</span>
   <p>已经没有下一篇了</p>
 </div>
 </a>
-</div></div></div><div class="article_sidebar left"><div class="author_sidebar sidebar_container"><div class="author_info"><div class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/></div><div class="author_name"><h3><a href="/about">FY</a></h3><p>不断学习，不断提升！</p></div></div><div class="author_data"><ul><li> <div> <span>2</span><p>文章</p></div></li><li> <div> <span>0</span><p>分类</p></div></li><li> <div> <span>0</span><p>标签</p></div></li></ul></div></div><div class="catalogue sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-feiji"></i>目录</h3><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E5%A4%84%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">字符处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Switch%E8%AF%AD%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">Switch语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E5%8F%A5%E5%9D%97%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F"><span class="toc-number">2.1.</span> <span class="toc-text">语句块中的变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#goto"><span class="toc-number">2.2.</span> <span class="toc-text">goto</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%95%B0%E7%BB%84%E7%9A%84%E5%BE%AA%E7%8E%AF"><span class="toc-number">2.3.</span> <span class="toc-text">基于数组的循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#std-vector%E5%87%A0%E4%B8%AA%E6%96%B0%E7%94%A8%E6%B3%95"><span class="toc-number">2.4.</span> <span class="toc-text">std::vector几个新用法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#vector%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-number">2.4.1.</span> <span class="toc-text">vector的扩容机制</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88"><span class="toc-number">3.</span> <span class="toc-text">指针</span></a></li></ol></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-24gl-folderOpen"></i>分类</h3><div class="archive_lists"><ul class="category-list"></ul></div></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-tag"></i>标签</h3></div></div></div><footer class="footer"> <div class="footer_bottom"><div class="footer_box"><div class="copy"><span>主题</span><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn">Hexo</a><span>模板</span><a href="/">Hexo</a></div><div class="copy"><span>© 2022<a href="/">Hexo</a>鲁ICP备2022003990号</span></div></div></div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"> </script><script src="/assets/lib/prettify/prettify.js"> </script><script src="/assets/lib/fancybox/fancybox.js"> </script><script src="/assets/js/app.js"> </script></div></body></html>
+</div></div></div><div class="article_sidebar left"><div class="author_sidebar sidebar_container"><div class="author_info"><div class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/></div><div class="author_name"><h3><a href="/about">FY</a></h3><p>不断学习，不断提升！</p></div></div><div class="author_data"><ul><li> <div> <span>2</span><p>文章</p></div></li><li> <div> <span>0</span><p>分类</p></div></li><li> <div> <span>0</span><p>标签</p></div></li></ul></div></div><div class="catalogue sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-feiji"></i>目录</h3><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#c-%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-number">1.</span> <span class="toc-text">c++运算符优先级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%AE%8C%E6%95%B4%E4%BC%98%E5%85%88%E7%BA%A7%E8%A1%A8%EF%BC%88%E4%BB%8E%E9%AB%98%E5%88%B0%E4%BD%8E%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">一、完整优先级表（从高到低）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E5%A4%84%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">字符处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Switch%E8%AF%AD%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">Switch语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E5%8F%A5%E5%9D%97%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F"><span class="toc-number">4.1.</span> <span class="toc-text">语句块中的变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#goto"><span class="toc-number">4.2.</span> <span class="toc-text">goto</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%95%B0%E7%BB%84%E7%9A%84%E5%BE%AA%E7%8E%AF"><span class="toc-number">4.3.</span> <span class="toc-text">基于数组的循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#std-vector%E5%87%A0%E4%B8%AA%E6%96%B0%E7%94%A8%E6%B3%95"><span class="toc-number">4.4.</span> <span class="toc-text">std::vector几个新用法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#vector%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-number">4.4.1.</span> <span class="toc-text">vector的扩容机制</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88"><span class="toc-number">5.</span> <span class="toc-text">指针</span></a></li></ol></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-24gl-folderOpen"></i>分类</h3><div class="archive_lists"><ul class="category-list"></ul></div></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-tag"></i>标签</h3></div></div></div><footer class="footer"> <div class="footer_bottom"><div class="footer_box"><div class="copy"><span>主题</span><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn">Hexo</a><span>模板</span><a href="/">Hexo</a></div><div class="copy"><span>© 2022<a href="/">Hexo</a>鲁ICP备2022003990号</span></div></div></div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"> </script><script src="/assets/lib/prettify/prettify.js"> </script><script src="/assets/lib/fancybox/fancybox.js"> </script><script src="/assets/js/app.js"> </script></div></body></html>
