@@ -685,16 +685,178 @@
 </li>
 <li>高级方案：内存池，手动整理内存移动数据合并碎片（本课程不展开）。</li>
 </ol>
+<h2 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h2><h3 id="智能指针std-unique-ptr"><a href="#智能指针std-unique-ptr" class="headerlink" title="智能指针std::unique_ptr"></a>智能指针std::unique_ptr</h3><p>表格</p>
+<table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>原生指针 (raw pointer)</th>
+<th>智能指针 (smart pointer)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>声明</td>
+<td><code>int* a;</code></td>
+<td><code>std::unique_ptr&lt;int&gt; a;</code></td>
+</tr>
+<tr>
+<td>本质</td>
+<td>存地址的变量</td>
+<td><strong>一个类对象</strong>（封装了原生指针）</td>
+</tr>
+<tr>
+<td>内存管理</td>
+<td>手动 <code>new</code> &#x2F; <code>delete</code></td>
+<td>自动管理，离开作用域自动释放</td>
+</tr>
+<tr>
+<td>安全性</td>
+<td>易出现<strong>重复释放、野指针、悬挂指针</strong></td>
+<td>从语法层面避免部分问题</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>讲师类比：智能指针之于原生指针，类似 <code>vector</code> 之于原生数组 —— 都是标准库封装的 “更安全的替代品”。</p>
+</blockquote>
+<hr>
+<p><code>unique_ptr</code> 的声明与初始化</p>
+<ol>
+<li>老式写法（直接用 <code>new</code>）</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;memory&gt;   // 必须包含这个头文件</span><br><span class="line"></span><br><span class="line">// 单个 int</span><br><span class="line">std::unique_ptr&lt;int&gt; ptr(new int(5));  // 申请一个 int，初始值为 5</span><br><span class="line"></span><br><span class="line">// 数组（5 个 int）</span><br><span class="line">std::unique_ptr&lt;int[]&gt; arr(new int[5]&#123;3, 2, 1, 0, 0&#125;);</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>C++14 推荐写法：<code>std::make_unique</code></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 单个 int，初始值为 5</span><br><span class="line">auto ptr = std::make_unique&lt;int&gt;(5);</span><br><span class="line"></span><br><span class="line">// 数组，5 个 int（默认初始化为 0）</span><br><span class="line">auto arr = std::make_unique&lt;int[]&gt;(5);</span><br></pre></td></tr></table></figure>
+
+<p> ⚠️ 极易混淆的点（讲师反复强调）</p>
+<p>表格</p>
+<table>
+<thead>
+<tr>
+<th>写法</th>
+<th>尖括号内</th>
+<th>圆括号内含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>make_unique&lt;int&gt;(5)</code></td>
+<td><code>int</code>（单个）</td>
+<td><strong>初始值</strong> &#x3D; 5</td>
+</tr>
+<tr>
+<td><code>make_unique&lt;int[]&gt;(5)</code></td>
+<td><code>int[]</code>（数组）</td>
+<td><strong>数组元素个数</strong> &#x3D; 5</td>
+</tr>
+</tbody></table>
+<p>圆括号的语义完全不同，这是 C++ 设计上被吐槽的点之一。</p>
+<hr>
+<p>访问方式：单对象 vs 数组</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">std::unique_ptr&lt;int&gt; ptr(new int(5));</span><br><span class="line">*ptr = 500;        // ✅ 解引用，单对象用 *</span><br><span class="line">// ptr[0] = 500;   // ❌ 编译报错！单对象不允许下标访问</span><br><span class="line"></span><br><span class="line">std::unique_ptr&lt;int[]&gt; arr(new int[5]);</span><br><span class="line">arr[0] = 10;       // ✅ 数组用下标 []</span><br><span class="line">// *arr = 10;      // ❌ 数组形式不能用 * 解引用</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这是 <code>unique_ptr</code> 比原生指针 “智能” 的地方之一：<strong>在编译期就阻止了你用错访问方式</strong>。原生指针 <code>int* a</code> 既可以 <code>*a</code> 也可以 <code>a[0]</code>，编译器不管，运行时才崩。</p>
+</blockquote>
+<hr>
+<p>核心特性：唯一性（不可复制）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::unique_ptr&lt;int&gt; a(new int(5));</span><br><span class="line">// std::unique_ptr&lt;int&gt; b = a;   // ❌ 编译报错！删除了拷贝构造</span><br><span class="line">// std::unique_ptr&lt;int&gt; b(a);    // ❌ 同样报错</span><br></pre></td></tr></table></figure>
+
+<p><strong>为什么？</strong> 因为如果允许多个 <code>unique_ptr</code> 指向同一块内存，析构时就会<strong>重复释放（double free）</strong>。唯一性从根源上杜绝了这个问题。</p>
+<hr>
+<p>四个常用成员函数</p>
+<ol>
+<li><code>reset()</code> — 释放内存并置空</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::unique_ptr&lt;int&gt; ptr(new int(5));</span><br><span class="line">ptr.reset();   // ① 释放申请的内存  ② 将内部指针置为 nullptr</span><br></pre></td></tr></table></figure>
+
+<p>效果等同于 <code>delete ptr; ptr = nullptr;</code>，但你不需要手动写。</p>
+<ol start="2">
+<li><code>get()</code> — 获取内部原生指针（不释放所有权）</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::unique_ptr&lt;int&gt; ptr(new int(5));</span><br><span class="line">int* raw = ptr.get();   // raw 拿到地址，但 ptr 仍然拥有这块内存</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>用途：某些旧 API 只接受原生指针时，临时拿出来用一下。<strong>不要 <code>delete</code> 返回的指针</strong>，否则会 double free。</p>
+</blockquote>
+<ol start="3">
+<li><code>release()</code> — 放弃所有权但不释放内存</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::unique_ptr&lt;int&gt; ptr(new int(150));</span><br><span class="line">int* raw = ptr.release();  // ptr 内部变为 nullptr，内存不释放</span><br><span class="line">// 此时必须手动管理 raw，用完要 delete raw; 否则内存泄漏</span><br></pre></td></tr></table></figure>
+
+<p>表格</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>reset()</code></th>
+<th><code>release()</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>释放内存？</td>
+<td>✅ 是</td>
+<td>❌ 否</td>
+</tr>
+<tr>
+<td>内部指针置空？</td>
+<td>✅ 是</td>
+<td>✅ 是</td>
+</tr>
+<tr>
+<td>返回值</td>
+<td>无</td>
+<td>原生指针地址</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>讲师说 “release 听起来像释放但其实不释放内存”—— 这个提醒很重要，很多人在这里踩坑。</p>
+</blockquote>
+<ol start="4">
+<li><code>std::move()</code> — 转移所有权（”过户”）</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">std::unique_ptr&lt;int&gt; a(new int(5));</span><br><span class="line">std::unique_ptr&lt;int&gt; b;</span><br><span class="line"></span><br><span class="line">b = std::move(a);  // a 的所有权&quot;过户&quot;给 b</span><br><span class="line">// 此后 a 内部为 nullptr，b 拥有该内存</span><br></pre></td></tr></table></figure>
+
+<p><strong>过户前后对比：</strong></p>
+<p>表格</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>过户前</th>
+<th>过户后</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>a</code></td>
+<td>指向内存地址</td>
+<td><code>nullptr</code>（空）</td>
+</tr>
+<tr>
+<td><code>b</code></td>
+<td><code>nullptr</code></td>
+<td>指向原内存地址</td>
+</tr>
+</tbody></table>
+<p>这是 <code>unique_ptr</code> 唯一的 “转移” 方式，保证任意时刻只有一个所有者。</p>
+<hr>
+<p>为什么 <code>unique_ptr</code> 更安全</p>
+<ol>
+<li><strong>不会重复释放</strong> — 唯一性保证只有一个所有者，析构时只释放一次</li>
+<li><strong>不会悬挂指针</strong> — 原生指针可以随意复制，<code>delete a</code> 后 <code>b</code> 还指向已释放内存（悬挂）；<code>unique_ptr</code> 不允许复制，从语法上消灭了这个场景</li>
+<li><strong>自动释放</strong> — 离开作用域自动调用析构函数释放内存，不需要手动 <code>delete</code></li>
+</ol>
 </div><div class="article_tags"><span> <i class="yufont icon-tag"></i> 标签: </span></div></article><div class="article-copyright"><p>标题: <a href="/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">C++</a></p><p> 链接: <a href="/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">http://example.com/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/</a></p><p> 版权声明: 若无特殊标注皆为 FY 原创版权, 转载请以链接形式注明作者及原始出处</p><p>最后编辑时间: 2026-08-28</p></div><div class="page_turning"><a class="page_up" href="/2026/08/27/hello-world/"
-  style="background-image:url(/assets/images/random/29.jpg)">
+  style="background-image:url(/assets/images/random/13.jpg)">
   <div class="inner"><span>上一篇:</span>
     <p>Hello World</p>
   </div>
 </a>
 <a class="page_down" href="javascript:;"
-style="background-image:url(/assets/images/random/14.jpg)">
+style="background-image:url(/assets/images/random/6.jpg)">
 <div class="inner"><span>下一篇:</span>
   <p>已经没有下一篇了</p>
 </div>
 </a>
-</div></div></div><div class="article_sidebar left"><div class="author_sidebar sidebar_container"><div class="author_info"><div class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/></div><div class="author_name"><h3><a href="/about">FY</a></h3><p>不断学习，不断提升！</p></div></div><div class="author_data"><ul><li> <div> <span>2</span><p>文章</p></div></li><li> <div> <span>0</span><p>分类</p></div></li><li> <div> <span>0</span><p>标签</p></div></li></ul></div></div><div class="catalogue sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-feiji"></i>目录</h3><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#c-%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-number">1.</span> <span class="toc-text">c++运算符优先级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7%E5%86%B3%E5%AE%9A%E4%BA%86%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%AD%E5%90%84%E4%B8%AA%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F%EF%BC%8C%E4%BC%98%E5%85%88%E7%BA%A7%E9%AB%98%E7%9A%84%E5%85%88%E7%AE%97%E3%80%82%E6%88%91%E7%BB%99%E4%BD%A0%E6%95%B4%E7%90%86%E4%B8%80%E4%BB%BD%E5%AE%8C%E6%95%B4%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7%E8%A1%A8%EF%BC%8C%E9%87%8D%E7%82%B9%E6%A0%87%E6%B3%A8%E4%BD%A0%E5%85%B3%E5%BF%83%E7%9A%84%E7%AE%97%E6%9C%AF%E3%80%81%E4%BD%8D%E7%A7%BB%E3%80%81%E6%8C%87%E9%92%88%E7%9B%B8%E5%85%B3%E8%BF%90%E7%AE%97%E7%AC%A6%E3%80%82"><span class="toc-number">2.</span> <span class="toc-text">运算符优先级决定了表达式中各个运算符的执行顺序，优先级高的先算。我给你整理一份完整的优先级表，重点标注你关心的算术、位移、指针相关运算符。</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E4%BC%98%E5%85%88%E7%BA%A7%E8%A1%A8%EF%BC%88%E4%BB%8E%E9%AB%98%E5%88%B0%E4%BD%8E%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">完整优先级表（从高到低）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E5%A4%84%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">字符处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Switch%E8%AF%AD%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">Switch语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E5%8F%A5%E5%9D%97%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F"><span class="toc-number">4.1.</span> <span class="toc-text">语句块中的变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#goto"><span class="toc-number">4.2.</span> <span class="toc-text">goto</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%95%B0%E7%BB%84%E7%9A%84%E5%BE%AA%E7%8E%AF"><span class="toc-number">4.3.</span> <span class="toc-text">基于数组的循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#std-vector%E5%87%A0%E4%B8%AA%E6%96%B0%E7%94%A8%E6%B3%95"><span class="toc-number">4.4.</span> <span class="toc-text">std::vector几个新用法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#vector%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-number">4.4.1.</span> <span class="toc-text">vector的扩容机制</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88"><span class="toc-number">5.</span> <span class="toc-text">指针</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%8A%A01%E5%86%85%E5%AD%98%E7%9A%84%E4%BD%8D%E7%A7%BB%E9%87%8F"><span class="toc-number">5.1.</span> <span class="toc-text">指针加1内存的位移量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E9%87%8F%E6%8C%87%E9%92%88vs%E6%8C%87%E9%92%88%E5%B8%B8%E9%87%8F"><span class="toc-number">5.2.</span> <span class="toc-text">常量指针vs指针常量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%92%8C%E6%95%B0%E7%BB%84"><span class="toc-number">5.3.</span> <span class="toc-text">指针和数组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="toc-number">5.4.</span> <span class="toc-text">动态内存分配</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E8%AF%AD%E8%A8%80%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%87%BD%E6%95%B0%EF%BC%88%EF%BC%89"><span class="toc-number">5.4.1.</span> <span class="toc-text">C 语言动态内存函数（&lt;stdlib.h&gt;）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98-new-delete"><span class="toc-number">5.4.2.</span> <span class="toc-text">C++ 动态内存 new &#x2F;delete</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-vs-C-%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%AF%B9%E6%AF%94"><span class="toc-number">5.4.3.</span> <span class="toc-text">C vs C++ 动态内存对比</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#memset%E4%B8%8Ememcpy"><span class="toc-number">5.4.4.</span> <span class="toc-text">memset与memcpy</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E9%A3%8E%E9%99%A9"><span class="toc-number">5.4.5.</span> <span class="toc-text">C++动态内存风险</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-C-%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E7%81%B5%E6%B4%BB%E5%BC%BA%E5%A4%A7%EF%BC%8C%E4%BD%86%E4%B9%9F%E6%98%AF%E6%9C%80%E9%9A%BE%E8%B0%83%E8%AF%95-Bug-%E7%9A%84%E6%9D%A5%E6%BA%90%EF%BC%8C%E5%BF%AB%E4%B9%90%E5%92%8C%E5%9D%91%E9%83%BD%E6%9D%A5%E8%87%AA%E5%A0%86%E5%86%85%E5%AD%98%E3%80%82"><span class="toc-number">6.</span> <span class="toc-text">C&#x2F;C++ 动态内存灵活强大，但也是最难调试 Bug 的来源，快乐和坑都来自堆内存。</span></a></li></ol></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-24gl-folderOpen"></i>分类</h3><div class="archive_lists"><ul class="category-list"></ul></div></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-tag"></i>标签</h3></div></div></div><footer class="footer"> <div class="footer_bottom"><div class="footer_box"><div class="copy"><span>主题</span><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn">Hexo</a><span>模板</span><a href="/">Hexo</a></div><div class="copy"><span>© 2022<a href="/">Hexo</a>鲁ICP备2022003990号</span></div></div></div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"> </script><script src="/assets/lib/prettify/prettify.js"> </script><script src="/assets/lib/fancybox/fancybox.js"> </script><script src="/assets/js/app.js"> </script></div></body></html>
+</div></div></div><div class="article_sidebar left"><div class="author_sidebar sidebar_container"><div class="author_info"><div class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/></div><div class="author_name"><h3><a href="/about">FY</a></h3><p>不断学习，不断提升！</p></div></div><div class="author_data"><ul><li> <div> <span>2</span><p>文章</p></div></li><li> <div> <span>0</span><p>分类</p></div></li><li> <div> <span>0</span><p>标签</p></div></li></ul></div></div><div class="catalogue sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-feiji"></i>目录</h3><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#c-%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-number">1.</span> <span class="toc-text">c++运算符优先级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E4%BC%98%E5%85%88%E7%BA%A7%E5%86%B3%E5%AE%9A%E4%BA%86%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%AD%E5%90%84%E4%B8%AA%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F%EF%BC%8C%E4%BC%98%E5%85%88%E7%BA%A7%E9%AB%98%E7%9A%84%E5%85%88%E7%AE%97%E3%80%82%E6%88%91%E7%BB%99%E4%BD%A0%E6%95%B4%E7%90%86%E4%B8%80%E4%BB%BD%E5%AE%8C%E6%95%B4%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7%E8%A1%A8%EF%BC%8C%E9%87%8D%E7%82%B9%E6%A0%87%E6%B3%A8%E4%BD%A0%E5%85%B3%E5%BF%83%E7%9A%84%E7%AE%97%E6%9C%AF%E3%80%81%E4%BD%8D%E7%A7%BB%E3%80%81%E6%8C%87%E9%92%88%E7%9B%B8%E5%85%B3%E8%BF%90%E7%AE%97%E7%AC%A6%E3%80%82"><span class="toc-number">2.</span> <span class="toc-text">运算符优先级决定了表达式中各个运算符的执行顺序，优先级高的先算。我给你整理一份完整的优先级表，重点标注你关心的算术、位移、指针相关运算符。</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8C%E6%95%B4%E4%BC%98%E5%85%88%E7%BA%A7%E8%A1%A8%EF%BC%88%E4%BB%8E%E9%AB%98%E5%88%B0%E4%BD%8E%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">完整优先级表（从高到低）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E5%A4%84%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">字符处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Switch%E8%AF%AD%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">Switch语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E5%8F%A5%E5%9D%97%E4%B8%AD%E7%9A%84%E5%8F%98%E9%87%8F"><span class="toc-number">4.1.</span> <span class="toc-text">语句块中的变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#goto"><span class="toc-number">4.2.</span> <span class="toc-text">goto</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%95%B0%E7%BB%84%E7%9A%84%E5%BE%AA%E7%8E%AF"><span class="toc-number">4.3.</span> <span class="toc-text">基于数组的循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#std-vector%E5%87%A0%E4%B8%AA%E6%96%B0%E7%94%A8%E6%B3%95"><span class="toc-number">4.4.</span> <span class="toc-text">std::vector几个新用法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#vector%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9C%BA%E5%88%B6"><span class="toc-number">4.4.1.</span> <span class="toc-text">vector的扩容机制</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88"><span class="toc-number">5.</span> <span class="toc-text">指针</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%8A%A01%E5%86%85%E5%AD%98%E7%9A%84%E4%BD%8D%E7%A7%BB%E9%87%8F"><span class="toc-number">5.1.</span> <span class="toc-text">指针加1内存的位移量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E9%87%8F%E6%8C%87%E9%92%88vs%E6%8C%87%E9%92%88%E5%B8%B8%E9%87%8F"><span class="toc-number">5.2.</span> <span class="toc-text">常量指针vs指针常量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%92%8C%E6%95%B0%E7%BB%84"><span class="toc-number">5.3.</span> <span class="toc-text">指针和数组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D"><span class="toc-number">5.4.</span> <span class="toc-text">动态内存分配</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E8%AF%AD%E8%A8%80%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%87%BD%E6%95%B0%EF%BC%88%EF%BC%89"><span class="toc-number">5.4.1.</span> <span class="toc-text">C 语言动态内存函数（&lt;stdlib.h&gt;）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98-new-delete"><span class="toc-number">5.4.2.</span> <span class="toc-text">C++ 动态内存 new &#x2F;delete</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-vs-C-%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%AF%B9%E6%AF%94"><span class="toc-number">5.4.3.</span> <span class="toc-text">C vs C++ 动态内存对比</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#memset%E4%B8%8Ememcpy"><span class="toc-number">5.4.4.</span> <span class="toc-text">memset与memcpy</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#C-%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E9%A3%8E%E9%99%A9"><span class="toc-number">5.4.5.</span> <span class="toc-text">C++动态内存风险</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-C-%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E7%81%B5%E6%B4%BB%E5%BC%BA%E5%A4%A7%EF%BC%8C%E4%BD%86%E4%B9%9F%E6%98%AF%E6%9C%80%E9%9A%BE%E8%B0%83%E8%AF%95-Bug-%E7%9A%84%E6%9D%A5%E6%BA%90%EF%BC%8C%E5%BF%AB%E4%B9%90%E5%92%8C%E5%9D%91%E9%83%BD%E6%9D%A5%E8%87%AA%E5%A0%86%E5%86%85%E5%AD%98%E3%80%82"><span class="toc-number">6.</span> <span class="toc-text">C&#x2F;C++ 动态内存灵活强大，但也是最难调试 Bug 的来源，快乐和坑都来自堆内存。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88"><span class="toc-number">7.</span> <span class="toc-text">智能指针</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88std-unique-ptr"><span class="toc-number">7.1.</span> <span class="toc-text">智能指针std::unique_ptr</span></a></li></ol></li></ol></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-24gl-folderOpen"></i>分类</h3><div class="archive_lists"><ul class="category-list"></ul></div></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-tag"></i>标签</h3></div></div></div><footer class="footer"> <div class="footer_bottom"><div class="footer_box"><div class="copy"><span>主题</span><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn">Hexo</a><span>模板</span><a href="/">Hexo</a></div><div class="copy"><span>© 2022<a href="/">Hexo</a>鲁ICP备2022003990号</span></div></div></div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"> </script><script src="/assets/lib/prettify/prettify.js"> </script><script src="/assets/lib/fancybox/fancybox.js"> </script><script src="/assets/js/app.js"> </script></div></body></html>
