@@ -1332,35 +1332,29 @@
 </blockquote>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">std::string str;</span><br><span class="line">str=<span class="string">&quot;1234&quot;</span>+<span class="string">&quot;56&quot;</span>;<span class="comment">//error错误</span></span><br><span class="line">变通方法：</span><br><span class="line">str=string&#123;<span class="string">&quot;123&quot;</span>&#125;+<span class="string">&quot;456&quot;</span>;</span><br><span class="line">str=<span class="string">&quot;456&quot;</span>+<span class="string">&quot;123&quot;</span>+string&#123;<span class="string">&quot;123&quot;</span>&#125;;<span class="comment">//错误</span></span><br><span class="line">str=<span class="string">&quot;456&quot;</span>+(<span class="string">&quot;123&quot;</span>+string&#123;<span class="string">&quot;123&quot;</span>&#125;);<span class="comment">//正确</span></span><br><span class="line"></span><br><span class="line">str += <span class="string">&quot;hello&quot;</span>+<span class="string">&quot;world&quot;</span>;<span class="comment">//错误</span></span><br><span class="line">str += <span class="string">&quot;hello&quot;</span>+string&#123;<span class="string">&quot;world&quot;</span>&#125;;<span class="comment">//正确</span></span><br></pre></td></tr></table></figure>
 <hr>
-<ul>
-<li>std::string str利用.append(“字符串”,first,end)方法可以连接一个字符串(first,end截取想要的部分)</li>
-</ul>
+<blockquote>
+<p>std::string str利用.append(“字符串”,first,end)方法可以连接一个字符串(first,end截取想要的部分)</p>
+</blockquote>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">str.<span class="built_in">append</span>(<span class="string">&quot;s&quot;</span>);</span><br></pre></td></tr></table></figure>
 <hr>
 <blockquote>
-<p>string截取字符串</p>
+<p>string截取字符串 .substr(起始位置，要截取的长度)</p>
 </blockquote>
-<ul>
-<li>.substr(起始位置，要截取的长度)</li>
-</ul>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::string str&#123;<span class="string">&quot;123456&quot;</span>&#125;;</span><br><span class="line">std::string strsub&#123;str.<span class="built_in">substr</span>(<span class="number">1</span>)&#125;;<span class="comment">//strsub=&quot;23456&quot;</span></span><br><span class="line">std::string strsubA&#123;str.<span class="built_in">substr</span>(<span class="number">1</span>,<span class="number">3</span>)&#125;;<span class="comment">//strsubA=&quot;234&quot;</span></span><br></pre></td></tr></table></figure>
 <hr>
 <blockquote>
-<p>string的长度</p>
+<p>string的长度 .length()可以得到string的长度<br><strong>中文支持不良</strong></p>
 </blockquote>
-<ul>
-<li>.length()可以得到string的长度<br><strong>中文支持不良</strong></li>
-</ul>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::string str&#123;<span class="string">&quot;123&quot;</span>&#125;;</span><br><span class="line">str.<span class="built_in">length</span>();<span class="comment">//将返回3</span></span><br></pre></td></tr></table></figure>
 
 </div><div class="article_tags"><span> <i class="yufont icon-tag"></i> 标签: </span></div></article><div class="article-copyright"><p>标题: <a href="/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">C++</a></p><p> 链接: <a href="/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">http://example.com/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/</a></p><p> 版权声明: 若无特殊标注皆为 FY 原创版权, 转载请以链接形式注明作者及原始出处</p><p>最后编辑时间: 2026-08-31</p></div><div class="page_turning"><a class="page_up" href="/2026/08/27/hello-world/"
-  style="background-image:url(/assets/images/random/11.jpg)">
+  style="background-image:url(/assets/images/random/35.jpg)">
   <div class="inner"><span>上一篇:</span>
     <p>Hello World</p>
   </div>
 </a>
 <a class="page_down" href="javascript:;"
-style="background-image:url(/assets/images/random/26.jpg)">
+style="background-image:url(/assets/images/random/18.jpg)">
 <div class="inner"><span>下一篇:</span>
   <p>已经没有下一篇了</p>
 </div>
