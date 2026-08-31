@@ -1346,15 +1346,27 @@
 <p>string的长度 .length()可以得到string的长度<br><strong>中文支持不良</strong></p>
 </blockquote>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">std::string str&#123;<span class="string">&quot;123&quot;</span>&#125;;</span><br><span class="line">str.<span class="built_in">length</span>();<span class="comment">//将返回3</span></span><br></pre></td></tr></table></figure>
-
-</div><div class="article_tags"><span> <i class="yufont icon-tag"></i> 标签: </span></div></article><div class="article-copyright"><p>标题: <a href="/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">C++</a></p><p> 链接: <a href="/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">http://example.com/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/</a></p><p> 版权声明: 若无特殊标注皆为 FY 原创版权, 转载请以链接形式注明作者及原始出处</p><p>最后编辑时间: 2026-08-31</p></div><div class="page_turning"><a class="page_up" href="/2026/08/27/hello-world/"
-  style="background-image:url(/assets/images/random/7.jpg)">
+<hr>
+<blockquote>
+<p>string字符串比较 .compare(起始位置,参与比较的长度,被比较的字符串);</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">string strA&#123; <span class="string">&quot;abcd cdef&quot;</span> &#125;.</span><br><span class="line"></span><br><span class="line">strA.<span class="built_in">compare</span>(<span class="number">5</span>,<span class="number">4</span>, <span class="string">&quot;cdef&quot;</span> ); <span class="comment">//返回0</span></span><br></pre></td></tr></table></figure>
+<hr>
+<blockquote>
+<p>string字符串的搜索 .find()是string类型自带的一个方法,用来搜索字符串种的内容,并且返回内容所在的位置,当<br>返回值为std::string::npos时,表示未找到</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">语法:</span><br><span class="line">.<span class="built_in">find</span>(要搜索的内容,开始搜索的位置);</span><br><span class="line">.<span class="built_in">find</span>(要搜索的内容,开始搜索的位置,要纳入搜的长度);</span><br><span class="line"></span><br><span class="line">string strA&#123; <span class="string">&quot;abcd cdef ghijk&quot;</span> &#125;;</span><br><span class="line"></span><br><span class="line">strA.<span class="built_in">find</span>(<span class="string">&quot;cdef&quot;</span>)返回值为<span class="number">5</span></span><br><span class="line"></span><br><span class="line">strA.<span class="built_in">find</span>(<span class="string">&quot;cdef&quot;</span>,<span class="number">6</span>)返回值 std::string::npos</span><br><span class="line"></span><br><span class="line">strA.<span class="built_in">find</span>(<span class="string">&quot;cdef&quot;</span>,<span class="number">0</span>,<span class="number">2</span>)返回值为<span class="number">2</span>等同于从位置<span class="number">0</span>开始搜索cd</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>.rfind()是string类型自带的一个方法,用来搜索字符串种的内容,并且返回内容所在的位置,当<br>返回值为std :: string:npos时,表示未找到,与find不同的是,rfind是从字符串末端开始查找</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">语法:</span><br><span class="line"></span><br><span class="line">.<span class="built_in">rfind</span>(要搜索的内容);</span><br><span class="line"></span><br><span class="line">string strA&#123; <span class="string">&quot;abcd cdjk ghijk&quot;</span> &#125;;</span><br><span class="line"></span><br><span class="line">strA.<span class="built_in">rfind</span>(<span class="string">&quot;jk&quot;</span>)返回值为<span class="number">13</span></span><br></pre></td></tr></table></figure></div><div class="article_tags"><span> <i class="yufont icon-tag"></i> 标签: </span></div></article><div class="article-copyright"><p>标题: <a href="/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">C++</a></p><p> 链接: <a href="/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">http://example.com/2026/08/27/C++%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/</a></p><p> 版权声明: 若无特殊标注皆为 FY 原创版权, 转载请以链接形式注明作者及原始出处</p><p>最后编辑时间: 2026-08-31</p></div><div class="page_turning"><a class="page_up" href="/2026/08/27/hello-world/"
+  style="background-image:url(/assets/images/random/6.jpg)">
   <div class="inner"><span>上一篇:</span>
     <p>Hello World</p>
   </div>
 </a>
 <a class="page_down" href="javascript:;"
-style="background-image:url(/assets/images/random/34.jpg)">
+style="background-image:url(/assets/images/random/25.jpg)">
 <div class="inner"><span>下一篇:</span>
   <p>已经没有下一篇了</p>
 </div>
