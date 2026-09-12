@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><link rel="shortcut icon" href="/assets/imgs/favicon.ico" type="image/x-icon"><title>c++与c语言联合编程 | Hexo</title><meta name="keywords" content=""><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"><link rel="stylesheet" href="https://at.alicdn.com/t/c/font_3435803_wadmwlqwhps.css"><link rel="stylesheet" href="/style/index.css"><link rel="stylesheet" href="/assets/lib/prettify/prettify.css"><link rel="stylesheet" href="/assets/lib/fancybox/fancybox.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="app"><header class="header yu13_p_30" id="header"><div class="header_left"><h1 class="yu13_logo"><a id="logo" href="/">Hexo</a></h1></div><div class="header_right"><div class="header_search yu13_cursor yu13_hover" id="search"><i class="yufont icon-sousuo"></i></div><div class="line yu13_p_10"></div><nav class="header_nav"><ul class="nav"><li class="menu_nav"><a href="/"><i class="fas"></i><span> 首页</span></a></li><li class="menu_nav"><a href="/archives"><i class="fas"></i><span> 归档</span></a></li><li class="menu_nav"><a href="/categorys"><i class="fas"></i><span> 分类</span></a></li><li class="menu_nav"><a href="/tags"><i class="fas"></i><span> 标签</span></a></li><li class="menu_nav"><a href="/links"><i class="fas"></i><span> 友情链接</span></a></li></ul></nav></div></header><div class="article_topbg" style="background-image: url('/assets/imgs/top_bg.jpg')"><div class="topbg_container"><h1 class="title">c++与c语言联合编程</h1><div class="info"><div class="article_meta"><div class="left"><span class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/><a href="/about">FY</a></span><span><i class="yufont icon-yingyong"></i><span>暂无分类</span></span><span><i class="yufont icon-rili"></i>2026-9-12</span></div></div></div></div></div><div class="container log_container clearfix"><div class="article_content left"> <div class="article_main"><article class="content"><div class="content_text article_text"> <h1 id="第-19-章：函数进阶"><a href="#第-19-章：函数进阶" class="headerlink" title="第 19 章：函数进阶"></a>第 19 章：函数进阶</h1><blockquote>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><link rel="shortcut icon" href="/assets/imgs/favicon.ico" type="image/x-icon"><title>c++与c语言进阶 | Hexo</title><meta name="keywords" content=""><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"><link rel="stylesheet" href="https://at.alicdn.com/t/c/font_3435803_wadmwlqwhps.css"><link rel="stylesheet" href="/style/index.css"><link rel="stylesheet" href="/assets/lib/prettify/prettify.css"><link rel="stylesheet" href="/assets/lib/fancybox/fancybox.css"><meta name="generator" content="Hexo 8.1.2"></head><body><div id="app"><header class="header yu13_p_30" id="header"><div class="header_left"><h1 class="yu13_logo"><a id="logo" href="/">Hexo</a></h1></div><div class="header_right"><div class="header_search yu13_cursor yu13_hover" id="search"><i class="yufont icon-sousuo"></i></div><div class="line yu13_p_10"></div><nav class="header_nav"><ul class="nav"><li class="menu_nav"><a href="/"><i class="fas"></i><span> 首页</span></a></li><li class="menu_nav"><a href="/archives"><i class="fas"></i><span> 归档</span></a></li><li class="menu_nav"><a href="/categorys"><i class="fas"></i><span> 分类</span></a></li><li class="menu_nav"><a href="/tags"><i class="fas"></i><span> 标签</span></a></li><li class="menu_nav"><a href="/links"><i class="fas"></i><span> 友情链接</span></a></li></ul></nav></div></header><div class="article_topbg" style="background-image: url('/assets/imgs/top_bg.jpg')"><div class="topbg_container"><h1 class="title">c++与c语言进阶</h1><div class="info"><div class="article_meta"><div class="left"><span class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/><a href="/about">FY</a></span><span><i class="yufont icon-yingyong"></i><span>暂无分类</span></span><span><i class="yufont icon-rili"></i>2026-9-13</span></div></div></div></div></div><div class="container log_container clearfix"><div class="article_content left"> <div class="article_main"><article class="content"><div class="content_text article_text"> <h1 id="第-19-章：函数进阶"><a href="#第-19-章：函数进阶" class="headerlink" title="第 19 章：函数进阶"></a>第 19 章：函数进阶</h1><blockquote>
 <p>语言：C++（MSVC &#x2F; VS 环境）｜来源：课程录音转写整理｜配套：Word 版学习笔记</p>
 </blockquote>
 <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本章是<strong>函数部分的收尾章节</strong>，核心线索只有一条——模块化：先理解编译器怎么看函数（声明与定义），再理解多文件工程如何组织（头文件与源文件），最后把函数封装成库、做成模板，从「会写函数」升级到「能交付函数」。</p>
@@ -273,7 +273,7 @@
 </blockquote>
 <h2 id="§6-静态库与项目模板"><a href="#§6-静态库与项目模板" class="headerlink" title="§6 静态库与项目模板"></a>§6 静态库与项目模板</h2><p>用过的 printf、STL 都来自别人封装好的库。这一节把前面的知识串起来：自己做函数 → 打包成静态库 → 配置给其他人用 → 把工程导出成项目模板。</p>
 <h4 id="什么是库-SDK"><a href="#什么是库-SDK" class="headerlink" title="什么是库 &#x2F; SDK"></a>什么是库 &#x2F; SDK</h4><p>库就是「实现 + 声明」的打包：把函数实现编译成 <code>.lib</code>（静态库）文件，头文件作为说明书一起发布。把库、文档、示例程序打包发布，就构成 SDK。版本号等常量应在头文件开头用 const 常量定义，并可以把函数、变量、常量装进自己的命名空间（模仿 <code>std</code>），避免与使用者的名字冲突。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"><span class="keyword">namespace</span> mylib &#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> VERSION = <span class="number">1</span>;      <span class="comment">// 版本常量</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">ave</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span></span>;</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">max</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once    <span class="comment">//.h文件</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">ave</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span>;</span><br><span class="line"><span class="keyword">namespace</span> mylib &#123;</span><br><span class="line">   <span class="function"><span class="type">const</span> <span class="type">char</span>* <span class="title">GetVersion</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;文件名.h&quot;</span> <span class="comment">//.cpp文件</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> VERSION <span class="string">&quot;1.0&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">ave</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a*b/<span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">namespace</span> fylhg</span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="type">const</span> <span class="type">char</span>* <span class="title">GetVersion</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="type">const</span> <span class="type">char</span>* str=VERSION;</span><br><span class="line">        <span class="keyword">return</span> str;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h4 id="制作静态库的步骤"><a href="#制作静态库的步骤" class="headerlink" title="制作静态库的步骤"></a>制作静态库的步骤</h4><table>
 <thead>
@@ -456,16 +456,515 @@
 
 <p><strong>第 6 题：__cdecl 与 __stdcall 有什么区别？为什么 printf 只能是 __cdecl？</strong><br>参数都从右到左入栈；__cdecl 由调用者恢复栈平衡并支持不定参数，__stdcall 由被调函数恢复栈平衡、不支持不定参数。printf 参数个数不固定，只有调用者知道压了多少参数，所以只能是 __cdecl。</p>
 <p><strong>第 7 题：#pragma once 与 #ifndef 保护各自有什么优缺点？</strong><br>#pragma once 写法简洁、无宏名冲突风险，但是非标准指令，个别编译器不支持；#ifndef 是标准写法、兼容所有编译器，但宏名必须全工程唯一，否则内容会被静默跳过。</p>
-</div><div class="article_tags"><span> <i class="yufont icon-tag"></i> 标签: </span></div></article><div class="article-copyright"><p>标题: <a href="/2026/09/12/c%E8%AF%AD%E8%A8%80%E4%B8%8Ec++%E8%81%94%E5%90%88%E7%BC%96%E7%A8%8B/">c++与c语言联合编程</a></p><p> 链接: <a href="/2026/09/12/c%E8%AF%AD%E8%A8%80%E4%B8%8Ec++%E8%81%94%E5%90%88%E7%BC%96%E7%A8%8B/">http://example.com/2026/09/12/c%E8%AF%AD%E8%A8%80%E4%B8%8Ec++%E8%81%94%E5%90%88%E7%BC%96%E7%A8%8B/</a></p><p> 版权声明: 若无特殊标注皆为 FY 原创版权, 转载请以链接形式注明作者及原始出处</p><p>最后编辑时间: 2026-09-12</p></div><div class="page_turning"><a class="page_up" href="/2026/09/11/c++%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD%E5%92%8C%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF/"
-  style="background-image:url(/assets/images/random/35.jpg)">
+<h1 id="第-20-章：编译与预处理"><a href="#第-20-章：编译与预处理" class="headerlink" title="第 20 章：编译与预处理"></a>第 20 章：编译与预处理</h1><h2 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h2><p>前 19 章我们都在「写代码」，这一章切换到<strong>编译器的视角</strong>：源码是如何变成可执行程序的？编译器与链接器各自做什么？为什么会出现「无法解析的外部符号」「重定义」这些错误？</p>
+<p>核心线索只有一条——从源码到程序的两步流水线：编译（翻译单元 → 目标文件）＋ 链接（目标文件 → 可执行文件）。所有概念（翻译单元、未定义行为、ODR、链接属性、宏、条件编译、命名空间、调试、断言）都围绕这条线展开。建议按 §1 → §9 的顺序阅读，每节末尾的「警告」卡片与文末「练习与自查」用于检验掌握程度。</p>
+<h2 id="知识结构-1"><a href="#知识结构-1" class="headerlink" title="知识结构"></a>知识结构</h2><p>整章可以收敛为一条主线：编译器怎么看代码 → 怎么组织多文件 → 怎么在出错时找到问题。</p>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>核心内容</th>
+<th>课程片段</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>§1–§3 编译与规则</td>
+<td>翻译单元、编译与链接、未定义行为、ODR、链接属性、inline 变量</td>
+<td>20.1</td>
+</tr>
+<tr>
+<td>§4 宏定义</td>
+<td>#define 对象宏 &#x2F; 函数宏 &#x2F; # ##、#undef</td>
+<td>20.2</td>
+</tr>
+<tr>
+<td>§5 条件编译</td>
+<td>#ifdef &#x2F; #ifndef &#x2F; #if &#x2F; #elif，版本控制与功能开关</td>
+<td>20.4</td>
+</tr>
+<tr>
+<td>§6 预定义宏</td>
+<td><strong>func</strong>、<strong>DATE</strong>、<strong>FILE</strong>、__cplusplus、_DEBUG、_WIN32&#x2F;_WIN64</td>
+<td>20.5</td>
+</tr>
+<tr>
+<td>§7 命名空间</td>
+<td>namespace、全局命名空间、扩展、匿名命名空间、别名</td>
+<td>20.3</td>
+</tr>
+<tr>
+<td>§8 调试</td>
+<td>语法错误 vs 逻辑错误、断点、逐语句&#x2F;逐过程&#x2F;跳出、观察窗口</td>
+<td>20.6</td>
+</tr>
+<tr>
+<td>§9 断言</td>
+<td>assert 宏、NDEBUG、static_assert 编译期检查</td>
+<td>20.7</td>
+</tr>
+</tbody></table>
+<h2 id="§1-编译与链接：翻译单元"><a href="#§1-编译与链接：翻译单元" class="headerlink" title="§1 编译与链接：翻译单元"></a>§1 编译与链接：翻译单元</h2><p>写代码只是第一步，真正把代码变成程序的是<strong>编译器</strong>。你可以把编译器想象成「翻译官」：我们写的是给编译器看的源码，编译器把它翻译成机器能执行的机器码。这一节解决的是「源码到底经历了什么才变成 .exe」。</p>
+<h4 id="翻译单元（Translation-Unit）"><a href="#翻译单元（Translation-Unit）" class="headerlink" title="翻译单元（Translation Unit）"></a>翻译单元（Translation Unit）</h4><p>每个 <code>.cpp</code> 源文件在编译时，会先把 <code>#include</code> 的头文件<strong>完整复制</strong>进来（<code>#include</code> 的字面意思就是「包含」），合并后的整体就是一个<strong>翻译单元</strong>（也叫编译单元）。它是编译器处理的最小独立单位。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// main.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdio&gt;</span>   <span class="comment">// 头文件内容被“复制”进本翻译单元</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">add</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span></span>;   <span class="comment">// 引用了别的翻译单元里的函数</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, <span class="built_in">add</span>(<span class="number">1</span>, <span class="number">2</span>));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="编译与链接两步流水线"><a href="#编译与链接两步流水线" class="headerlink" title="编译与链接两步流水线"></a>编译与链接两步流水线</h4><ul>
+<li><strong>编译</strong>：把每个翻译单元单独编译成<strong>目标文件</strong> <code>.obj</code>。目标文件里是翻译好的机器码，以及一张「引用信息表」（本单元用到了哪些还没找到地址的名字）。</li>
+<li><strong>链接</strong>：链接器把多个 <code>.obj</code> 拼起来：如果 A 单元调用了定义在 B 单元的函数，链接器就负责在 B 的机器码里<strong>找到这个函数，把地址填回去</strong>，最终生成 <code>.exe</code>（或 <code>.lib</code>、<code>.dll</code>）。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>编译（Compile）</th>
+<th>链接（Link）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>输入</td>
+<td>翻译单元（.cpp + 头文件）</td>
+<td>目标文件 .obj</td>
+</tr>
+<tr>
+<td>输出</td>
+<td>.obj 目标文件</td>
+<td>.exe &#x2F; .lib &#x2F; .dll</td>
+</tr>
+<tr>
+<td>职责</td>
+<td>逐行翻译成机器码</td>
+<td>解析引用、拼接地址</td>
+</tr>
+<tr>
+<td>错误码特征</td>
+<td>C 开头（如 C2080）</td>
+<td>LNK 开头（如 LNK2019）</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>警告</strong>：看到报错先认「阶段」：<code>C2080</code> 这类 C 开头错误发生在<strong>编译期</strong>（某个翻译单元内部的问题）；<code>LNK2019 无法解析的外部符号</code> 这类 LNK 开头错误发生在<strong>链接期</strong>——语法没错，但链接器找不到引用函数的定义（比如声明了 <code>extern</code> 函数却没在任何 .cpp 里实现它）。</p>
+</blockquote>
+<h2 id="§2-未定义行为（Undefined-Behavior）"><a href="#§2-未定义行为（Undefined-Behavior）" class="headerlink" title="§2 未定义行为（Undefined Behavior）"></a>§2 未定义行为（Undefined Behavior）</h2><p>C++ 标准委员会规定了语言的「标准行为」，但<strong>标准并没有规定所有情况</strong>。当代码落在标准没规定的行为上时，结果完全取决于编译器心情——这就是<strong>未定义行为（UB）</strong>。</p>
+<h4 id="典型例子：同一表达式中变量既自增又被读取"><a href="#典型例子：同一表达式中变量既自增又被读取" class="headerlink" title="典型例子：同一表达式中变量既自增又被读取"></a>典型例子：同一表达式中变量既自增又被读取</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">2</span>;</span><br><span class="line"><span class="type">int</span> r = ++a + a;   <span class="comment">// 先算 ++a（a 变 3）再取 a：3 + 3 = 6？</span></span><br><span class="line">                   <span class="comment">// 还是先取 a 再算 ++a：2 + 3 = 5？</span></span><br><span class="line">                   <span class="comment">// —— 标准没说，两种都可能！</span></span><br></pre></td></tr></table></figure>
+
+<p>这<strong>不是运算符优先级问题</strong>（优先级只决定「谁先算」的次序），而是「同一个表达式里先读 a 还是先改 a」的求值顺序没有被标准规定。不同编译器、甚至同一编译器不同版本，结果都可能不同。</p>
+<h4 id="常见的未定义行为"><a href="#常见的未定义行为" class="headerlink" title="常见的未定义行为"></a>常见的未定义行为</h4><ul>
+<li>同一表达式中对同一变量既读又写（如 <code>++a + a</code>）；</li>
+<li><strong>有符号整数溢出</strong>（如 <code>int</code> 加到超过上限）；</li>
+<li>除零、空指针解引用、越界访问数组。</li>
+</ul>
+<blockquote>
+<p><strong>备注</strong>：未定义行为难以靠编译器查出来（编译器甚至不检查），所以写代码时要有意识地避开。能避免就避免，遇到多了解。标准委员会「没规定」≠「没毛病」，只是把责任留给了程序员。</p>
+</blockquote>
+<blockquote>
+<p><strong>警告</strong>：为什么老师的经验是「不要写 <code>++a + a</code> 这种代码」？因为它在不同编译器上表现不同——这不是编译器坏了，而是你踩进了未定义行为的区域。</p>
+</blockquote>
+<h2 id="§3-单一定义规则-ODR-与链接属性"><a href="#§3-单一定义规则-ODR-与链接属性" class="headerlink" title="§3 单一定义规则 ODR 与链接属性"></a>§3 单一定义规则 ODR 与链接属性</h2><p>多文件工程最常见的两类报错：「重定义」（defined multiple times）和「无法解析的外部符号」（unresolved external symbol）。它们的理论根源都来自同一个规则——<strong>ODR（One Definition Rule，单一定义规则）</strong>。</p>
+<h4 id="ODR-的核心规定"><a href="#ODR-的核心规定" class="headerlink" title="ODR 的核心规定"></a>ODR 的核心规定</h4><ul>
+<li>变量、函数、类、枚举、模板：在<strong>每个翻译单元中只能有一个定义</strong>，但<strong>可以有多个声明</strong>；</li>
+<li>非内联的函数或变量：在<strong>整个程序中有且仅有一个定义</strong>。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a.cpp</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">max</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> </span>&#123; <span class="keyword">return</span> a &gt; b ? a : b; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// b.cpp</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">max</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> </span>&#123; <span class="keyword">return</span> a &gt; b ? a : b; &#125;   <span class="comment">// LNK2005 重定义！</span></span><br><span class="line"><span class="comment">// 链接器：整个程序里 max 只能有一份定义</span></span><br></pre></td></tr></table></figure>
+
+<p>声明写 100 次都没事（只是告诉编译器「长什么样」）；定义写 2 次必错（编译器&#x2F;链接器不知道用哪一份）。</p>
+<h4 id="ODR-的例外：可以放多个「定义」的东西"><a href="#ODR-的例外：可以放多个「定义」的东西" class="headerlink" title="ODR 的例外：可以放多个「定义」的东西"></a>ODR 的例外：可以放多个「定义」的东西</h4><ul>
+<li><code>const</code> 常量（默认<strong>内部链接</strong>，每个翻译单元各一份，互不冲突）；</li>
+<li><code>static</code> 变量 &#x2F; 函数（<strong>内部链接</strong>）；</li>
+<li><code>inline</code> 函数 &#x2F; 变量（C++17 起，<strong>外部链接</strong>但允许重复定义、多份合并为一份）；</li>
+<li>类内定义的成员函数、模板（天然允许多个翻译单元各有一份，链接时合并）。</li>
+</ul>
+<blockquote>
+<p><strong>备注</strong>：ODR 非常复杂，标准文档有几十页。本课只掌握两句话：①「声明可多次、定义只能一次」；②「想打破这个限制，用 const &#x2F; static &#x2F; inline」。</p>
+</blockquote>
+<h3 id="3-1-链接属性：内部链接与外部链接"><a href="#3-1-链接属性：内部链接与外部链接" class="headerlink" title="3.1 链接属性：内部链接与外部链接"></a>3.1 链接属性：内部链接与外部链接</h3><p>链接器靠<strong>名字</strong>连接各目标文件，所以每个名字都必须有唯一的「身份」——这就是<strong>链接属性（Linkage）</strong>。C&#x2F;C++ 的链接属性分三种：</p>
+<table>
+<thead>
+<tr>
+<th>链接属性</th>
+<th>含义</th>
+<th>典型对象</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>无链接</td>
+<td>仅在其作用域（代码块）内有效</td>
+<td>函数内的普通局部变量</td>
+</tr>
+<tr>
+<td>内部链接</td>
+<td>仅在本翻译单元内有效，其他文件访问不到</td>
+<td>static 变量&#x2F;函数、const 常量</td>
+</tr>
+<tr>
+<td>外部链接</td>
+<td>在整个程序中有效，其他翻译单元可引用</td>
+<td>全局变量、普通函数、extern 声明</td>
+</tr>
+</tbody></table>
+<ul>
+<li><strong>static</strong>：把名字从外部链接「降级」为<strong>内部链接</strong>——只在当前 .cpp 里有效，其他文件即使声明了 extern 也找不到它。早期代码常用 static 隐藏实现细节，但现在标准委员会<strong>不推荐</strong>用 static 函数做隐藏（推荐用匿名命名空间，见 <a href="#sec-namespace">§7</a>）。</li>
+<li><strong>const</strong>：全局 const 默认也是<strong>内部链接</strong>（每个 .cpp 各有一份独立副本），所以两个文件里都写 <code>const int VERSION = 1;</code> 不会冲突；加上 <code>extern</code> 才转为外部链接：<code>extern const int VERSION;</code>。</li>
+<li><strong>extern</strong>：声明「这个名字在别的翻译单元里有定义」，让本单元引用外部定义的名字。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a.cpp</span></span><br><span class="line"><span class="type">static</span> <span class="type">int</span> s_count = <span class="number">0</span>;        <span class="comment">// 内部链接：只有 a.cpp 能用</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> VERSION = <span class="number">1</span>;         <span class="comment">// 内部链接：每个 .cpp 各一份副本</span></span><br><span class="line"><span class="type">int</span> g_total = <span class="number">100</span>;             <span class="comment">// 外部链接：整个程序唯一一份</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// b.cpp</span></span><br><span class="line"><span class="keyword">extern</span> <span class="type">int</span> g_total;            <span class="comment">// 声明：引用 a.cpp 里的定义</span></span><br><span class="line"><span class="comment">// extern int s_count;         // 错误！static 名字无法跨文件引用</span></span><br><span class="line"><span class="comment">// extern const int VERSION;   // 若 a.cpp 里没写 extern，这里也引用不到</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-inline-变量（C-17）"><a href="#3-2-inline-变量（C-17）" class="headerlink" title="3.2 inline 变量（C++17）"></a>3.2 inline 变量（C++17）</h3><p>普通全局变量定义只能写一次（放某个 .cpp 里），头文件里放定义就会「重定义」。<strong>inline 变量</strong>是 C++17 的新特性：允许在<strong>头文件</strong>里定义变量，多个翻译单元包含它也不会报重定义——链接器会把所有副本<strong>合并成同一个实体</strong>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// config.h —— 每个用到它的 .cpp 都有一份“定义”，但链接后合并为一份</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"><span class="keyword">inline</span> <span class="type">int</span> app_version = <span class="number">350</span>;      <span class="comment">// C++17：头文件里定义全局变量</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// main.cpp</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;config.h&quot;</span></span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> v = app_version;   <span class="comment">// 读到的就是唯一的那一份</span></span><br><span class="line">    <span class="keyword">return</span> v;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>inline 变量具有<strong>外部链接属性</strong>，但允许重复定义（ODR 例外）；</li>
+<li>static 变量是<strong>内部链接</strong>，每个翻译单元各一份独立内存——两者本质不同；</li>
+<li>普通（非 inline）变量定义在头文件里仍是重定义错误，必须配 C++17 标准。</li>
+</ul>
+<blockquote>
+<p><strong>警告</strong>：记忆要点：<code>inline</code> 保留<strong>外部链接</strong>且多份合一；<code>static</code> 是<strong>内部链接</strong>各管各的。前者适合「头文件里放全局常量&#x2F;配置」，后者适合「本文件私用」。inline 变量写函数早已支持，写成变量是 C++17 才支持的，注意别把语法混了。</p>
+</blockquote>
+<h2 id="§4-宏定义-define"><a href="#§4-宏定义-define" class="headerlink" title="§4 宏定义 #define"></a>§4 宏定义 #define</h2><p>所有以 <code>#</code> 开头的行，都是<strong>预处理指令</strong>——它们是「和编译器对话」的指令，<strong>不会编译进最终代码</strong>，而是在编译开始前由预处理器做<strong>纯文本替换</strong>。</p>
+<h4 id="4-1-对象式宏：定义常量与提升可读性"><a href="#4-1-对象式宏：定义常量与提升可读性" class="headerlink" title="4.1 对象式宏：定义常量与提升可读性"></a>4.1 对象式宏：定义常量与提升可读性</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> VERSION 250          <span class="comment">// 以后所有 VERSION 都被替换成 250</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SCREEN_WIDTH 1920     <span class="comment">// 一眼看懂含义，改一处全部生效</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> w = SCREEN_WIDTH;     <span class="comment">// 编译前被替换成 int w = 1920;</span></span><br><span class="line">    <span class="keyword">return</span> w;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>好处</strong>：一处定义、多处使用；改版本号只需改一行；用有含义的名字（SCREEN_WIDTH）提升可读性。</li>
+<li><strong>宏名规则</strong>：像变量名——字母、数字、下划线、中文都可以，但<strong>不能以数字开头</strong>。</li>
+<li><strong>无值宏</strong>：<code>#define FLAG</code>（后面不跟内容）等价于「把 FLAG 定义为空」，专门用来当<strong>标识开关</strong>，配合 <a href="#sec-cond">§5 条件编译</a> 使用。</li>
+<li><strong>不替换的情况</strong>：出现在注释里、或已经是某个更长标识符的一部分时（如 <code>MY_FLAG2</code> 中的 <code>MY_FLAG</code>）不会替换。</li>
+</ul>
+<h4 id="4-2-函数式宏：带参数的宏"><a href="#4-2-函数式宏：带参数的宏" class="headerlink" title="4.2 函数式宏：带参数的宏"></a>4.2 函数式宏：带参数的宏</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAX(a, b) ((a) &gt; (b) ? (a) : (b))</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> m = <span class="built_in">MAX</span>(<span class="number">3</span>, <span class="number">5</span>);   <span class="comment">// 展开成 ((3) &gt; (5) ? (3) : (5))</span></span><br><span class="line">    <span class="keyword">return</span> m;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>宏的「参数」只是<strong>文本替换</strong>：调用处被原样展开，没有函数调用的压栈&#x2F;跳转开销，也没有类型检查；</li>
+<li><strong>参数和整体都要加括号</strong>：<code>MAX(a + 1, b)</code> 若写成 <code>a &gt; b ? a : b</code> 展开后运算顺序会出错；</li>
+<li>它只是「长得像函数」，<strong>不是函数</strong>，不能递归，没有作用域。</li>
+</ul>
+<blockquote>
+<p><strong>提示</strong>：经典实用宏：申请并释放内存的固定组合 <code>free(p); p = NULL;</code> 可以打包成一个宏，减少重复代码。但复杂的宏会让代码难调试，现代 C++ 更推荐用 const 常量、inline 函数、模板替代宏。</p>
+</blockquote>
+<h4 id="4-3-字符串化-与-连接"><a href="#4-3-字符串化-与-连接" class="headerlink" title="4.3 # 字符串化 与 ## 连接"></a>4.3 # 字符串化 与 ## 连接</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> STR(x) #x          <span class="comment">// 字符串化：STR(233) → &quot;233&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CAT(a, b) a##b     <span class="comment">// 连接：CAT(Test, 2) → Test2</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">char</span>* s = <span class="built_in">STR</span>(<span class="number">233</span>);          <span class="comment">// s = &quot;233&quot;（自动加双引号）</span></span><br><span class="line">    <span class="type">int</span> Test2 = <span class="number">42</span>;</span><br><span class="line">    <span class="type">int</span> v = <span class="built_in">CAT</span>(Test, <span class="number">2</span>);              <span class="comment">// v = Test2 = 42</span></span><br><span class="line">    <span class="keyword">return</span> v;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>#</code> 把参数转成字符串字面量，自动处理转义，无需手写双引号；</li>
+<li><code>##</code> 把两个记号拼接成一个新记号（常用于批量生成名字）。</li>
+</ul>
+<h4 id="4-4-undef：取消宏定义"><a href="#4-4-undef：取消宏定义" class="headerlink" title="4.4 #undef：取消宏定义"></a>4.4 #undef：取消宏定义</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> FLAG</span></span><br><span class="line"><span class="comment">// ... 使用 FLAG ...</span></span><br><span class="line"><span class="meta">#<span class="keyword">undef</span> FLAG                <span class="comment">// 从这一行起，FLAG 不再被定义</span></span></span><br><span class="line"><span class="comment">// 之后再写 FLAG 就不生效（报“未定义标识符”等）</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>备注</strong>：宏的生效&#x2F;失效顺序<strong>按代码书写顺序</strong>（从上往下预处理），不是函数执行顺序。<code>#undef</code> 后宏立即失效。</p>
+</blockquote>
+<h4 id="4-5-const-与-define-选哪个？"><a href="#4-5-const-与-define-选哪个？" class="headerlink" title="4.5 const 与 #define 选哪个？"></a>4.5 const 与 #define 选哪个？</h4><table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>const 常量</th>
+<th>#define 宏</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>本质</td>
+<td>真正的变量，有类型</td>
+<td>预处理期纯文本替换</td>
+</tr>
+<tr>
+<td>类型检查</td>
+<td>有，编译期检查严格</td>
+<td>无，就是替换</td>
+</tr>
+<tr>
+<td>安全性</td>
+<td>高</td>
+<td>低（可能替换出意外）</td>
+</tr>
+<tr>
+<td>适用</td>
+<td>C++ 风格，推荐</td>
+<td>C 风格、Windows API 大量使用；C++ 中仅作开关&#x2F;条件编译</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>警告</strong>：C 风格的宏常量在 C++ 中不是首选：宏没有类型，参与运算时不安全（例如把数字宏换成 float 定义可能产生意外结果）。工程里团队约定好即可，但头文件中的常量定义更推荐 const + inline（C++17）。</p>
+</blockquote>
+<h2 id="§5-条件编译：预处理指令"><a href="#§5-条件编译：预处理指令" class="headerlink" title="§5 条件编译：预处理指令"></a>§5 条件编译：预处理指令</h2><p>条件编译让<strong>同一份源码在不同条件下编译出不同的代码</strong>。不满足条件的代码，编译器根本不会编译，自然不会进入可执行文件。</p>
+<h4 id="5-1-防止头文件被重复包含"><a href="#5-1-防止头文件被重复包含" class="headerlink" title="5.1 防止头文件被重复包含"></a>5.1 防止头文件被重复包含</h4><p>同一个头文件可能被多个头文件间接包含多次，每次都要加「防重复包含」保护，两种写法：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">pragma</span> once</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">max</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> MYLIB_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MYLIB_H</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">max</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span></span>;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>#pragma once</th>
+<th>#ifndef 宏保护</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>标准性</td>
+<td>非标准指令</td>
+<td>C&#x2F;C++ 标准预处理器指令</td>
+</tr>
+<tr>
+<td>写法</td>
+<td>一行</td>
+<td>三行（#ifndef&#x2F;#define&#x2F;#endif）</td>
+</tr>
+<tr>
+<td>宏名冲突风险</td>
+<td>无</td>
+<td>有（宏名需全工程唯一）</td>
+</tr>
+<tr>
+<td>支持的编译器</td>
+<td>多数现代编译器</td>
+<td>所有编译器</td>
+</tr>
+</tbody></table>
+<h4 id="5-2-版本控制：-if-elif-else"><a href="#5-2-版本控制：-if-elif-else" class="headerlink" title="5.2 版本控制：#if &#x2F; #elif &#x2F; #else"></a>5.2 版本控制：#if &#x2F; #elif &#x2F; #else</h4><p>通过控制一个版本号宏，就能在编译期<strong>挑选不同版本的函数实现</strong>——大型软件里非常实用：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> APP_VERSION 1003        <span class="comment">// 版本号 1003，改这里即可换版本</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">if</span> APP_VERSION == 1000</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">sendSMS</span><span class="params">()</span> </span>&#123; <span class="comment">/* 1000 版的发短信逻辑 */</span> &#125;</span><br><span class="line"><span class="meta">#<span class="keyword">elif</span> APP_VERSION == 1003</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">sendSMS</span><span class="params">()</span> </span>&#123; <span class="comment">/* 1003 版的发短信逻辑 */</span> &#125;</span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">sendSMS</span><span class="params">()</span> </span>&#123; <span class="comment">/* 兜底逻辑 */</span> &#125;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>#if</code> 条件里可以写<strong>简单的整数运算</strong>（加减乘除、比较），但不能太复杂；</li>
+<li>也可以做<strong>功能开关</strong>：<code>#define SMS_ENABLED 1</code> 表示启用，配合 <code>&amp;&amp;</code> &#x2F; <code>||</code> 组合多个条件：</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> APP_VERSION 1003</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SMS_ENABLED   1</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">if</span> (APP_VERSION == 1003) &amp;&amp; (SMS_ENABLED == 1)</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">sendSMS</span><span class="params">()</span> </span>&#123; <span class="comment">/* 只在 1003 版且开启短信时才编译 */</span> &#125;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<h4 id="5-3-字符集宏：-UNICODE-UNICODE-MBCS"><a href="#5-3-字符集宏：-UNICODE-UNICODE-MBCS" class="headerlink" title="5.3 字符集宏：_UNICODE &#x2F; UNICODE &#x2F; _MBCS"></a>5.3 字符集宏：_UNICODE &#x2F; UNICODE &#x2F; _MBCS</h4><p>VS 工程属性里设置「字符集」时，编译器会自动定义相应的<strong>预定义宏</strong>：选「使用多字节字符集」定义 <code>_MBCS</code>，选「使用 Unicode 字符集」定义 <code>_UNICODE</code> 和 <code>UNICODE</code>。代码可以据此写两套字符处理逻辑，这也是「预处理指令不只用于头文件」的例证。</p>
+<blockquote>
+<p><strong>提示</strong>：条件编译的典型应用：① 头文件防重复包含；② 版本管理（同一份源码出 VIP 版&#x2F;普通版）；③ 功能开关（编译期启用&#x2F;禁用某功能）；④ 字符集&#x2F;平台差异适配。</p>
+</blockquote>
+<h2 id="§6-预定义宏"><a href="#§6-预定义宏" class="headerlink" title="§6 预定义宏"></a>§6 预定义宏</h2><p>预定义宏是<strong>编译器提前帮你定义好的宏</strong>——你找不到它的定义在哪里，但它就是存在。用途：调试信息、版本控制、跨平台&#x2F;跨标准判断。</p>
+<h4 id="6-1-常用预定义宏一览"><a href="#6-1-常用预定义宏一览" class="headerlink" title="6.1 常用预定义宏一览"></a>6.1 常用预定义宏一览</h4><table>
+<thead>
+<tr>
+<th>宏</th>
+<th>作用</th>
+<th>支持标准</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>__func__</code></td>
+<td>返回当前函数名（字符串）</td>
+<td>C99 &#x2F; C++11</td>
+</tr>
+<tr>
+<td><code>__FILE__</code></td>
+<td>当前源文件名</td>
+<td>C99 &#x2F; C++11</td>
+</tr>
+<tr>
+<td><code>__DATE__</code></td>
+<td>编译日期（如 Dec 29 2019）</td>
+<td>C99 &#x2F; C++11</td>
+</tr>
+<tr>
+<td><code>__TIME__</code></td>
+<td>编译时间（该翻译单元重新编译时才更新）</td>
+<td>C99 &#x2F; C++11</td>
+</tr>
+<tr>
+<td><code>__cplusplus</code></td>
+<td>C++ 编译时为整数（否则未定义）</td>
+<td>C++ 标准</td>
+</tr>
+<tr>
+<td><code>_DEBUG</code></td>
+<td>调试模式（Debug 配置）下定义</td>
+<td>MSVC</td>
+</tr>
+<tr>
+<td><code>__FUNCTION__</code></td>
+<td>当前函数名</td>
+<td>MSVC（较老）</td>
+</tr>
+<tr>
+<td><code>__FUNCSIG__</code></td>
+<td>完整函数签名（含调用约定、返回值、参数）</td>
+<td>MSVC</td>
+</tr>
+<tr>
+<td><code>_WIN32</code></td>
+<td>32 位程序时定义（x86 与 x64 都定义）</td>
+<td>MSVC</td>
+</tr>
+<tr>
+<td><code>_WIN64</code></td>
+<td>64 位程序时定义</td>
+<td>MSVC</td>
+</tr>
+<tr>
+<td><code>__TIMESTAMP__</code></td>
+<td>源文件最后修改的日期与时间</td>
+<td>MSVC 等</td>
+</tr>
+</tbody></table>
+<h4 id="6-2-实战：记录异常来自哪个函数"><a href="#6-2-实战：记录异常来自哪个函数" class="headerlink" title="6.2 实战：记录异常来自哪个函数"></a>6.2 实战：记录异常来自哪个函数</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">saveFile</span><span class="params">(<span class="type">const</span> <span class="type">char</span>* path)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!path) &#123;</span><br><span class="line">        <span class="comment">// 程序出错/异常时，直接拿到当前函数名</span></span><br><span class="line">        std::<span class="built_in">printf</span>(<span class="string">&quot;error in function: %s\n&quot;</span>, __func__);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-3-实战：Debug-Release-模式切换"><a href="#6-3-实战：Debug-Release-模式切换" class="headerlink" title="6.3 实战：Debug &#x2F; Release 模式切换"></a>6.3 实战：Debug &#x2F; Release 模式切换</h4><p>VS 的 Debug 配置会自动定义 <code>_DEBUG</code> 宏，Release 配置不会。利用它，调试信息只在 Debug 版出现：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> _DEBUG</span></span><br><span class="line">    std::<span class="built_in">printf</span>(<span class="string">&quot;DEBUG: i = %d\n&quot;</span>, i);   <span class="comment">// 调试时打印循环值</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"><span class="comment">// Release 模式下：这段代码根本不会被编译进程序</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>提示</strong>：调试时想打印每个循环值、发布时又不想让用户看到——不用删代码，用 <code>_DEBUG</code> 宏包起来即可。以后做性能测试、发布版本管理，这是经常用到的技巧。</p>
+</blockquote>
+<h4 id="6-4-实战：判断-32-位-64-位"><a href="#6-4-实战：判断-32-位-64-位" class="headerlink" title="6.4 实战：判断 32 位 &#x2F; 64 位"></a>6.4 实战：判断 32 位 &#x2F; 64 位</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> _WIN64</span></span><br><span class="line">    <span class="comment">// 64 位代码</span></span><br><span class="line"><span class="meta">#<span class="keyword">elif</span> defined(_WIN32)</span></span><br><span class="line">    <span class="comment">// 32 位代码</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>警告</strong>：预定义宏分两类：① <strong>标准要求的宏</strong>（<strong>func</strong>、<strong>FILE</strong>、<strong>DATE</strong>、<strong>TIME</strong>、__cplusplus 等）——只要编译器支持 C++11&#x2F;C99 就有；② <strong>编译器特有的宏</strong>（_DEBUG、<strong>FUNCSIG</strong>、_WIN32&#x2F;_WIN64 等）——只在 MSVC 下有效。用了后者，换编译器（如 GCC&#x2F;Clang）就可能报错，要注意可移植性。</p>
+</blockquote>
+<h2 id="§7-命名空间-namespace"><a href="#§7-命名空间-namespace" class="headerlink" title="§7 命名空间 namespace"></a>§7 命名空间 namespace</h2><p>大型项目里变量、函数、类成千上万，名字很容易撞车。<strong>命名空间</strong>把有逻辑关系的名字归到一组，避免名字冲突——就像把文件放进不同的文件夹。</p>
+<h4 id="7-1-定义与访问"><a href="#7-1-定义与访问" class="headerlink" title="7.1 定义与访问"></a>7.1 定义与访问</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> mylib &#123;</span><br><span class="line">    <span class="type">int</span> version = <span class="number">1</span>;</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">max</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> </span>&#123; <span class="keyword">return</span> a &gt; b ? a : b; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> v = mylib::version;          <span class="comment">// 必须带命名空间名</span></span><br><span class="line">    <span class="type">int</span> m = mylib::<span class="built_in">max</span>(<span class="number">3</span>, <span class="number">5</span>);</span><br><span class="line">    <span class="keyword">return</span> v + m;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-2-using-namespace-的利弊"><a href="#7-2-using-namespace-的利弊" class="headerlink" title="7.2 using namespace 的利弊"></a>7.2 using namespace 的利弊</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;      <span class="comment">// 把 std 里的名字全部“搬”进当前作用域</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 好处：cout 不用写成 std::cout</span></span><br><span class="line"><span class="comment">// 代价：std 里所有名字都可能和你的变量冲突！</span></span><br><span class="line"><span class="type">int</span> count;                <span class="comment">// 若与 std 中的名字冲突，就报错了</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>备注</strong>：课程观点：全局 <code>using namespace std;</code> 带来的收益（少敲几个字符）与风险（大面积名字冲突）不成正比，更倾向显式写 <code>std::</code>。个人&#x2F;团队按约定取舍即可。</p>
+</blockquote>
+<h4 id="7-3-全局命名空间：-前缀"><a href="#7-3-全局命名空间：-前缀" class="headerlink" title="7.3 全局命名空间：:: 前缀"></a>7.3 全局命名空间：:: 前缀</h4><p>没有放进任何命名空间的名字，都住在<strong>全局命名空间</strong>里。当局部变量「遮蔽」了全局变量时，用 <code>::</code> 前缀强制访问全局版本：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> score = <span class="number">100</span>;            <span class="comment">// 全局命名空间</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="type">int</span> score = <span class="number">0</span>;          <span class="comment">// 局部变量遮蔽了全局 score</span></span><br><span class="line">    score = <span class="number">50</span>;             <span class="comment">// 改的是局部的</span></span><br><span class="line">    ::score = <span class="number">99</span>;           <span class="comment">// 用 :: 才能访问全局的 score</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-4-命名空间的扩展与嵌套"><a href="#7-4-命名空间的扩展与嵌套" class="headerlink" title="7.4 命名空间的扩展与嵌套"></a>7.4 命名空间的扩展与嵌套</h4><ul>
+<li><strong>可扩展</strong>：同一命名空间可以写在多个地方（比如分散在多个头文件里），它们会<strong>合并</strong>成同一个命名空间——这也是 <code>std</code> 能分布在多个标准头文件里的原因；</li>
+<li><strong>可嵌套</strong>：命名空间里可以再写命名空间（<code>namespace A::B</code> 是 C++17 的嵌套简写），一层层组织。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a.h —— 第一批</span></span><br><span class="line"><span class="keyword">namespace</span> mylib &#123; <span class="type">int</span> x = <span class="number">1</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// b.h —— 第二批，仍然是同一个 mylib</span></span><br><span class="line"><span class="keyword">namespace</span> mylib &#123; <span class="type">int</span> y = <span class="number">2</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用：mylib::x、mylib::y 都在</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="7-5-匿名命名空间：替代-static"><a href="#7-5-匿名命名空间：替代-static" class="headerlink" title="7.5 匿名命名空间：替代 static"></a>7.5 匿名命名空间：替代 static</h4><p>「只在本翻译单元内有效」的需求，标准委员会现在<strong>推荐用匿名命名空间</strong>，而不是 static 函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// helper.cpp</span></span><br><span class="line"><span class="keyword">namespace</span> &#123;                    <span class="comment">// 没有名字的命名空间</span></span><br><span class="line">    <span class="type">int</span> private_value = <span class="number">42</span>;    <span class="comment">// 只在本 .cpp 内有效</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">helper</span><span class="params">()</span> </span>&#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 其他 .cpp 看不到 private_value 和 helper</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>匿名命名空间内的名字具有<strong>内部链接属性</strong>，只在当前翻译单元有效；</li>
+<li>它不参与命名空间「扩展合并」——不同翻译单元里的匿名命名空间是<strong>各自独立</strong>的；</li>
+<li>兼容性原因，static 写法仍可用，但新代码推荐匿名命名空间。</li>
+</ul>
+<h4 id="7-6-命名空间别名"><a href="#7-6-命名空间别名" class="headerlink" title="7.6 命名空间别名"></a>7.6 命名空间别名</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> VeryLong::Deep::Nested &#123; <span class="type">int</span> v = <span class="number">1</span>; &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> VL = VeryLong::Deep::Nested;   <span class="comment">// 别名</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> VL::v;   <span class="comment">// 等价于 VeryLong::Deep::Nested::v</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="§8-调试"><a href="#§8-调试" class="headerlink" title="§8 调试"></a>§8 调试</h2><p>程序越大、逻辑越复杂，越难免出 bug。写 Hello World 不会出错，不代表能力问题——<strong>排错能力</strong>才是工程能力的一部分。</p>
+<h4 id="8-1-错误的两种类型"><a href="#8-1-错误的两种类型" class="headerlink" title="8.1 错误的两种类型"></a>8.1 错误的两种类型</h4><table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>语法错误（编译错误）</th>
+<th>逻辑错误（运行错误）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>发现时机</td>
+<td>编译期，编译器直接报错</td>
+<td>运行期，程序能编译通过</td>
+</tr>
+<tr>
+<td>典型例子</td>
+<td>变量名以数字开头、使用未初始化的内存</td>
+<td>计算学生成绩时排错位（结果不符合预期）</td>
+</tr>
+<tr>
+<td>排查难度</td>
+<td>易，双击错误信息跳到出错行</td>
+<td>难，需要调试器跟踪变量</td>
+</tr>
+</tbody></table>
+<h4 id="8-2-写代码的四个好习惯（让排错更容易）"><a href="#8-2-写代码的四个好习惯（让排错更容易）" class="headerlink" title="8.2 写代码的四个好习惯（让排错更容易）"></a>8.2 写代码的四个好习惯（让排错更容易）</h4><ul>
+<li><strong>模块化</strong>：能写成函数就写成函数，独立功能独立封装，别一写几十行堆在一起；</li>
+<li><strong>命名直观</strong>：函数名&#x2F;变量名&#x2F;类名&#x2F;结构体名要让人一眼看懂用途，最好不用看注释；</li>
+<li><strong>正确缩进与断行</strong>：if&#x2F;else 配对的缩进一致，逻辑结构一眼可见；</li>
+<li><strong>写注释</strong>：方便日后排错和理解（老师自嘲自己写代码不爱写注释是反面教材）。</li>
+</ul>
+<h4 id="8-3-调试器核心操作（VS-自带调试器）"><a href="#8-3-调试器核心操作（VS-自带调试器）" class="headerlink" title="8.3 调试器核心操作（VS 自带调试器）"></a>8.3 调试器核心操作（VS 自带调试器）</h4><ul>
+<li><strong>断点</strong>：在语句左侧点红点，程序执行到这里就<strong>停下</strong>；可以下多个断点，运行中也可以随时补；</li>
+<li><strong>继续</strong>：从断点处恢复运行到下一个断点；</li>
+<li><strong>逐语句（Step Into）</strong>：一句一句执行；遇到函数调用会<strong>进入函数内部</strong>看实现；</li>
+<li><strong>逐过程（Step Over）</strong>：不进入函数内部，直接执行完整个函数调用（但函数确实执行了）；</li>
+<li><strong>跳出（Step Out）</strong>：在函数内部想直接返回上一层，点它立即退出当前函数；</li>
+<li><strong>观察窗口 &#x2F; 局部变量窗口</strong>：实时查看变量的当前值——定位「哪个变量在什么时候变成了意外值」是调试的核心；</li>
+<li><strong>寄存器窗口</strong>：查看 EAX&#x2F;EBX&#x2F;ECX&#x2F;EDX 等 CPU 寄存器，配合反汇编使用（写普通代码很少用）；</li>
+<li><strong>反汇编窗口</strong>：按<strong>汇编指令</strong>逐条执行，适合底层研究（高端局才用）。</li>
+</ul>
+<blockquote>
+<p><strong>备注</strong>：调试的核心思路：先怀疑某个变量的值，下断点 → 逐语句跟踪 → 在观察窗口看它每一步的变化 → 找到「第一次变成错误值」的那一行，错误根源就定位了。比如结果每隔几个学生就错一位，往往是「计数器没有在每个班级开始处清零」。</p>
+</blockquote>
+<h4 id="8-4-其他调试器"><a href="#8-4-其他调试器" class="headerlink" title="8.4 其他调试器"></a>8.4 其他调试器</h4><ul>
+<li><strong>OllyDbg（OD）</strong>：著名的逆向调试器，本身就是一个调试器；正常写代码用 VS 即可，需要深入反汇编时才用它；</li>
+<li><strong>x64dbg</strong>：较新的调试器，以后课程会涉及；</li>
+<li><strong>WinDbg</strong>：较老、偏底层，常配合<strong>双机调试</strong>（电脑 A 调试电脑 B）使用。</li>
+</ul>
+<h4 id="8-5-用预处理宏控制调试输出"><a href="#8-5-用预处理宏控制调试输出" class="headerlink" title="8.5 用预处理宏控制调试输出"></a>8.5 用预处理宏控制调试输出</h4><p>不想打断点、直接打印调试信息时，用宏做总开关——发布时关掉即可，不用删代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> DEBUG_PRINT 1      <span class="comment">// 总开关：发布时改成 0</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">if</span> DEBUG_PRINT</span></span><br><span class="line">    <span class="meta">#<span class="keyword">define</span> DBG(fmt, ...) std::printf(<span class="string">&quot;[DBG] &quot;</span> fmt <span class="string">&quot;\n&quot;</span>, __VA_ARGS__)</span></span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">    <span class="meta">#<span class="keyword">define</span> DBG(fmt, ...)   <span class="comment">// 发布版：什么都不做</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">DBG</span>(<span class="string">&quot;i = %d&quot;</span>, <span class="number">3</span>);      <span class="comment">// 调试版打印，发布版无任何输出</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="§9-断言-assert-与-static-assert"><a href="#§9-断言-assert-与-static-assert" class="headerlink" title="§9 断言 assert 与 static_assert"></a>§9 断言 assert 与 static_assert</h2><p>「断言」翻译自英文 assert——用一句断言声明「这里必须是这个条件」，条件不成立就立刻暴露问题。它专门用来捕捉那些<strong>你很重视、但又不确定会不会发生</strong>的情况（空指针、野指针、非法输入等）。</p>
+<h4 id="9-1-运行时断言：assert-宏"><a href="#9-1-运行时断言：assert-宏" class="headerlink" title="9.1 运行时断言：assert 宏"></a>9.1 运行时断言：assert 宏</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cassert&gt;</span>     <span class="comment">// assert 宏所在的头文件</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">divide</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">assert</span>(b != <span class="number">0</span>);          <span class="comment">// 条件为假 → 弹出错误对话框并终止</span></span><br><span class="line">    <span class="keyword">return</span> a / b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>语法：<code>assert(布尔表达式)</code>。任意数值都会转成 bool：非 0 为真、0 为假；</li>
+<li>表达式为 <strong>false</strong> 时，程序弹出错误信息（含文件名、行号、表达式），可选择<strong>终止 &#x2F; 重试 &#x2F; 忽略</strong>；</li>
+<li>只用于<strong>调试期显式找错</strong>，不要用它处理用户输入校验（正式程序里应该用 if 处理非法输入）。</li>
+</ul>
+<h4 id="9-2-用-NDEBUG-关闭-assert"><a href="#9-2-用-NDEBUG-关闭-assert" class="headerlink" title="9.2 用 NDEBUG 关闭 assert"></a>9.2 用 NDEBUG 关闭 assert</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> NDEBUG              <span class="comment">// 必须写在 #include &lt;cassert&gt; 之前！</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cassert&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">assert</span>(<span class="literal">false</span>);          <span class="comment">// NDEBUG 已定义：这一句被“编译掉”，不生效</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>警告</strong>：<code>NDEBUG</code> 必须在包含 <code>&lt;cassert&gt;</code> <strong>之前</strong>定义才有效——头文件被合并进源文件时，assert 是否启用就已经由当时的宏状态决定了。它的原理是 <code>#ifdef NDEBUG</code> 让 assert 展开为空操作。</p>
+</blockquote>
+<h4 id="9-3-编译期断言：static-assert"><a href="#9-3-编译期断言：static-assert" class="headerlink" title="9.3 编译期断言：static_assert"></a>9.3 编译期断言：static_assert</h4><p>assert 是<strong>运行时</strong>检查（程序跑起来才知道）；<code>static_assert</code> 是<strong>编译期</strong>检查（编译阶段就能验证），且<strong>不需要任何头文件</strong>，条件必须是<strong>常量表达式</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(<span class="type">int</span>) == <span class="number">4</span>, <span class="string">&quot;int 必须是 4 字节&quot;</span>);</span><br><span class="line"><span class="keyword">static_assert</span>(<span class="number">1</span> + <span class="number">1</span> == <span class="number">2</span>, <span class="string">&quot;数学没坏&quot;</span>);   <span class="comment">// 编译期常量才可用</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> <span class="number">0</span>; &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>条件为假 → <strong>编译失败</strong>，输出你写的错误信息；</li>
+<li>因为发生在编译期，条件里不能是运行时的变量值；</li>
+<li>典型应用：<strong>平台&#x2F;位数校验</strong>——例如强制程序只在 32 位下编译：</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(<span class="type">void</span>*) == <span class="number">4</span>,</span><br><span class="line">              <span class="string">&quot;本程序只支持 32 位（x86）编译！&quot;</span>);</span><br><span class="line"><span class="comment">// 在 x64 下编译 → 编译直接失败，并提示这条消息</span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>assert</th>
+<th>static_assert</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>检查时机</td>
+<td>运行时（程序执行到该行）</td>
+<td>编译期</td>
+</tr>
+<tr>
+<td>头文件</td>
+<td>需要 <cassert></td>
+<td>不需要</td>
+</tr>
+<tr>
+<td>条件要求</td>
+<td>任意表达式（转 bool）</td>
+<td>必须是常量表达式</td>
+</tr>
+<tr>
+<td>失败后果</td>
+<td>弹出错误对话框</td>
+<td>编译失败并输出信息</td>
+</tr>
+<tr>
+<td>典型用途</td>
+<td>空指针&#x2F;野指针等运行时可疑点</td>
+<td>平台位数、类型大小、编译期约束</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>备注</strong>：assert 的实现机理：底层调用 CRT 的诊断函数，弹出带文件名、行号的对话框——这些都是编译器底层提供的。有兴趣完全可以自己实现一个「自定义断言宏」；日常使用记住「NDEBUG 关 assert、static_assert 管编译期」就够了。</p>
+</blockquote>
+<h2 id="§10-练习与自查"><a href="#§10-练习与自查" class="headerlink" title="§10 练习与自查"></a>§10 练习与自查</h2><p>先独立作答，再对照参考答案。能用自己的话讲清每一条，才算真正掌握。</p>
+<p><strong>第 1 题：什么是翻译单元？编译和链接分别做什么？</strong><br>一个 .cpp 源文件把 #include 的头文件内容复制进来后形成的整体叫翻译单元。编译：把翻译单元翻译成 .obj 目标文件（机器码 + 引用信息）；链接：把多个 .obj 的引用解析到实际地址，拼成 .exe &#x2F; .lib &#x2F; .dll。</p>
+<p><strong>第 2 题：什么是未定义行为？举一个例子并说明为什么不同编译器结果不同。</strong><br>标准没有规定结果的代码行为就是未定义行为。例：int r &#x3D; ++a + a; ——同一个表达式里变量既被修改又被读取，求值顺序标准没规定，所以不同编译器可以给出不同结果。它不是运算符优先级问题。</p>
+<p><strong>第 3 题：ODR（单一定义规则）的核心内容是什么？哪些情况可以有「多个定义」？</strong><br>变量&#x2F;函数&#x2F;类&#x2F;枚举&#x2F;模板在每个翻译单元中只能有一个定义，可以有多个声明；非内联的函数或变量在整个程序中只能有一个定义。例外：const 常量、static 变量&#x2F;函数（内部链接，各文件独立）、inline 函数&#x2F;变量（C++17）、类内定义和模板。</p>
+<p><strong>第 4 题：static、const、extern、inline 变量各自的链接属性是什么？</strong><br>static：内部链接，仅本翻译单元有效；const：全局 const 默认内部链接，加 extern 变外部链接；extern：声明外部定义的名字（外部链接）；inline 变量（C++17）：外部链接但允许重复定义，头文件里定义多份链接时合并成一份。</p>
+<p><strong>第 5 题：#define 与 const 有什么区别？函数式宏为什么要给参数加括号？</strong><br>#define 是预处理期纯文本替换，没有类型、没有类型检查，C 风格；const 是真正的变量，有类型、编译期检查严格，C++ 更推荐。函数式宏只是文本替换，不加括号时展开后运算优先级会出错（如 MAX(a+1,b) 展开成 a+1 &gt; b ? a+1 : b），所以参数和整体都要加括号。</p>
+<p><strong>第 6 题：#ifdef&#x2F;#ifndef 和 #if&#x2F;#elif&#x2F;#else 分别用于什么场景？</strong><br>#ifdef&#x2F;#ifndef 用于判断「某个宏是否定义」，最典型的是头文件防重复包含（#ifndef MYLIB_H &#x2F; #define &#x2F; #endif）和功能开关；#if&#x2F;#elif&#x2F;#else 用于判断「宏的取值」，典型是版本号控制——同一个版本号宏选不同版本的函数实现，还可以用 &amp;&amp; 和 || 组合多个条件。</p>
+<p><strong>第 7 题：_DEBUG 宏是干什么的？它如何做到「发布版自动去掉调试输出」？</strong><br>_DEBUG 是 MSVC 在 Debug 配置下自动定义的预定义宏，Release 配置不定义。用 #ifdef _DEBUG 包住调试输出代码，Debug 版会编译进去，Release 版预处理后这段代码根本不存在，无需手动删代码。</p>
+<p><strong>第 8 题：逐语句、逐过程、跳出分别是什么意思？调试逻辑错误的核心思路是什么？</strong><br>逐语句：一句一句执行，遇函数调用进入函数内部；逐过程：执行完整个函数调用但不进入内部；跳出：在函数内部直接返回上一层。核心思路：怀疑某个变量的值 → 下断点 → 逐语句跟踪 → 在观察窗口看它每一步的变化 → 找到第一次变成错误值的那一行，就定位了错误根源。</p>
+<p><strong>第 9 题：assert 和 static_assert 有什么区别？NDEBUG 为什么要写在 #include <cassert> 之前？</strong><br>assert 是运行时检查（条件为假弹错误框），static_assert 是编译期检查（条件必须是常量表达式，失败则编译报错，且不需要头文件）。NDEBUG 必须在包含 cassert 之前定义，因为 assert 是否启用由头文件合并时的宏状态决定——预处理阶段 #ifdef NDEBUG 已经把 assert 展开成空操作了。</p>
+</div><div class="article_tags"><span> <i class="yufont icon-tag"></i> 标签: </span></div></article><div class="article-copyright"><p>标题: <a href="/2026/09/12/c%E8%AF%AD%E8%A8%80%E4%B8%8Ec++%E8%81%94%E5%90%88%E7%BC%96%E7%A8%8B/">c++与c语言进阶</a></p><p> 链接: <a href="/2026/09/12/c%E8%AF%AD%E8%A8%80%E4%B8%8Ec++%E8%81%94%E5%90%88%E7%BC%96%E7%A8%8B/">http://example.com/2026/09/12/c%E8%AF%AD%E8%A8%80%E4%B8%8Ec++%E8%81%94%E5%90%88%E7%BC%96%E7%A8%8B/</a></p><p> 版权声明: 若无特殊标注皆为 FY 原创版权, 转载请以链接形式注明作者及原始出处</p><p>最后编辑时间: 2026-09-13</p></div><div class="page_turning"><a class="page_up" href="/2026/09/11/c++%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD%E5%92%8C%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF/"
+  style="background-image:url(/assets/images/random/31.jpg)">
   <div class="inner"><span>上一篇:</span>
     <p>c++重载和函数模板</p>
   </div>
 </a>
 <a class="page_down" href="javascript:;"
-style="background-image:url(/assets/images/random/2.jpg)">
+style="background-image:url(/assets/images/random/3.jpg)">
 <div class="inner"><span>下一篇:</span>
   <p>已经没有下一篇了</p>
 </div>
 </a>
-</div></div></div><div class="article_sidebar left"><div class="author_sidebar sidebar_container"><div class="author_info"><div class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/></div><div class="author_name"><h3><a href="/about">FY</a></h3><p>不断学习，不断提升！</p></div></div><div class="author_data"><ul><li> <div> <span>6</span><p>文章</p></div></li><li> <div> <span>0</span><p>分类</p></div></li><li> <div> <span>0</span><p>标签</p></div></li></ul></div></div><div class="catalogue sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-feiji"></i>目录</h3><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-19-%E7%AB%A0%EF%BC%9A%E5%87%BD%E6%95%B0%E8%BF%9B%E9%98%B6"><span class="toc-number">1.</span> <span class="toc-text">第 19 章：函数进阶</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9F%A5%E8%AF%86%E7%BB%93%E6%9E%84"><span class="toc-number">1.2.</span> <span class="toc-text">知识结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A71-%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F-static"><span class="toc-number">1.3.</span> <span class="toc-text">§1 静态变量 static</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%89%B9%E6%80%A7"><span class="toc-number">1.3.1.</span> <span class="toc-text">特性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9%E6%AF%94"><span class="toc-number">1.3.2.</span> <span class="toc-text">对比</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A72-%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0-inline"><span class="toc-number">1.4.</span> <span class="toc-text">§2 内联函数 inline</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.4.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%82%E7%94%A8%E6%9D%A1%E4%BB%B6"><span class="toc-number">1.4.2.</span> <span class="toc-text">适用条件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A73-%E5%A3%B0%E6%98%8E%E4%B8%8E%E5%AE%9A%E4%B9%89"><span class="toc-number">1.5.</span> <span class="toc-text">§3 声明与定义</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BF%85%E9%A1%BB%E5%85%88%E5%A3%B0%E6%98%8E%E5%90%8E%E4%BD%BF%E7%94%A8"><span class="toc-number">1.5.1.</span> <span class="toc-text">为什么必须先声明后使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E%E4%B8%8E%E5%AE%9A%E4%B9%89%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.5.2.</span> <span class="toc-text">声明与定义的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E4%B8%8E%E5%AE%9A%E4%B9%89%EF%BC%9Aextern"><span class="toc-number">1.5.3.</span> <span class="toc-text">3.1 变量的声明与定义：extern</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80"><span class="toc-number">1.5.4.</span> <span class="toc-text">3.2 程序的内存布局</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A74-%E5%A4%B4%E6%96%87%E4%BB%B6%E4%B8%8E%E6%BA%90%E6%96%87%E4%BB%B6"><span class="toc-number">1.6.</span> <span class="toc-text">§4 头文件与源文件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BA%90%E6%96%87%E4%BB%B6%E4%B8%8E%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B"><span class="toc-number">1.6.1.</span> <span class="toc-text">源文件与编译流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5%EF%BC%9A%E6%8A%8A%E8%87%AA%E5%B7%B1%E7%9A%84%E5%87%BD%E6%95%B0%E7%BB%84%E7%BB%87%E6%88%90%E3%80%8C%E6%BA%90%E6%96%87%E4%BB%B6-%E5%A4%B4%E6%96%87%E4%BB%B6%E3%80%8D"><span class="toc-number">1.6.2.</span> <span class="toc-text">实践：把自己的函数组织成「源文件 + 头文件」</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%B4%E6%96%87%E4%BB%B6%E9%87%8C%E8%83%BD%E6%94%BE%E5%AE%9A%E4%B9%89%E5%90%97"><span class="toc-number">1.6.3.</span> <span class="toc-text">头文件里能放定义吗</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E9%98%B2%E6%AD%A2%E5%A4%B4%E6%96%87%E4%BB%B6%E8%A2%AB%E9%87%8D%E5%A4%8D%E5%8C%85%E5%90%AB"><span class="toc-number">1.6.4.</span> <span class="toc-text">4.1 防止头文件被重复包含</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91%EF%BC%9A-if-ifdef-ifndef"><span class="toc-number">1.6.5.</span> <span class="toc-text">4.2 条件编译：#if &#x2F; #ifdef &#x2F; #ifndef</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A75-C-%E4%B8%8E-C-%E6%B7%B7%E7%94%A8%EF%BC%9Aextern-%E2%80%9CC%E2%80%9D"><span class="toc-number">1.7.</span> <span class="toc-text">§5 C 与 C++ 混用：extern “C”</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E7%9A%84%E6%A0%B9%E6%BA%90%EF%BC%9A%E5%90%8D%E5%AD%97%E4%BF%AE%E9%A5%B0"><span class="toc-number">1.7.1.</span> <span class="toc-text">问题的根源：名字修饰</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%EF%BC%9Aextern-%E2%80%9CC%E2%80%9D"><span class="toc-number">1.7.2.</span> <span class="toc-text">解决方案：extern “C”</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A76-%E9%9D%99%E6%80%81%E5%BA%93%E4%B8%8E%E9%A1%B9%E7%9B%AE%E6%A8%A1%E6%9D%BF"><span class="toc-number">1.8.</span> <span class="toc-text">§6 静态库与项目模板</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%BA%93-SDK"><span class="toc-number">1.8.1.</span> <span class="toc-text">什么是库 &#x2F; SDK</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%B6%E4%BD%9C%E9%9D%99%E6%80%81%E5%BA%93%E7%9A%84%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.8.2.</span> <span class="toc-text">制作静态库的步骤</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E9%9D%99%E6%80%81%E5%BA%93%E7%9A%84%E4%B8%89%E6%AD%A5%E9%85%8D%E7%BD%AE"><span class="toc-number">1.8.3.</span> <span class="toc-text">使用静态库的三步配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%BC%E5%87%BA%E9%A1%B9%E7%9B%AE%E6%A8%A1%E6%9D%BF"><span class="toc-number">1.8.4.</span> <span class="toc-text">导出项目模板</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A77-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E7%BA%A6%E5%AE%9A"><span class="toc-number">1.9.</span> <span class="toc-text">§7 函数调用约定</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-number">1.9.1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cdecl%EF%BC%88%E9%BB%98%E8%AE%A4%E7%BA%A6%E5%AE%9A%EF%BC%89"><span class="toc-number">1.9.2.</span> <span class="toc-text">__cdecl（默认约定）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#stdcall"><span class="toc-number">1.9.3.</span> <span class="toc-text">__stdcall</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fastcall"><span class="toc-number">1.9.4.</span> <span class="toc-text">__fastcall</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A78-%E9%80%92%E5%BD%92%E5%87%BD%E6%95%B0"><span class="toc-number">1.10.</span> <span class="toc-text">§8 递归函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E4%B8%8E%E9%80%80%E5%87%BA%E6%9C%BA%E5%88%B6"><span class="toc-number">1.10.1.</span> <span class="toc-text">定义与退出机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%88%E6%BA%A2%E5%87%BA%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AD%BB%E9%80%92%E5%BD%92%E4%BC%9A%E5%B4%A9%E6%BA%83"><span class="toc-number">1.10.2.</span> <span class="toc-text">栈溢出：为什么死递归会崩溃</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%99%90%E5%88%B6%E4%B8%8E%E7%9B%B8%E4%BA%92%E9%80%92%E5%BD%92"><span class="toc-number">1.10.3.</span> <span class="toc-text">限制与相互递归</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E6%88%98%EF%BC%9A%E7%94%A8%E9%80%92%E5%BD%92%E6%94%B9%E9%80%A0%E8%A7%A3%E6%9E%90%E7%A8%8B%E5%BA%8F"><span class="toc-number">1.10.4.</span> <span class="toc-text">实战：用递归改造解析程序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A79-%E7%BB%83%E4%B9%A0%E4%B8%8E%E8%87%AA%E6%9F%A5"><span class="toc-number">1.11.</span> <span class="toc-text">§9 练习与自查</span></a></li></ol></li></ol></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-24gl-folderOpen"></i>分类</h3><div class="archive_lists"><ul class="category-list"></ul></div></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-tag"></i>标签</h3></div></div></div><footer class="footer"> <div class="footer_bottom"><div class="footer_box"><div class="copy"><span>主题</span><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn">Hexo</a><span>模板</span><a href="/">Hexo</a></div><div class="copy"><span>© 2022<a href="/">Hexo</a>鲁ICP备2022003990号</span></div></div></div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"> </script><script src="/assets/lib/prettify/prettify.js"> </script><script src="/assets/lib/fancybox/fancybox.js"> </script><script src="/assets/js/app.js"> </script></div></body></html>
+</div></div></div><div class="article_sidebar left"><div class="author_sidebar sidebar_container"><div class="author_info"><div class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/></div><div class="author_name"><h3><a href="/about">FY</a></h3><p>不断学习，不断提升！</p></div></div><div class="author_data"><ul><li> <div> <span>6</span><p>文章</p></div></li><li> <div> <span>0</span><p>分类</p></div></li><li> <div> <span>0</span><p>标签</p></div></li></ul></div></div><div class="catalogue sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-feiji"></i>目录</h3><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-19-%E7%AB%A0%EF%BC%9A%E5%87%BD%E6%95%B0%E8%BF%9B%E9%98%B6"><span class="toc-number">1.</span> <span class="toc-text">第 19 章：函数进阶</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9F%A5%E8%AF%86%E7%BB%93%E6%9E%84"><span class="toc-number">1.2.</span> <span class="toc-text">知识结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A71-%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F-static"><span class="toc-number">1.3.</span> <span class="toc-text">§1 静态变量 static</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%89%B9%E6%80%A7"><span class="toc-number">1.3.1.</span> <span class="toc-text">特性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9%E6%AF%94"><span class="toc-number">1.3.2.</span> <span class="toc-text">对比</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A72-%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0-inline"><span class="toc-number">1.4.</span> <span class="toc-text">§2 内联函数 inline</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.4.1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%82%E7%94%A8%E6%9D%A1%E4%BB%B6"><span class="toc-number">1.4.2.</span> <span class="toc-text">适用条件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A73-%E5%A3%B0%E6%98%8E%E4%B8%8E%E5%AE%9A%E4%B9%89"><span class="toc-number">1.5.</span> <span class="toc-text">§3 声明与定义</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BF%85%E9%A1%BB%E5%85%88%E5%A3%B0%E6%98%8E%E5%90%8E%E4%BD%BF%E7%94%A8"><span class="toc-number">1.5.1.</span> <span class="toc-text">为什么必须先声明后使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E%E4%B8%8E%E5%AE%9A%E4%B9%89%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.5.2.</span> <span class="toc-text">声明与定义的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E4%B8%8E%E5%AE%9A%E4%B9%89%EF%BC%9Aextern"><span class="toc-number">1.5.3.</span> <span class="toc-text">3.1 变量的声明与定义：extern</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E7%A8%8B%E5%BA%8F%E7%9A%84%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80"><span class="toc-number">1.5.4.</span> <span class="toc-text">3.2 程序的内存布局</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A74-%E5%A4%B4%E6%96%87%E4%BB%B6%E4%B8%8E%E6%BA%90%E6%96%87%E4%BB%B6"><span class="toc-number">1.6.</span> <span class="toc-text">§4 头文件与源文件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BA%90%E6%96%87%E4%BB%B6%E4%B8%8E%E7%BC%96%E8%AF%91%E6%B5%81%E7%A8%8B"><span class="toc-number">1.6.1.</span> <span class="toc-text">源文件与编译流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5%EF%BC%9A%E6%8A%8A%E8%87%AA%E5%B7%B1%E7%9A%84%E5%87%BD%E6%95%B0%E7%BB%84%E7%BB%87%E6%88%90%E3%80%8C%E6%BA%90%E6%96%87%E4%BB%B6-%E5%A4%B4%E6%96%87%E4%BB%B6%E3%80%8D"><span class="toc-number">1.6.2.</span> <span class="toc-text">实践：把自己的函数组织成「源文件 + 头文件」</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%B4%E6%96%87%E4%BB%B6%E9%87%8C%E8%83%BD%E6%94%BE%E5%AE%9A%E4%B9%89%E5%90%97"><span class="toc-number">1.6.3.</span> <span class="toc-text">头文件里能放定义吗</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E9%98%B2%E6%AD%A2%E5%A4%B4%E6%96%87%E4%BB%B6%E8%A2%AB%E9%87%8D%E5%A4%8D%E5%8C%85%E5%90%AB"><span class="toc-number">1.6.4.</span> <span class="toc-text">4.1 防止头文件被重复包含</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91%EF%BC%9A-if-ifdef-ifndef"><span class="toc-number">1.6.5.</span> <span class="toc-text">4.2 条件编译：#if &#x2F; #ifdef &#x2F; #ifndef</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A75-C-%E4%B8%8E-C-%E6%B7%B7%E7%94%A8%EF%BC%9Aextern-%E2%80%9CC%E2%80%9D"><span class="toc-number">1.7.</span> <span class="toc-text">§5 C 与 C++ 混用：extern “C”</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E7%9A%84%E6%A0%B9%E6%BA%90%EF%BC%9A%E5%90%8D%E5%AD%97%E4%BF%AE%E9%A5%B0"><span class="toc-number">1.7.1.</span> <span class="toc-text">问题的根源：名字修饰</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%EF%BC%9Aextern-%E2%80%9CC%E2%80%9D"><span class="toc-number">1.7.2.</span> <span class="toc-text">解决方案：extern “C”</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A76-%E9%9D%99%E6%80%81%E5%BA%93%E4%B8%8E%E9%A1%B9%E7%9B%AE%E6%A8%A1%E6%9D%BF"><span class="toc-number">1.8.</span> <span class="toc-text">§6 静态库与项目模板</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%BA%93-SDK"><span class="toc-number">1.8.1.</span> <span class="toc-text">什么是库 &#x2F; SDK</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%B6%E4%BD%9C%E9%9D%99%E6%80%81%E5%BA%93%E7%9A%84%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.8.2.</span> <span class="toc-text">制作静态库的步骤</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E9%9D%99%E6%80%81%E5%BA%93%E7%9A%84%E4%B8%89%E6%AD%A5%E9%85%8D%E7%BD%AE"><span class="toc-number">1.8.3.</span> <span class="toc-text">使用静态库的三步配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%BC%E5%87%BA%E9%A1%B9%E7%9B%AE%E6%A8%A1%E6%9D%BF"><span class="toc-number">1.8.4.</span> <span class="toc-text">导出项目模板</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A77-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E7%BA%A6%E5%AE%9A"><span class="toc-number">1.9.</span> <span class="toc-text">§7 函数调用约定</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%83%8C%E6%99%AF"><span class="toc-number">1.9.1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cdecl%EF%BC%88%E9%BB%98%E8%AE%A4%E7%BA%A6%E5%AE%9A%EF%BC%89"><span class="toc-number">1.9.2.</span> <span class="toc-text">__cdecl（默认约定）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#stdcall"><span class="toc-number">1.9.3.</span> <span class="toc-text">__stdcall</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fastcall"><span class="toc-number">1.9.4.</span> <span class="toc-text">__fastcall</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A78-%E9%80%92%E5%BD%92%E5%87%BD%E6%95%B0"><span class="toc-number">1.10.</span> <span class="toc-text">§8 递归函数</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E4%B8%8E%E9%80%80%E5%87%BA%E6%9C%BA%E5%88%B6"><span class="toc-number">1.10.1.</span> <span class="toc-text">定义与退出机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%88%E6%BA%A2%E5%87%BA%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E6%AD%BB%E9%80%92%E5%BD%92%E4%BC%9A%E5%B4%A9%E6%BA%83"><span class="toc-number">1.10.2.</span> <span class="toc-text">栈溢出：为什么死递归会崩溃</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%99%90%E5%88%B6%E4%B8%8E%E7%9B%B8%E4%BA%92%E9%80%92%E5%BD%92"><span class="toc-number">1.10.3.</span> <span class="toc-text">限制与相互递归</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E6%88%98%EF%BC%9A%E7%94%A8%E9%80%92%E5%BD%92%E6%94%B9%E9%80%A0%E8%A7%A3%E6%9E%90%E7%A8%8B%E5%BA%8F"><span class="toc-number">1.10.4.</span> <span class="toc-text">实战：用递归改造解析程序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A79-%E7%BB%83%E4%B9%A0%E4%B8%8E%E8%87%AA%E6%9F%A5"><span class="toc-number">1.11.</span> <span class="toc-text">§9 练习与自查</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC-20-%E7%AB%A0%EF%BC%9A%E7%BC%96%E8%AF%91%E4%B8%8E%E9%A2%84%E5%A4%84%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">第 20 章：编译与预处理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B-1"><span class="toc-number">2.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9F%A5%E8%AF%86%E7%BB%93%E6%9E%84-1"><span class="toc-number">2.2.</span> <span class="toc-text">知识结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A71-%E7%BC%96%E8%AF%91%E4%B8%8E%E9%93%BE%E6%8E%A5%EF%BC%9A%E7%BF%BB%E8%AF%91%E5%8D%95%E5%85%83"><span class="toc-number">2.3.</span> <span class="toc-text">§1 编译与链接：翻译单元</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BF%BB%E8%AF%91%E5%8D%95%E5%85%83%EF%BC%88Translation-Unit%EF%BC%89"><span class="toc-number">2.3.1.</span> <span class="toc-text">翻译单元（Translation Unit）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E4%B8%8E%E9%93%BE%E6%8E%A5%E4%B8%A4%E6%AD%A5%E6%B5%81%E6%B0%B4%E7%BA%BF"><span class="toc-number">2.3.2.</span> <span class="toc-text">编译与链接两步流水线</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A72-%E6%9C%AA%E5%AE%9A%E4%B9%89%E8%A1%8C%E4%B8%BA%EF%BC%88Undefined-Behavior%EF%BC%89"><span class="toc-number">2.4.</span> <span class="toc-text">§2 未定义行为（Undefined Behavior）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B8%E5%9E%8B%E4%BE%8B%E5%AD%90%EF%BC%9A%E5%90%8C%E4%B8%80%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%AD%E5%8F%98%E9%87%8F%E6%97%A2%E8%87%AA%E5%A2%9E%E5%8F%88%E8%A2%AB%E8%AF%BB%E5%8F%96"><span class="toc-number">2.4.1.</span> <span class="toc-text">典型例子：同一表达式中变量既自增又被读取</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E6%9C%AA%E5%AE%9A%E4%B9%89%E8%A1%8C%E4%B8%BA"><span class="toc-number">2.4.2.</span> <span class="toc-text">常见的未定义行为</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A73-%E5%8D%95%E4%B8%80%E5%AE%9A%E4%B9%89%E8%A7%84%E5%88%99-ODR-%E4%B8%8E%E9%93%BE%E6%8E%A5%E5%B1%9E%E6%80%A7"><span class="toc-number">2.5.</span> <span class="toc-text">§3 单一定义规则 ODR 与链接属性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ODR-%E7%9A%84%E6%A0%B8%E5%BF%83%E8%A7%84%E5%AE%9A"><span class="toc-number">2.5.1.</span> <span class="toc-text">ODR 的核心规定</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ODR-%E7%9A%84%E4%BE%8B%E5%A4%96%EF%BC%9A%E5%8F%AF%E4%BB%A5%E6%94%BE%E5%A4%9A%E4%B8%AA%E3%80%8C%E5%AE%9A%E4%B9%89%E3%80%8D%E7%9A%84%E4%B8%9C%E8%A5%BF"><span class="toc-number">2.5.2.</span> <span class="toc-text">ODR 的例外：可以放多个「定义」的东西</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E9%93%BE%E6%8E%A5%E5%B1%9E%E6%80%A7%EF%BC%9A%E5%86%85%E9%83%A8%E9%93%BE%E6%8E%A5%E4%B8%8E%E5%A4%96%E9%83%A8%E9%93%BE%E6%8E%A5"><span class="toc-number">2.5.3.</span> <span class="toc-text">3.1 链接属性：内部链接与外部链接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-inline-%E5%8F%98%E9%87%8F%EF%BC%88C-17%EF%BC%89"><span class="toc-number">2.5.4.</span> <span class="toc-text">3.2 inline 变量（C++17）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A74-%E5%AE%8F%E5%AE%9A%E4%B9%89-define"><span class="toc-number">2.6.</span> <span class="toc-text">§4 宏定义 #define</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-%E5%AF%B9%E8%B1%A1%E5%BC%8F%E5%AE%8F%EF%BC%9A%E5%AE%9A%E4%B9%89%E5%B8%B8%E9%87%8F%E4%B8%8E%E6%8F%90%E5%8D%87%E5%8F%AF%E8%AF%BB%E6%80%A7"><span class="toc-number">2.6.1.</span> <span class="toc-text">4.1 对象式宏：定义常量与提升可读性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-%E5%87%BD%E6%95%B0%E5%BC%8F%E5%AE%8F%EF%BC%9A%E5%B8%A6%E5%8F%82%E6%95%B0%E7%9A%84%E5%AE%8F"><span class="toc-number">2.6.2.</span> <span class="toc-text">4.2 函数式宏：带参数的宏</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%96-%E4%B8%8E-%E8%BF%9E%E6%8E%A5"><span class="toc-number">2.6.3.</span> <span class="toc-text">4.3 # 字符串化 与 ## 连接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-4-undef%EF%BC%9A%E5%8F%96%E6%B6%88%E5%AE%8F%E5%AE%9A%E4%B9%89"><span class="toc-number">2.6.4.</span> <span class="toc-text">4.4 #undef：取消宏定义</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-5-const-%E4%B8%8E-define-%E9%80%89%E5%93%AA%E4%B8%AA%EF%BC%9F"><span class="toc-number">2.6.5.</span> <span class="toc-text">4.5 const 与 #define 选哪个？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A75-%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91%EF%BC%9A%E9%A2%84%E5%A4%84%E7%90%86%E6%8C%87%E4%BB%A4"><span class="toc-number">2.7.</span> <span class="toc-text">§5 条件编译：预处理指令</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-%E9%98%B2%E6%AD%A2%E5%A4%B4%E6%96%87%E4%BB%B6%E8%A2%AB%E9%87%8D%E5%A4%8D%E5%8C%85%E5%90%AB"><span class="toc-number">2.7.1.</span> <span class="toc-text">5.1 防止头文件被重复包含</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%EF%BC%9A-if-elif-else"><span class="toc-number">2.7.2.</span> <span class="toc-text">5.2 版本控制：#if &#x2F; #elif &#x2F; #else</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-%E5%AD%97%E7%AC%A6%E9%9B%86%E5%AE%8F%EF%BC%9A-UNICODE-UNICODE-MBCS"><span class="toc-number">2.7.3.</span> <span class="toc-text">5.3 字符集宏：_UNICODE &#x2F; UNICODE &#x2F; _MBCS</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A76-%E9%A2%84%E5%AE%9A%E4%B9%89%E5%AE%8F"><span class="toc-number">2.8.</span> <span class="toc-text">§6 预定义宏</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-1-%E5%B8%B8%E7%94%A8%E9%A2%84%E5%AE%9A%E4%B9%89%E5%AE%8F%E4%B8%80%E8%A7%88"><span class="toc-number">2.8.1.</span> <span class="toc-text">6.1 常用预定义宏一览</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-2-%E5%AE%9E%E6%88%98%EF%BC%9A%E8%AE%B0%E5%BD%95%E5%BC%82%E5%B8%B8%E6%9D%A5%E8%87%AA%E5%93%AA%E4%B8%AA%E5%87%BD%E6%95%B0"><span class="toc-number">2.8.2.</span> <span class="toc-text">6.2 实战：记录异常来自哪个函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-3-%E5%AE%9E%E6%88%98%EF%BC%9ADebug-Release-%E6%A8%A1%E5%BC%8F%E5%88%87%E6%8D%A2"><span class="toc-number">2.8.3.</span> <span class="toc-text">6.3 实战：Debug &#x2F; Release 模式切换</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-4-%E5%AE%9E%E6%88%98%EF%BC%9A%E5%88%A4%E6%96%AD-32-%E4%BD%8D-64-%E4%BD%8D"><span class="toc-number">2.8.4.</span> <span class="toc-text">6.4 实战：判断 32 位 &#x2F; 64 位</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A77-%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4-namespace"><span class="toc-number">2.9.</span> <span class="toc-text">§7 命名空间 namespace</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#7-1-%E5%AE%9A%E4%B9%89%E4%B8%8E%E8%AE%BF%E9%97%AE"><span class="toc-number">2.9.1.</span> <span class="toc-text">7.1 定义与访问</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-2-using-namespace-%E7%9A%84%E5%88%A9%E5%BC%8A"><span class="toc-number">2.9.2.</span> <span class="toc-text">7.2 using namespace 的利弊</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-3-%E5%85%A8%E5%B1%80%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%EF%BC%9A-%E5%89%8D%E7%BC%80"><span class="toc-number">2.9.3.</span> <span class="toc-text">7.3 全局命名空间：:: 前缀</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-4-%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E7%9A%84%E6%89%A9%E5%B1%95%E4%B8%8E%E5%B5%8C%E5%A5%97"><span class="toc-number">2.9.4.</span> <span class="toc-text">7.4 命名空间的扩展与嵌套</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-5-%E5%8C%BF%E5%90%8D%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%EF%BC%9A%E6%9B%BF%E4%BB%A3-static"><span class="toc-number">2.9.5.</span> <span class="toc-text">7.5 匿名命名空间：替代 static</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-6-%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E5%88%AB%E5%90%8D"><span class="toc-number">2.9.6.</span> <span class="toc-text">7.6 命名空间别名</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A78-%E8%B0%83%E8%AF%95"><span class="toc-number">2.10.</span> <span class="toc-text">§8 调试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#8-1-%E9%94%99%E8%AF%AF%E7%9A%84%E4%B8%A4%E7%A7%8D%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.10.1.</span> <span class="toc-text">8.1 错误的两种类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-2-%E5%86%99%E4%BB%A3%E7%A0%81%E7%9A%84%E5%9B%9B%E4%B8%AA%E5%A5%BD%E4%B9%A0%E6%83%AF%EF%BC%88%E8%AE%A9%E6%8E%92%E9%94%99%E6%9B%B4%E5%AE%B9%E6%98%93%EF%BC%89"><span class="toc-number">2.10.2.</span> <span class="toc-text">8.2 写代码的四个好习惯（让排错更容易）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-3-%E8%B0%83%E8%AF%95%E5%99%A8%E6%A0%B8%E5%BF%83%E6%93%8D%E4%BD%9C%EF%BC%88VS-%E8%87%AA%E5%B8%A6%E8%B0%83%E8%AF%95%E5%99%A8%EF%BC%89"><span class="toc-number">2.10.3.</span> <span class="toc-text">8.3 调试器核心操作（VS 自带调试器）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-4-%E5%85%B6%E4%BB%96%E8%B0%83%E8%AF%95%E5%99%A8"><span class="toc-number">2.10.4.</span> <span class="toc-text">8.4 其他调试器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-5-%E7%94%A8%E9%A2%84%E5%A4%84%E7%90%86%E5%AE%8F%E6%8E%A7%E5%88%B6%E8%B0%83%E8%AF%95%E8%BE%93%E5%87%BA"><span class="toc-number">2.10.5.</span> <span class="toc-text">8.5 用预处理宏控制调试输出</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A79-%E6%96%AD%E8%A8%80-assert-%E4%B8%8E-static-assert"><span class="toc-number">2.11.</span> <span class="toc-text">§9 断言 assert 与 static_assert</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#9-1-%E8%BF%90%E8%A1%8C%E6%97%B6%E6%96%AD%E8%A8%80%EF%BC%9Aassert-%E5%AE%8F"><span class="toc-number">2.11.1.</span> <span class="toc-text">9.1 运行时断言：assert 宏</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-2-%E7%94%A8-NDEBUG-%E5%85%B3%E9%97%AD-assert"><span class="toc-number">2.11.2.</span> <span class="toc-text">9.2 用 NDEBUG 关闭 assert</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#9-3-%E7%BC%96%E8%AF%91%E6%9C%9F%E6%96%AD%E8%A8%80%EF%BC%9Astatic-assert"><span class="toc-number">2.11.3.</span> <span class="toc-text">9.3 编译期断言：static_assert</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%C2%A710-%E7%BB%83%E4%B9%A0%E4%B8%8E%E8%87%AA%E6%9F%A5"><span class="toc-number">2.12.</span> <span class="toc-text">§10 练习与自查</span></a></li></ol></li></ol></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-24gl-folderOpen"></i>分类</h3><div class="archive_lists"><ul class="category-list"></ul></div></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-tag"></i>标签</h3></div></div></div><footer class="footer"> <div class="footer_bottom"><div class="footer_box"><div class="copy"><span>主题</span><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn">Hexo</a><span>模板</span><a href="/">Hexo</a></div><div class="copy"><span>© 2022<a href="/">Hexo</a>鲁ICP备2022003990号</span></div></div></div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"> </script><script src="/assets/lib/prettify/prettify.js"> </script><script src="/assets/lib/fancybox/fancybox.js"> </script><script src="/assets/js/app.js"> </script></div></body></html>
