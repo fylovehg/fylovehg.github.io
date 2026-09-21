@@ -2469,16 +2469,419 @@
 <li>数组版 <code>new[]/delete[]</code>、带参 placement new 也要成对；</li>
 <li>应用：对象池，预分配大内存，避免频繁 new&#x2F;delete 造成碎片和性能损耗。</li>
 </ul>
+<h1 id="C-第-25-章-继承·系统学习笔记"><a href="#C-第-25-章-继承·系统学习笔记" class="headerlink" title="C++ 第 25 章 继承·系统学习笔记"></a>C++ 第 25 章 继承·系统学习笔记</h1><blockquote>
+<p>整理自课堂六讲（01.28.1 ~ 01.28.6），以 C++ 开发者视角补充标准规则、常见坑与现代写法。<br>示例类沿用课堂游戏案例：<code>Object → MapObject → MoveObject → AttackObject</code>，以及多重继承的 <code>Wolf / Man / Woluman</code>。</p>
+</blockquote>
+<hr>
+<h2 id="类的继承"><a href="#类的继承" class="headerlink" title="类的继承"></a>类的继承</h2><p><strong>1. 什么是继承</strong></p>
+<p>生活中”继承” &#x3D; 把别人的东西拿过来用。映射到代码：</p>
+<ul>
+<li><strong>最大好处</strong>：代码复用，少写重复成员；</li>
+<li><strong>次要好处</strong>：表达清晰的演化 &#x2F; 分类关系（is-a）。</li>
+</ul>
+<p>课堂演化链（游戏对象）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Object           只有 name</span><br><span class="line">  └─ MapObject   + x, y          （地图上可见）</span><br><span class="line">       └─ MoveObject  + hp, level（可移动生物）</span><br><span class="line">            └─ AttackObject + damage（可攻击）</span><br></pre></td></tr></table></figure>
+
+<p><strong>2. 术语</strong></p>
+<table>
+<thead>
+<tr>
+<th>中文</th>
+<th>英文</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>基类 &#x2F; 父类</td>
+<td>base class</td>
+<td>被继承的类</td>
+</tr>
+<tr>
+<td>派生类 &#x2F; 子类</td>
+<td>derived class</td>
+<td>继承出来的新类</td>
+</tr>
+<tr>
+<td>直接基类</td>
+<td>direct base</td>
+<td>冒号后面直接写的那个</td>
+</tr>
+<tr>
+<td>间接基类</td>
+<td>indirect base</td>
+<td>爷爷辈的，链条更上面</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>现代 C++ 更推荐用 <strong>base &#x2F; derived</strong>，因为”父子”在多重继承下会有歧义（一个儿子可以有多个爸爸）。</p>
+</blockquote>
+<p><strong>3. 语法</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MapObject</span> : <span class="keyword">public</span> Object &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="type">int</span> x, y;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>冒号后面的 <code>public</code> 是<strong>继承方式</strong>（下一节细讲）；</li>
+<li><code>class</code> 默认继承方式是 <strong>private</strong>；<code>struct</code> 默认是 <strong>public</strong>（课堂提了一句”不写相当于 private”）。</li>
+</ul>
+<p><strong>4. 子类自动得到什么</strong></p>
+<p>子类自动拥有父类的<strong>全部</strong>成员变量和成员函数（含 private，只是访问不到）。</p>
+<p><strong>有 3 样东西不被继承</strong>（老师重点强调）：</p>
+<table>
+<thead>
+<tr>
+<th>不继承</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>构造函数</td>
+<td>父类不知道子类有哪些新成员，没法替你构造</td>
+</tr>
+<tr>
+<td>析构函数</td>
+<td>同理，各析构各的</td>
+</tr>
+<tr>
+<td>重载赋值运算符 <code>operator=</code></td>
+<td>同上</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>注意：”不继承” ≠ “不存在”。父类的 private 成员依然存在于子类内存里，只是子类代码碰不到。</p>
+</blockquote>
+<p><strong>5. 内存大小验证（课堂实验）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Object       : 32 字节</span><br><span class="line">MapObject    : 40 字节   // 多了 x, y（8 字节）</span><br><span class="line">MoveObject   : 48 字节   // 多了 hp, level（8 字节）</span><br></pre></td></tr></table></figure>
+
+<p>派生类对象 &#x3D; 基类子对象 + 自己新增成员，大小严格叠加。</p>
+<p><strong>6. is-a vs has-a（设计原则，最容易错）</strong></p>
+<ul>
+<li><strong>is-a（是一个）→ 用继承</strong>：人是动物；可见对象是对象；狼人是狼也是人。</li>
+<li><strong>has-a（有一个）→ 用组合&#x2F;包含</strong>：人<strong>有</strong>胳膊；飞机<strong>有</strong>发动机、座位、空姐。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ✅ 对：人是动物</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Man</span> : <span class="keyword">public</span> Animal &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ❌ 错：人不是胳膊</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Man</span> : <span class="keyword">public</span> Arm &#123;&#125;;   <span class="comment">// 语法能过，但逻辑荒谬</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>内存布局上这两种写法长得几乎一样（都是把另一个类的内存拼进来），<strong>区别完全在语义</strong>。判断口诀：能说”X 是一种 Y”就用继承，能说”X 有一个 Y”就用组合。</p>
+</blockquote>
+<p><strong>7. 三种访问权限（类内）</strong></p>
+<table>
+<thead>
+<tr>
+<th>权限</th>
+<th>类内</th>
+<th>类外</th>
+<th>派生类内</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>public</code></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>protected</code></td>
+<td>✅</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>private</code></td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+</tbody></table>
+<p><code>protected</code> 是专门为继承设计的：<strong>对儿子开放，对外面锁死</strong>。<br>比喻：我有 500 万不想给外人花，但愿意给儿子花 → 用 <code>protected</code>；日记本连儿子都不能看 → 用 <code>private</code>。</p>
+<p><strong>8. <code>final</code>（C++11）</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> <span class="keyword">final</span> &#123; ... &#125;;   <span class="comment">// A 不能再被当基类</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> : <span class="keyword">public</span> A &#123;&#125;;  <span class="comment">// ❌ 编译错误</span></span><br></pre></td></tr></table></figure>
+
+<p>冷知识：<code>final</code> 是<strong>上下文敏感关键字</strong>——只在类名后这种位置是关键字，其他地方可以当变量名：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="keyword">final</span> = <span class="number">10</span>;   <span class="comment">// 合法，但别这么写</span></span><br></pre></td></tr></table></figure>
+
+<p>开发者补充：<code>final</code> 常和 <code>override</code> 配对用，下一章多态还会遇到（成员函数也能 <code>virtual void f() final;</code> 禁止再被重写）。</p>
+<hr>
+<h2 id="类的继承访问属性"><a href="#类的继承访问属性" class="headerlink" title="类的继承访问属性"></a>类的继承访问属性</h2><p><strong>1. 两个位置都能写权限</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Base</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:    <span class="type">int</span> a;</span><br><span class="line"><span class="keyword">protected</span>: <span class="type">int</span> b;</span><br><span class="line"><span class="keyword">private</span>:   <span class="type">int</span> c;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Derived</span> : <span class="keyword">public</span> Base &#123; ... &#125;;</span><br><span class="line"><span class="comment">//              ^^^^^^ 继承方式：public / protected / private</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>类内</strong>的权限（<code>a/b/c</code> 前面）：定义这个成员本身的访问级别；</li>
+<li><strong>继承方式</strong>（冒号后）：决定基类成员”进入”派生类后变成什么级别。</li>
+</ul>
+<p>3 种类内权限 × 3 种继承方式 &#x3D; <strong>9 种组合</strong>。</p>
+<p><strong>2. 权限等级（从高到低）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public (3)  &gt;  protected (2)  &gt;  private (1)</span><br></pre></td></tr></table></figure>
+
+<p>继承时可以理解成：<strong>取两者的较小值</strong>。</p>
+<p><strong>3. 9 种组合速查表</strong></p>
+<p>假设基类成员原本权限是 P，继承方式是 I：</p>
+<table>
+<thead>
+<tr>
+<th>基类成员 \ 继承方式</th>
+<th><code>public</code> 继承</th>
+<th><code>protected</code> 继承</th>
+<th><code>private</code> 继承</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>public 成员</td>
+<td><strong>public</strong></td>
+<td>protected</td>
+<td><strong>private</strong></td>
+</tr>
+<tr>
+<td>protected 成员</td>
+<td>protected</td>
+<td>protected</td>
+<td><strong>private</strong></td>
+</tr>
+<tr>
+<td>private 成员</td>
+<td>不可访问（仍存在）</td>
+<td>不可访问（仍存在）</td>
+<td>不可访问（仍存在）</td>
+</tr>
+</tbody></table>
+<p>记忆口诀：</p>
+<ul>
+<li><code>public</code> 继承：<strong>原封不动</strong>；</li>
+<li><code>protected</code> 继承：<strong>public 降级为 protected</strong>，其余不变；</li>
+<li><code>private</code> 继承：<strong>public 和 protected 全部降级为 private</strong>。</li>
+</ul>
+<p><strong>4. 关键认知：private 成员”继承了但碰不到”</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Base</span> &#123; <span class="type">int</span> c; &#125;;              <span class="comment">// private</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Derived</span> : <span class="keyword">public</span> Base &#123;&#125;;    <span class="comment">// 派生类对象里 c 确实存在（占内存），但 Derived 代码里访问不到</span></span><br></pre></td></tr></table></figure>
+
+<p>内存大小会证明 c 真的在里面。不要以为”访问不到就没继承”。</p>
+<p><strong>5. 私有继承的”代代相传”效应</strong></p>
+<p>一旦某一层用了 <code>private</code> 继承，基类的 public&#x2F;protected 成员在这一层全部变 private，<strong>它的派生类再也访问不到，也无法通过再次 public 继承恢复</strong>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Base</span> &#123; <span class="keyword">public</span>: <span class="type">int</span> x; &#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span> : <span class="keyword">private</span> Base &#123;&#125;;     <span class="comment">// x 在 A 里变 private</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">B</span> : <span class="keyword">public</span> A &#123;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">()</span> </span>&#123; x = <span class="number">1</span>; &#125;        <span class="comment">// ❌ 错误：x 在 A 里已是 private，B 看不到</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>6. 用 <code>using</code> 调整继承来的成员权限</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Derived</span> : <span class="keyword">private</span> Base &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">using</span> Base::a;   <span class="comment">// 把基类的 a 重新提升为 public</span></span><br><span class="line">    <span class="keyword">using</span> Base::b;   <span class="comment">// 把 protected 的 b 也提升为 public</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>规则：</p>
+<ul>
+<li>只能调整<strong>当前类能访问到</strong>的成员（基类的 private 成员改不了，因为你根本看不到它）；</li>
+<li>语法是 <code>using 基类名::成员名;</code>，<strong>后面不能写类型</strong>，不能写成 <code>using Base::void f();</code>；</li>
+<li>会把基类中所有同名函数一次性全部引入（相当于把它们拉进当前类作用域参与重载）。</li>
+</ul>
+<p><strong>7. 设计建议</strong></p>
+<ul>
+<li>现代 C++ 工程里<strong>几乎只用 <code>public</code> 继承</strong>；</li>
+<li>数据成员尽量 <code>private</code>，通过 <code>getter/setter</code> 访问——便于加校验、下断点调试；</li>
+<li><code>protected</code> 虽然方便派生类直接访问，但<strong>也会破坏封装</strong>（派生类能直接改内部成员），谨慎使用；</li>
+<li><code>private</code> 继承表达”用基类的实现来复用代码”（implemented-in-terms-of），现代写法里<strong>优先用组合（把基类当成员对象）替代 private 继承</strong>。</li>
+</ul>
+<hr>
+<h2 id="继承中的构造函数问题"><a href="#继承中的构造函数问题" class="headerlink" title="继承中的构造函数问题"></a>继承中的构造函数问题</h2><p><strong>1. 构造顺序：从最顶层基类开始</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">构造：  Object → MapObject → MoveObject → AttackObject</span><br></pre></td></tr></table></figure>
+
+<p>原因（从内存角度）：派生类对象在内存里是 <code>[基类子对象][自己成员]</code>，必须先把前面那块基类内存构造好，后面派生类构造函数里才可能调用基类的成员函数。</p>
+<p><strong>2. 默认调用的是基类的”默认构造”</strong></p>
+<p>这是最大的坑：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MapObject</span> : <span class="keyword">public</span> Object &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">MapObject</span>() &#123; ... &#125;   <span class="comment">// 没写初始化列表</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 上面这行等价于：MapObject() : Object() &#123; ... &#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>派生类<strong>拷贝构造</strong>也一样——默认调用基类的<strong>默认构造</strong>，<strong>不会</strong>自动调用基类拷贝构造！</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">MapObject</span>(<span class="type">const</span> MapObject&amp; other) &#123; ... &#125;</span><br><span class="line"><span class="comment">// 等价于：MapObject(const MapObject&amp; other) : Object() &#123; ... &#125;</span></span><br><span class="line"><span class="comment">//            ↑ 这里调的是 Object 的默认构造，不是拷贝构造！</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>3. 用初始化列表指定调用基类的哪个构造</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MapObject</span> : <span class="keyword">public</span> Object &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="built_in">MapObject</span>(<span class="type">int</span> id) : <span class="built_in">Object</span>(<span class="string">&quot;tree&quot;</span>), <span class="built_in">mapId</span>(id) &#123; ... &#125;</span><br><span class="line">    <span class="comment">//                  ^^^^^^^^^^^^^^^^ 显式调用 Object 的带参构造</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>要点：</p>
+<ul>
+<li><strong>必须</strong>用初始化列表语法调用基类构造；写在构造函数体内赋值是<strong>不行</strong>的，因为进入函数体时基类子对象已经被默认构造过了；</li>
+<li>初始化列表里<strong>不能</strong>直接初始化从基类继承来的成员（那时候基类还没构造完，”遗产手续还没办完”）。</li>
+</ul>
+<p><strong>4. 派生类拷贝构造如何”真正拷贝”基类部分</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">MapObject</span>(<span class="type">const</span> MapObject&amp; other) : <span class="built_in">Object</span>(other) &#123;</span><br><span class="line">    <span class="comment">//                              ^^^^^^^^^^^^</span></span><br><span class="line">    <span class="comment">// 把 Derived&amp; 隐式转成 Base&amp;，调用 Object 的拷贝构造</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里 <code>other</code> 是 <code>MapObject&amp;</code>，直接传给需要 <code>Object&amp;</code> 的基类拷贝构造——这就是<strong>向上转型（derived → base）</strong>，隐式、安全。</p>
+<blockquote>
+<p>预告：反过来把 <code>Base</code> 对象当 <code>Derived</code> 用会发生<strong>对象切片（object slicing）</strong>，下一章讲多态时会细讲。</p>
+</blockquote>
+<p><strong>5. 继承构造函数（C++11：<code>using Base::Base;</code>）</strong></p>
+<p>构造函数默认不继承，但可以用 using 强制继承：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MapObject</span> : <span class="keyword">public</span> Object &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">using</span> Object::Object;   <span class="comment">// 把 Object 所有构造函数全部继承过来</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">MapObject <span class="title">m</span><span class="params">(<span class="number">250</span>)</span></span>;   <span class="comment">// 直接调用 Object(int)，编译器自动转发</span></span><br></pre></td></tr></table></figure>
+
+<p>规则：</p>
+<ul>
+<li>一次性继承基类<strong>所有</strong>构造函数（不能挑着继承）；</li>
+<li><strong>默认构造函数、拷贝构造函数、移动构造函数不会被继承</strong>（编译器仍会为派生类合成）；</li>
+<li>写在 <code>public/protected/private</code> 区段都行——构造函数的访问权限比较特殊，不影响调用；</li>
+<li>本质上编译器帮你写了一堆 <code>Derived(args) : Base(args) {}</code>。</li>
+</ul>
+<p><strong>6. 初始化顺序的开发者提醒</strong></p>
+<ul>
+<li>成员&#x2F;基类的初始化顺序<strong>只按类内声明顺序</strong>，<strong>不按初始化列表里写的顺序</strong>；</li>
+<li>基类先于成员对象构造，成员对象先于派生类自己的函数体；</li>
+<li>写初始化列表时最好和声明顺序一致，否则 <code>-Wreorder</code> 会警告。</li>
+</ul>
+<hr>
+<h2 id="析构函数与成员重复的问题"><a href="#析构函数与成员重复的问题" class="headerlink" title="析构函数与成员重复的问题"></a>析构函数与成员重复的问题</h2><p><strong>1. 析构顺序：和构造完全相反</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">构造：  Object → MapObject → AttackObject</span><br><span class="line">析构：  AttackObject → MapObject → Object</span><br></pre></td></tr></table></figure>
+
+<p>原因：派生类析构时可能还会用到基类的资源，所以基类不能先析构；必须先把派生类自己的部分清理完，再清理基类。</p>
+<blockquote>
+<p><strong>重要预告</strong>：如果准备用基类指针指向派生类对象并 <code>delete</code>，基类析构函数<strong>必须是 <code>virtual</code></strong>，否则只会调基类析构，造成资源泄漏。这是下一章多态的重点。</p>
+</blockquote>
+<p><strong>2. 成员变量重名</strong></p>
+<p>派生类定义了和基类同名的变量，<strong>默认访问的是派生类自己的版本</strong>（名称隐藏）。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Base</span>     &#123; <span class="keyword">public</span>: <span class="type">int</span> x = <span class="number">1</span>; &#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Derived</span> : <span class="keyword">public</span> Base &#123; <span class="keyword">public</span>: <span class="type">int</span> x = <span class="number">2</span>; &#125;;</span><br><span class="line"></span><br><span class="line">Derived d;</span><br><span class="line">d.x;            <span class="comment">// 2（Derived 自己的）</span></span><br><span class="line">d.Base::x;      <span class="comment">// 1（用作用域限定访问基类版本）</span></span><br></pre></td></tr></table></figure>
+
+<p>类外访问也一样：<code>d.Base::x</code>。</p>
+<p><strong>3. 成员函数重名</strong></p>
+<p>函数重名分两种情况：</p>
+<p>情况 A：签名不同（参数列表不同）——是隐藏，不是重载！</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Base</span>     &#123; <span class="keyword">public</span>: <span class="function"><span class="type">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;&#125; &#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Derived</span> : <span class="keyword">public</span> Base &#123; <span class="keyword">public</span>: <span class="function"><span class="type">void</span> <span class="title">show</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;&#125; &#125;;</span><br><span class="line"></span><br><span class="line">Derived d;</span><br><span class="line">d.<span class="built_in">show</span>(<span class="number">10</span>);       <span class="comment">// ✅ Derived::show(int)</span></span><br><span class="line">d.<span class="built_in">show</span>();         <span class="comment">// ❌ 编译错误！Base::show() 被隐藏了，不可见</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>关键认知</strong>：基类和派生类是两个不同的作用域。派生类里只要出现同名函数，<strong>不管参数是否相同，基类的同名函数全部被隐藏</strong>，不会构成跨类重载。</p>
+<p>解决：用 <code>using</code> 把基类函数引入派生类作用域：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Derived</span> : <span class="keyword">public</span> Base &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">using</span> Base::show;       <span class="comment">// 把 Base 的所有 show 都拉进来</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">show</span><span class="params">(<span class="type">int</span> n)</span> </span>&#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line">d.<span class="built_in">show</span>();       <span class="comment">// ✅ 现在能用了</span></span><br></pre></td></tr></table></figure>
+
+<p>情况 B：签名完全相同</p>
+<p>这就是”覆盖”（非虚函数版本的隐藏），<code>using</code> 也区分不出来，直接用作用域限定：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d.Base::<span class="built_in">show</span>();   <span class="comment">// 明确调基类版本</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>4. 多级继承下的访问</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Grand</span> &#123; <span class="keyword">public</span>: <span class="function"><span class="type">void</span> <span class="title">show</span><span class="params">()</span></span>; &#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Base</span> : <span class="keyword">public</span> Grand &#123;&#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Derived</span> : <span class="keyword">public</span> Base &#123;&#125;;</span><br><span class="line"></span><br><span class="line">Derived d;</span><br><span class="line">d.Base::<span class="built_in">show</span>();       <span class="comment">// ✅ 直接基类</span></span><br><span class="line">d.Derived::Base::<span class="built_in">show</span>();  <span class="comment">// ✅ 也行，但啰嗦</span></span><br><span class="line">d.Grand::<span class="built_in">show</span>();      <span class="comment">// ✅ 也可以！Grand 是祖先，直接写类名即可</span></span><br></pre></td></tr></table></figure>
+
+<p>写法上 <code>d.Grand::show()</code> 更简洁，<code>d.Base::Grand::show()</code> 层次更清楚，看团队风格。</p>
+<p><strong>5. 设计提醒</strong></p>
+<ul>
+<li>自己写的类尽量<strong>避免</strong>和基类成员同名；</li>
+<li>阅读别人代码时遇到同名，先想”名称隐藏”规则，再判断到底调的是哪一版。</li>
+</ul>
+<hr>
+<h2 id="多重继承的问题"><a href="#多重继承的问题" class="headerlink" title="多重继承的问题"></a>多重继承的问题</h2><p><strong>1. 什么是多重继承</strong></p>
+<p>一个派生类同时继承多个基类：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Wolf</span>  &#123; <span class="keyword">public</span>: <span class="function"><span class="type">void</span> <span class="title">bite</span><span class="params">()</span></span>; &#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Man</span>   &#123; <span class="keyword">public</span>: <span class="function"><span class="type">void</span> <span class="title">eat</span><span class="params">()</span></span>;  &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Woluman</span> : <span class="keyword">public</span> Wolf, <span class="keyword">public</span> Man &#123;</span><br><span class="line">    <span class="comment">// 既会 bite，又会 eat</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Woluman jack;</span><br><span class="line">jack.<span class="built_in">bite</span>();   <span class="comment">// 狼的特性</span></span><br><span class="line">jack.<span class="built_in">eat</span>();    <span class="comment">// 人的特性</span></span><br></pre></td></tr></table></figure>
+
+<p>C++ 支持多继承；Java 只支持单继承 + 多接口。</p>
+<p><strong>2. 二义性：两个基类有同名成员</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Wolf</span> &#123; <span class="keyword">public</span>: <span class="function"><span class="type">void</span> <span class="title">eat</span><span class="params">()</span></span>; &#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Man</span>  &#123; <span class="keyword">public</span>: <span class="function"><span class="type">void</span> <span class="title">eat</span><span class="params">()</span></span>; &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Woluman</span> : <span class="keyword">public</span> Wolf, <span class="keyword">public</span> Man &#123;&#125;;</span><br><span class="line"></span><br><span class="line">Woluman w;</span><br><span class="line">w.<span class="built_in">eat</span>();   <span class="comment">// ❌ 编译错误：Wolf::eat 还是 Man::eat？</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>三种解决方案</strong>：</p>
+<p><strong>方案一：基类名限定</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">w.Wolf::<span class="built_in">eat</span>();</span><br><span class="line">w.Man::<span class="built_in">eat</span>();</span><br></pre></td></tr></table></figure>
+
+<p><strong>方案二：<code>using</code> 引入某一个版本</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Woluman</span> : <span class="keyword">public</span> Wolf, <span class="keyword">public</span> Man &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="keyword">using</span> Man::eat;   <span class="comment">// 默认用 Man 的 eat</span></span><br><span class="line">&#125;;</span><br><span class="line">w.<span class="built_in">eat</span>();   <span class="comment">// ✅ 不歧义了，用 Man::eat</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>方案三：在派生类里重新定义，内部分发（最常用）</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Woluman</span> : <span class="keyword">public</span> Wolf, <span class="keyword">public</span> Man &#123;</span><br><span class="line">    <span class="type">bool</span> isWolf = <span class="literal">false</span>;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">transform</span><span class="params">()</span> </span>&#123; isWolf = !isWolf; &#125;</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">eat</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (isWolf) Wolf::<span class="built_in">eat</span>();</span><br><span class="line">        <span class="keyword">else</span>        Man::<span class="built_in">eat</span>();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：即使两个 <code>eat</code> 参数列表不同，只要名字一样、分别在不同基类里，<strong>照样二义</strong>（因为它们不在同一个作用域，编译器找不到”重载候选”）。</p>
+</blockquote>
+<p><strong>3. 重复继承（菱形 &#x2F; 钻石继承）问题</strong></p>
+<p>结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">   Animal &#123; int x, y; &#125;</span><br><span class="line">   /          \</span><br><span class="line">Wolf          Man</span><br><span class="line">   \          /</span><br><span class="line">   Woluman</span><br></pre></td></tr></table></figure>
+
+<p>按直觉 Woluman 应该只有一份 Animal 的 x,y。<strong>实际不是</strong>：</p>
+<ul>
+<li>Wolf 继承一份 Animal，Man 又继承一份 Animal；</li>
+<li>Woluman 对象里<strong>存了两份</strong> Animal 子对象；</li>
+<li><code>woluman.Wolf::x</code> 和 <code>woluman.Man::x</code> 是<strong>两块不同的内存</strong>，改一个不影响另一个。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Woluman w;</span><br><span class="line">w.Wolf::x = <span class="number">250</span>;</span><br><span class="line">w.Man::x  = <span class="number">350</span>;</span><br><span class="line"><span class="comment">// 两个 x 各存各的，互不影响</span></span><br></pre></td></tr></table></figure>
+
+<p>这就是”重复继承”问题。</p>
+<p><strong>4. 解决：虚继承（virtual inheritance）</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Animal</span> &#123; <span class="keyword">public</span>: <span class="type">int</span> x, y; &#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Wolf</span> : <span class="keyword">virtual</span> <span class="keyword">public</span> Animal &#123;&#125;;   <span class="comment">// 注意 virtual</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Man</span>  : <span class="keyword">virtual</span> <span class="keyword">public</span> Animal &#123;&#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Woluman</span> : <span class="keyword">public</span> Wolf, <span class="keyword">public</span> Man &#123;&#125;;</span><br><span class="line"></span><br><span class="line">Woluman w;</span><br><span class="line">w.x = <span class="number">250</span>;          <span class="comment">// ✅ 不歧义了！整个对象只有一份 Animal</span></span><br><span class="line">w.Wolf::x = <span class="number">100</span>;    <span class="comment">// 和 w.Man::x 是同一块内存</span></span><br></pre></td></tr></table></figure>
+
+<p>语义：<strong>虚基类在最终派生类里只存一份</strong>，中间路径共享。下一节从内存角度详细展开。</p>
+<p><strong>5. 设计原则：什么时候该用多重继承</strong></p>
+<p>典型场景很少（课堂举例：狼人既是狼又是人）。</p>
+<p><strong>典型错误</strong>：把 has-a 当成 is-a 来多重继承：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ❌ 错误：飞机不是发动机，飞机不是座位，飞机不是空姐</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Plane</span> : <span class="keyword">public</span> Engine, <span class="keyword">public</span> Seat, <span class="keyword">public</span> Stewardess &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ✅ 正确：组合</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Plane</span> &#123;</span><br><span class="line">    Engine engine;</span><br><span class="line">    Seat seats[<span class="number">100</span>];</span><br><span class="line">    Stewardess crew[<span class="number">6</span>];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>工程上多重继承能不用就不用。Effective C++ 建议：<strong>优先 public 单继承 + 接口（纯虚类）+ 组合</strong>。</p>
+</blockquote>
+<hr>
+<h2 id="从内存的角度理解继承"><a href="#从内存的角度理解继承" class="headerlink" title="从内存的角度理解继承"></a>从内存的角度理解继承</h2><p><strong>1. 单继承的内存布局</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Derived 对象布局：</span><br><span class="line">┌──────────────────┐</span><br><span class="line">│  Base 子对象      │  （父类成员按声明顺序排）</span><br><span class="line">│  [Base 成员...]  │</span><br><span class="line">├──────────────────┤</span><br><span class="line">│  Derived 新增成员 │</span><br><span class="line">│  [Derived 成员...]│</span><br><span class="line">└──────────────────┘</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>基类子对象在<strong>前面</strong>，派生类新增成员在<strong>后面</strong>；</li>
+<li>所以构造必须从基类开始（前面那块先成型）；</li>
+<li>向上转型 <code>Derived* → Base*</code> 时，指针不用偏移（基类在最开头）。</li>
+</ul>
+<p><strong>2. 多重继承的内存布局</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Woluman 对象布局：</span><br><span class="line">┌────────────────────┐</span><br><span class="line">│  Wolf 子对象        │  ← 从这里开始</span><br><span class="line">│  [Wolf 的 Animal 部分]│</span><br><span class="line">│  [Wolf 自己成员]    │</span><br><span class="line">├────────────────────┤</span><br><span class="line">│  Man 子对象         │</span><br><span class="line">│  [Man 的 Animal 部分] │  ← 第二份 Animal</span><br><span class="line">│  [Man 自己成员]     │</span><br><span class="line">├────────────────────┤</span><br><span class="line">│  Woluman 自己成员   │</span><br><span class="line">└────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>第一个基类子对象在最前面；</li>
+<li>后续基类子对象依次排在后面；</li>
+<li>把 <code>Woluman*</code> 转成 <code>Man*</code> 时，<strong>编译器会自动加一个偏移</strong>，指到中间那块 Man 子对象。</li>
+</ul>
+<p><strong>3. 菱形继承的内存（普通继承，未虚继承）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Woluman</span><br><span class="line">├─ Wolf 子对象</span><br><span class="line">│   └─ Animal 子对象 ① (x, y)</span><br><span class="line">├─ Man 子对象</span><br><span class="line">│   └─ Animal 子对象 ② (x, y)   ← 两份独立</span><br><span class="line">└─ Woluman 自己成员</span><br></pre></td></tr></table></figure>
+
+<p>两份 x,y 各占各的内存，所以 <code>w.Wolf::x</code> 和 <code>w.Man::x</code> 不联动。</p>
+<p><strong>4. 虚继承后的内存布局</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Woluman（虚继承）</span><br><span class="line">├─ Wolf 子对象</span><br><span class="line">│   └─ vbptr（虚基表指针）← 新增！指向偏移表</span><br><span class="line">├─ Man 子对象</span><br><span class="line">│   └─ vbptr（虚基表指针）← 新增！</span><br><span class="line">├─ Woluman 自己成员</span><br><span class="line">└─ 共享的 Animal 子对象 (x, y) ← 只这一份，被放到最后</span><br></pre></td></tr></table></figure>
+
+<p>关键点：</p>
+<ul>
+<li>每个虚继承路径的子对象前面<strong>多一个 vbptr</strong>（虚基表指针）；</li>
+<li>共享的虚基类子对象被<strong>挪到对象尾部</strong>；</li>
+<li>通过 <code>vbptr → 表里的偏移 → 找到共享的 Animal 子对象</code>，多了一层间接寻址，所以访问略慢；</li>
+<li>编译器帮你做的：<code>w.x</code> 不再是直接偏移，而是”沿着 vbptr 算一下再访问”。</li>
+</ul>
+<p><strong>5. 构造顺序 vs 内存位置（反直觉点）</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>虚继承下的表现</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>内存位置</strong></td>
+<td>共享的虚基类子对象在<strong>最后面</strong></td>
+</tr>
+<tr>
+<td><strong>构造顺序</strong></td>
+<td>虚基类子对象<strong>最先</strong>构造（因为 B、C 都要共享它）</td>
+</tr>
+<tr>
+<td><strong>析构顺序</strong></td>
+<td>反过来：派生类 → B&#x2F;C → 虚基类</td>
+</tr>
+</tbody></table>
+<p>也就是说：<strong>内存布局 ≠ 构造顺序</strong>。构造顺序由”谁先依赖谁”决定，不由谁在前在后决定。</p>
+<p><strong>6. 逆向分析视角（开发者彩蛋）</strong></p>
+<p>看一个陌生对象的内存：</p>
+<ul>
+<li>开头第一个成员如果是个<strong>指针</strong>，但你又没定义指针成员——大概率是 <strong>vptr</strong>（虚函数表指针，下一章多态讲）或 <strong>vbptr</strong>（虚基表指针）；</li>
+<li>顺着这个指针读出来的是一张<strong>偏移量表</strong>，表里那串数字（类似 <code>1,6,5,4,8,5,2,10</code>）就是到各虚基类子对象的偏移；</li>
+<li>看到这个结构，基本就能判定这个类用了<strong>虚继承 &#x2F; 多态</strong>。</li>
+</ul>
+<p><strong>7. 多继承下的指针调整（this 偏移）</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Woluman* w = <span class="keyword">new</span> Woluman;</span><br><span class="line">Man* m = w;        <span class="comment">// 编译器自动把指针加上 Man 子对象的偏移</span></span><br><span class="line">Wolf* l = w;       <span class="comment">// 不偏移，Wolf 在最开头</span></span><br></pre></td></tr></table></figure>
+
+<p>这也是为什么多重继承下 <code>dynamic_cast</code> 和交叉类型转换需要编译器帮忙调整指针。</p>
+<hr>
+<h2 id="附录：一章总口诀"><a href="#附录：一章总口诀" class="headerlink" title="附录：一章总口诀"></a>附录：一章总口诀</h2><ol>
+<li><strong>继承 &#x3D; 内存拼接</strong>，基类在前、派生类在后；多重继承按继承顺序依次拼接。</li>
+<li><strong>构造从最顶层基类开始，析构反过来。</strong></li>
+<li><strong>is-a 用继承，has-a 用组合</strong>——飞机不是发动机。</li>
+<li><strong>private 成员”继承了但访问不到”</strong>，内存里仍占地方。</li>
+<li><strong>派生类同名函数会隐藏基类同名函数</strong>（不管参数是否相同），用 <code>using</code> 或 <code>Base::</code> 救场。</li>
+<li><strong>多重继承要警惕二义性和菱形重复</strong>，必要时上 <code>virtual</code> 虚继承。</li>
+<li><strong>基类析构在准备多态时一定要 virtual</strong>（下一章重点）。</li>
+</ol>
 </div><div class="article_tags"><span> <i class="yufont icon-tag"></i> 标签: </span></div></article><div class="article-copyright"><p>标题: <a href="/2026/09/12/c%E8%AF%AD%E8%A8%80%E4%B8%8Ec++%E8%81%94%E5%90%88%E7%BC%96%E7%A8%8B/">c++与c语言进阶</a></p><p> 链接: <a href="/2026/09/12/c%E8%AF%AD%E8%A8%80%E4%B8%8Ec++%E8%81%94%E5%90%88%E7%BC%96%E7%A8%8B/">http://example.com/2026/09/12/c%E8%AF%AD%E8%A8%80%E4%B8%8Ec++%E8%81%94%E5%90%88%E7%BC%96%E7%A8%8B/</a></p><p> 版权声明: 若无特殊标注皆为 FY 原创版权, 转载请以链接形式注明作者及原始出处</p><p>最后编辑时间: 2026-09-21</p></div><div class="page_turning"><a class="page_up" href="/2026/09/11/c++%E5%87%BD%E6%95%B0%E9%87%8D%E8%BD%BD%E5%92%8C%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF/"
-  style="background-image:url(/assets/images/random/2.jpg)">
+  style="background-image:url(/assets/images/random/15.jpg)">
   <div class="inner"><span>上一篇:</span>
     <p>c++重载和函数模板</p>
   </div>
 </a>
 <a class="page_down" href="javascript:;"
-style="background-image:url(/assets/images/random/31.jpg)">
+style="background-image:url(/assets/images/random/25.jpg)">
 <div class="inner"><span>下一篇:</span>
   <p>已经没有下一篇了</p>
 </div>
 </a>
-</div></div></div><div class="article_sidebar left"><div class="author_sidebar sidebar_container"><div class="author_info"><div class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/></div><div class="author_name"><h3><a href="/about">FY</a></h3><p>不断学习，不断提升！</p></div></div><div class="author_data"><ul><li> <div> <span>6</span><p>文章</p></div></li><li> <div> <span>0</span><p>分类</p></div></li><li> <div> <span>0</span><p>标签</p></div></li></ul></div></div><div class="catalogue sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-feiji"></i>目录</h3><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#c-%E7%AC%AC-19-%E7%AB%A0%EF%BC%9A%E5%87%BD%E6%95%B0%E8%BF%9B%E9%98%B6"><span class="toc-number">1.</span> <span class="toc-text">c++ 第 19 章：函数进阶</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F-static"><span class="toc-number">1.2.</span> <span class="toc-text">静态变量 static</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0-inline"><span class="toc-number">1.3.</span> <span class="toc-text">内联函数 inline</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E%E4%B8%8E%E5%AE%9A%E4%B9%89"><span class="toc-number">1.4.</span> <span class="toc-text">声明与定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%B4%E6%96%87%E4%BB%B6%E4%B8%8E%E6%BA%90%E6%96%87%E4%BB%B6"><span class="toc-number">1.5.</span> <span class="toc-text">头文件与源文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-%E4%B8%8E-C-%E6%B7%B7%E7%94%A8%EF%BC%9Aextern-%E2%80%9CC%E2%80%9D"><span class="toc-number">1.6.</span> <span class="toc-text">C 与 C++ 混用：extern “C”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E5%BA%93%E4%B8%8E%E9%A1%B9%E7%9B%AE%E6%A8%A1%E6%9D%BF"><span class="toc-number">1.7.</span> <span class="toc-text">静态库与项目模板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E7%BA%A6%E5%AE%9A"><span class="toc-number">1.8.</span> <span class="toc-text">函数调用约定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E5%87%BD%E6%95%B0"><span class="toc-number">1.9.</span> <span class="toc-text">递归函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%83%E4%B9%A0%E4%B8%8E%E8%87%AA%E6%9F%A5"><span class="toc-number">1.10.</span> <span class="toc-text">练习与自查</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#c-%E7%AC%AC-20-%E7%AB%A0%EF%BC%9A%E7%BC%96%E8%AF%91%E4%B8%8E%E9%A2%84%E5%A4%84%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">c++ 第 20 章：编译与预处理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B-1"><span class="toc-number">2.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E4%B8%8E%E9%93%BE%E6%8E%A5%EF%BC%9A%E7%BF%BB%E8%AF%91%E5%8D%95%E5%85%83"><span class="toc-number">2.2.</span> <span class="toc-text">编译与链接：翻译单元</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AA%E5%AE%9A%E4%B9%89%E8%A1%8C%E4%B8%BA%EF%BC%88Undefined-Behavior%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">未定义行为（Undefined Behavior）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E4%B8%80%E5%AE%9A%E4%B9%89%E8%A7%84%E5%88%99-ODR-%E4%B8%8E%E9%93%BE%E6%8E%A5%E5%B1%9E%E6%80%A7"><span class="toc-number">2.4.</span> <span class="toc-text">单一定义规则 ODR 与链接属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%8F%E5%AE%9A%E4%B9%89-define"><span class="toc-number">2.5.</span> <span class="toc-text">宏定义 #define</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%96-%E4%B8%8E-%E8%BF%9E%E6%8E%A5"><span class="toc-number">3.</span> <span class="toc-text">字符串化 与 ## 连接</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91%EF%BC%9A%E9%A2%84%E5%A4%84%E7%90%86%E6%8C%87%E4%BB%A4"><span class="toc-number">3.1.</span> <span class="toc-text">条件编译：预处理指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E5%AE%9A%E4%B9%89%E5%AE%8F"><span class="toc-number">3.2.</span> <span class="toc-text">预定义宏</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4-namespace"><span class="toc-number">3.3.</span> <span class="toc-text">命名空间 namespace</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E8%AF%95"><span class="toc-number">3.4.</span> <span class="toc-text">调试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%AD%E8%A8%80-assert-%E4%B8%8E-static-assert"><span class="toc-number">3.5.</span> <span class="toc-text">断言 assert 与 static_assert</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%83%E4%B9%A0%E4%B8%8E%E8%87%AA%E6%9F%A5-1"><span class="toc-number">3.6.</span> <span class="toc-text">练习与自查</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-%E7%AC%AC-21-%E7%AB%A0%E3%80%8A%E7%B1%BB%EF%BC%88Class%EF%BC%89%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="toc-number">4.</span> <span class="toc-text">C++ 第 21 章《类（Class）》学习笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95"><span class="toc-number">4.1.</span> <span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B%E6%80%9D%E6%83%B3%E4%B8%8E-class-%E5%88%9D%E8%AF%86"><span class="toc-number">4.2.</span> <span class="toc-text">面向对象编程思想与 class 初识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E4%B8%8E%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F"><span class="toc-number">4.3.</span> <span class="toc-text">成员函数与成员变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#const-%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="toc-number">4.4.</span> <span class="toc-text">const 成员函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%EF%BC%88%E5%85%A5%E9%97%A8%EF%BC%89"><span class="toc-number">4.5.</span> <span class="toc-text">构造函数（入门）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%EF%BC%88%E6%B7%B1%E5%85%A5%EF%BC%89"><span class="toc-number">4.6.</span> <span class="toc-text">构造函数（深入）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A7%94%E6%89%98%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-number">4.7.</span> <span class="toc-text">委托构造函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0"><span class="toc-number">4.8.</span> <span class="toc-text">析构函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%83%E4%B9%A0"><span class="toc-number">4.9.</span> <span class="toc-text">项目练习</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%EF%BC%9A%E6%89%8B%E5%86%99%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%B1%BB"><span class="toc-number">4.10.</span> <span class="toc-text">项目实战：手写字符串类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%BD%95%EF%BC%9A%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E9%80%9F%E6%9F%A5"><span class="toc-number">4.11.</span> <span class="toc-text">附录：核心概念速查</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-%E7%AC%AC-22-%E7%AB%A0-%E7%B1%BB%E7%9A%84%E6%B7%B1%E5%85%A5%EF%BC%9A%E9%9D%99%E6%80%81%E6%88%90%E5%91%98-%E5%8F%8B%E5%85%83-%E5%B5%8C%E5%A5%97%E7%B1%BB-%E5%86%85%E5%AD%98%E4%B8%8E%E5%BA%95%E5%B1%82%EF%BC%8801-25-%E7%B3%BB%E5%88%97%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">C++ 第 22 章 类的深入：静态成员 &#x2F; 友元 &#x2F; 嵌套类 &#x2F; 内存与底层（01.25 系列）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95-1"><span class="toc-number">5.1.</span> <span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F"><span class="toc-number">5.2.</span> <span class="toc-text">静态成员变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="toc-number">5.3.</span> <span class="toc-text">静态成员函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8B%E5%85%83%EF%BC%88friend%EF%BC%89"><span class="toc-number">5.4.</span> <span class="toc-text">友元（friend）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B5%8C%E5%A5%97%E7%B1%BB"><span class="toc-number">5.5.</span> <span class="toc-text">嵌套类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B5%8C%E5%A5%97%E7%B1%BB%E7%9A%84%E6%A8%A1%E5%9D%97%E5%8C%96%E9%97%AE%E9%A2%98"><span class="toc-number">5.6.</span> <span class="toc-text">嵌套类的模块化问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#new-%E4%B8%8Edelete%E8%AF%A6%E7%BB%86%E7%94%A8%E6%B3%95"><span class="toc-number">5.7.</span> <span class="toc-text">new 与delete详细用法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E5%BA%95%E5%B1%82%E7%90%86%E8%A7%A3%E7%B1%BB%EF%BC%88this-call-%E9%80%86%E5%90%91%E8%A7%86%E8%A7%92%EF%BC%89"><span class="toc-number">5.8.</span> <span class="toc-text">从底层理解类（this call &#x2F; 逆向视角）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E7%9A%84%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E7%BA%A6%E5%AE%9A"><span class="toc-number">5.9.</span> <span class="toc-text">自定义类的函数调用约定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%BD%95%E4%B8%80-%E9%A1%B9%E7%9B%AE%E8%AF%BE-%E8%A7%92%E8%89%B2%E5%90%83%E8%8D%AF-%E9%80%86%E5%90%91%E7%BB%83%E4%B9%A0"><span class="toc-number">5.10.</span> <span class="toc-text">附录一:项目课(角色吃药 + 逆向练习)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%BD%95%E4%BA%8C%EF%BC%9A%E6%A0%B8%E5%BF%83%E7%BB%93%E8%AE%BA%E9%80%9F%E6%9F%A5"><span class="toc-number">5.11.</span> <span class="toc-text">附录二：核心结论速查</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-%E7%AC%AC-23-%E7%AB%A0-%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E7%AC%AC-23-%E7%AB%A0%EF%BC%89"><span class="toc-number">6.</span> <span class="toc-text">C++ 第 23 章 运算符重载 学习笔记（第 23 章）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95-2"><span class="toc-number">6.1.</span> <span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD%E7%9A%84%E5%8E%9F%E5%88%99%E5%92%8C%E6%97%B6%E6%9C%BA"><span class="toc-number">6.2.</span> <span class="toc-text">运算符重载的原则和时机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E8%BD%BD%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">6.3.</span> <span class="toc-text">重载赋值运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ostringstream-%E5%B8%B8%E7%94%A8%E7%94%A8%E6%B3%95"><span class="toc-number">6.4.</span> <span class="toc-text">ostringstream 常用用法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E8%BD%BD%E4%BD%8D%E7%A7%BB%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">6.5.</span> <span class="toc-text">重载位移运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E8%BD%BD%E4%B8%8B%E6%A0%87%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">6.6.</span> <span class="toc-text">重载下标运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E8%BD%BD%E5%87%BD%E6%95%B0%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">6.7.</span> <span class="toc-text">重载函数运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8-%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="toc-number">6.8.</span> <span class="toc-text">右值引用 知识点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E8%BD%BD%E4%BA%8C%E5%85%83%E7%AE%97%E6%9C%AF%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">6.9.</span> <span class="toc-text">重载二元算术运算符</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%99%84%EF%BC%9A%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD%E9%80%9F%E6%9F%A5%E8%A1%A8"><span class="toc-number">7.</span> <span class="toc-text">附：运算符重载速查表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-%E7%AC%AC-24-%E7%AB%A0-%E9%87%8D%E8%BD%BD%E8%BF%90%E7%AE%97%E7%AC%A6%E8%BF%9B%E9%98%B6"><span class="toc-number">8.</span> <span class="toc-text">C++ 第 24 章 重载运算符进阶</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E8%BD%BD%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%EF%BC%88%E4%B8%80%EF%BC%89"><span class="toc-number">8.1.</span> <span class="toc-text">重载类型转换（一）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E8%BD%BD%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%EF%BC%88%E4%BA%8C%EF%BC%89"><span class="toc-number">8.2.</span> <span class="toc-text">重载类型转换（二）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E9%98%B2%E6%AD%A2%E6%B8%B8%E6%88%8F%E8%A2%AB%E4%BF%AE%E6%94%B9"><span class="toc-number">8.3.</span> <span class="toc-text">如何防止游戏被修改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E8%BD%BD%E9%80%92%E5%A2%9E%E9%80%92%E5%87%8F%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">8.4.</span> <span class="toc-text">重载递增递减运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E8%BD%BD%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%EF%BC%88%E4%B8%80%EF%BC%89"><span class="toc-number">8.5.</span> <span class="toc-text">重载内存分配（一）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E8%BD%BD%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%EF%BC%88%E4%BA%8C%EF%BC%89"><span class="toc-number">8.6.</span> <span class="toc-text">重载内存分配（二）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#new%E5%92%8Cdelete%E9%87%8D%E8%BD%BD"><span class="toc-number">8.7.</span> <span class="toc-text">new和delete重载</span></a></li></ol></li></ol></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-24gl-folderOpen"></i>分类</h3><div class="archive_lists"><ul class="category-list"></ul></div></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-tag"></i>标签</h3></div></div></div><footer class="footer"> <div class="footer_bottom"><div class="footer_box"><div class="copy"><span>主题</span><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn">Hexo</a><span>模板</span><a href="/">Hexo</a></div><div class="copy"><span>© 2022<a href="/">Hexo</a>鲁ICP备2022003990号</span></div></div></div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"> </script><script src="/assets/lib/prettify/prettify.js"> </script><script src="/assets/lib/fancybox/fancybox.js"> </script><script src="/assets/js/app.js"> </script></div></body></html>
+</div></div></div><div class="article_sidebar left"><div class="author_sidebar sidebar_container"><div class="author_info"><div class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/></div><div class="author_name"><h3><a href="/about">FY</a></h3><p>不断学习，不断提升！</p></div></div><div class="author_data"><ul><li> <div> <span>6</span><p>文章</p></div></li><li> <div> <span>0</span><p>分类</p></div></li><li> <div> <span>0</span><p>标签</p></div></li></ul></div></div><div class="catalogue sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-feiji"></i>目录</h3><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#c-%E7%AC%AC-19-%E7%AB%A0%EF%BC%9A%E5%87%BD%E6%95%B0%E8%BF%9B%E9%98%B6"><span class="toc-number">1.</span> <span class="toc-text">c++ 第 19 章：函数进阶</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F-static"><span class="toc-number">1.2.</span> <span class="toc-text">静态变量 static</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0-inline"><span class="toc-number">1.3.</span> <span class="toc-text">内联函数 inline</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E%E4%B8%8E%E5%AE%9A%E4%B9%89"><span class="toc-number">1.4.</span> <span class="toc-text">声明与定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%B4%E6%96%87%E4%BB%B6%E4%B8%8E%E6%BA%90%E6%96%87%E4%BB%B6"><span class="toc-number">1.5.</span> <span class="toc-text">头文件与源文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-%E4%B8%8E-C-%E6%B7%B7%E7%94%A8%EF%BC%9Aextern-%E2%80%9CC%E2%80%9D"><span class="toc-number">1.6.</span> <span class="toc-text">C 与 C++ 混用：extern “C”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E5%BA%93%E4%B8%8E%E9%A1%B9%E7%9B%AE%E6%A8%A1%E6%9D%BF"><span class="toc-number">1.7.</span> <span class="toc-text">静态库与项目模板</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E7%BA%A6%E5%AE%9A"><span class="toc-number">1.8.</span> <span class="toc-text">函数调用约定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%92%E5%BD%92%E5%87%BD%E6%95%B0"><span class="toc-number">1.9.</span> <span class="toc-text">递归函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%83%E4%B9%A0%E4%B8%8E%E8%87%AA%E6%9F%A5"><span class="toc-number">1.10.</span> <span class="toc-text">练习与自查</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#c-%E7%AC%AC-20-%E7%AB%A0%EF%BC%9A%E7%BC%96%E8%AF%91%E4%B8%8E%E9%A2%84%E5%A4%84%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">c++ 第 20 章：编译与预处理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B-1"><span class="toc-number">2.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E4%B8%8E%E9%93%BE%E6%8E%A5%EF%BC%9A%E7%BF%BB%E8%AF%91%E5%8D%95%E5%85%83"><span class="toc-number">2.2.</span> <span class="toc-text">编译与链接：翻译单元</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AA%E5%AE%9A%E4%B9%89%E8%A1%8C%E4%B8%BA%EF%BC%88Undefined-Behavior%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">未定义行为（Undefined Behavior）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E4%B8%80%E5%AE%9A%E4%B9%89%E8%A7%84%E5%88%99-ODR-%E4%B8%8E%E9%93%BE%E6%8E%A5%E5%B1%9E%E6%80%A7"><span class="toc-number">2.4.</span> <span class="toc-text">单一定义规则 ODR 与链接属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%8F%E5%AE%9A%E4%B9%89-define"><span class="toc-number">2.5.</span> <span class="toc-text">宏定义 #define</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%96-%E4%B8%8E-%E8%BF%9E%E6%8E%A5"><span class="toc-number">3.</span> <span class="toc-text">字符串化 与 ## 连接</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91%EF%BC%9A%E9%A2%84%E5%A4%84%E7%90%86%E6%8C%87%E4%BB%A4"><span class="toc-number">3.1.</span> <span class="toc-text">条件编译：预处理指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E5%AE%9A%E4%B9%89%E5%AE%8F"><span class="toc-number">3.2.</span> <span class="toc-text">预定义宏</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4-namespace"><span class="toc-number">3.3.</span> <span class="toc-text">命名空间 namespace</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E8%AF%95"><span class="toc-number">3.4.</span> <span class="toc-text">调试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%AD%E8%A8%80-assert-%E4%B8%8E-static-assert"><span class="toc-number">3.5.</span> <span class="toc-text">断言 assert 与 static_assert</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%83%E4%B9%A0%E4%B8%8E%E8%87%AA%E6%9F%A5-1"><span class="toc-number">3.6.</span> <span class="toc-text">练习与自查</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-%E7%AC%AC-21-%E7%AB%A0%E3%80%8A%E7%B1%BB%EF%BC%88Class%EF%BC%89%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="toc-number">4.</span> <span class="toc-text">C++ 第 21 章《类（Class）》学习笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95"><span class="toc-number">4.1.</span> <span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B%E6%80%9D%E6%83%B3%E4%B8%8E-class-%E5%88%9D%E8%AF%86"><span class="toc-number">4.2.</span> <span class="toc-text">面向对象编程思想与 class 初识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E4%B8%8E%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F"><span class="toc-number">4.3.</span> <span class="toc-text">成员函数与成员变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#const-%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="toc-number">4.4.</span> <span class="toc-text">const 成员函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%EF%BC%88%E5%85%A5%E9%97%A8%EF%BC%89"><span class="toc-number">4.5.</span> <span class="toc-text">构造函数（入门）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%EF%BC%88%E6%B7%B1%E5%85%A5%EF%BC%89"><span class="toc-number">4.6.</span> <span class="toc-text">构造函数（深入）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A7%94%E6%89%98%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-number">4.7.</span> <span class="toc-text">委托构造函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0"><span class="toc-number">4.8.</span> <span class="toc-text">析构函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%83%E4%B9%A0"><span class="toc-number">4.9.</span> <span class="toc-text">项目练习</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%EF%BC%9A%E6%89%8B%E5%86%99%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%B1%BB"><span class="toc-number">4.10.</span> <span class="toc-text">项目实战：手写字符串类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%BD%95%EF%BC%9A%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E9%80%9F%E6%9F%A5"><span class="toc-number">4.11.</span> <span class="toc-text">附录：核心概念速查</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-%E7%AC%AC-22-%E7%AB%A0-%E7%B1%BB%E7%9A%84%E6%B7%B1%E5%85%A5%EF%BC%9A%E9%9D%99%E6%80%81%E6%88%90%E5%91%98-%E5%8F%8B%E5%85%83-%E5%B5%8C%E5%A5%97%E7%B1%BB-%E5%86%85%E5%AD%98%E4%B8%8E%E5%BA%95%E5%B1%82%EF%BC%8801-25-%E7%B3%BB%E5%88%97%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">C++ 第 22 章 类的深入：静态成员 &#x2F; 友元 &#x2F; 嵌套类 &#x2F; 内存与底层（01.25 系列）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95-1"><span class="toc-number">5.1.</span> <span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F"><span class="toc-number">5.2.</span> <span class="toc-text">静态成员变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0"><span class="toc-number">5.3.</span> <span class="toc-text">静态成员函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8B%E5%85%83%EF%BC%88friend%EF%BC%89"><span class="toc-number">5.4.</span> <span class="toc-text">友元（friend）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B5%8C%E5%A5%97%E7%B1%BB"><span class="toc-number">5.5.</span> <span class="toc-text">嵌套类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B5%8C%E5%A5%97%E7%B1%BB%E7%9A%84%E6%A8%A1%E5%9D%97%E5%8C%96%E9%97%AE%E9%A2%98"><span class="toc-number">5.6.</span> <span class="toc-text">嵌套类的模块化问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#new-%E4%B8%8Edelete%E8%AF%A6%E7%BB%86%E7%94%A8%E6%B3%95"><span class="toc-number">5.7.</span> <span class="toc-text">new 与delete详细用法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E5%BA%95%E5%B1%82%E7%90%86%E8%A7%A3%E7%B1%BB%EF%BC%88this-call-%E9%80%86%E5%90%91%E8%A7%86%E8%A7%92%EF%BC%89"><span class="toc-number">5.8.</span> <span class="toc-text">从底层理解类（this call &#x2F; 逆向视角）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E7%9A%84%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E7%BA%A6%E5%AE%9A"><span class="toc-number">5.9.</span> <span class="toc-text">自定义类的函数调用约定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%BD%95%E4%B8%80-%E9%A1%B9%E7%9B%AE%E8%AF%BE-%E8%A7%92%E8%89%B2%E5%90%83%E8%8D%AF-%E9%80%86%E5%90%91%E7%BB%83%E4%B9%A0"><span class="toc-number">5.10.</span> <span class="toc-text">附录一:项目课(角色吃药 + 逆向练习)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%BD%95%E4%BA%8C%EF%BC%9A%E6%A0%B8%E5%BF%83%E7%BB%93%E8%AE%BA%E9%80%9F%E6%9F%A5"><span class="toc-number">5.11.</span> <span class="toc-text">附录二：核心结论速查</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-%E7%AC%AC-23-%E7%AB%A0-%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%88%E7%AC%AC-23-%E7%AB%A0%EF%BC%89"><span class="toc-number">6.</span> <span class="toc-text">C++ 第 23 章 运算符重载 学习笔记（第 23 章）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95-2"><span class="toc-number">6.1.</span> <span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD%E7%9A%84%E5%8E%9F%E5%88%99%E5%92%8C%E6%97%B6%E6%9C%BA"><span class="toc-number">6.2.</span> <span class="toc-text">运算符重载的原则和时机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E8%BD%BD%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">6.3.</span> <span class="toc-text">重载赋值运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ostringstream-%E5%B8%B8%E7%94%A8%E7%94%A8%E6%B3%95"><span class="toc-number">6.4.</span> <span class="toc-text">ostringstream 常用用法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E8%BD%BD%E4%BD%8D%E7%A7%BB%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">6.5.</span> <span class="toc-text">重载位移运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E8%BD%BD%E4%B8%8B%E6%A0%87%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">6.6.</span> <span class="toc-text">重载下标运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E8%BD%BD%E5%87%BD%E6%95%B0%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">6.7.</span> <span class="toc-text">重载函数运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8-%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="toc-number">6.8.</span> <span class="toc-text">右值引用 知识点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E8%BD%BD%E4%BA%8C%E5%85%83%E7%AE%97%E6%9C%AF%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">6.9.</span> <span class="toc-text">重载二元算术运算符</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%99%84%EF%BC%9A%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD%E9%80%9F%E6%9F%A5%E8%A1%A8"><span class="toc-number">7.</span> <span class="toc-text">附：运算符重载速查表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-%E7%AC%AC-24-%E7%AB%A0-%E9%87%8D%E8%BD%BD%E8%BF%90%E7%AE%97%E7%AC%A6%E8%BF%9B%E9%98%B6"><span class="toc-number">8.</span> <span class="toc-text">C++ 第 24 章 重载运算符进阶</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E8%BD%BD%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%EF%BC%88%E4%B8%80%EF%BC%89"><span class="toc-number">8.1.</span> <span class="toc-text">重载类型转换（一）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E8%BD%BD%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%EF%BC%88%E4%BA%8C%EF%BC%89"><span class="toc-number">8.2.</span> <span class="toc-text">重载类型转换（二）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E9%98%B2%E6%AD%A2%E6%B8%B8%E6%88%8F%E8%A2%AB%E4%BF%AE%E6%94%B9"><span class="toc-number">8.3.</span> <span class="toc-text">如何防止游戏被修改</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E8%BD%BD%E9%80%92%E5%A2%9E%E9%80%92%E5%87%8F%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">8.4.</span> <span class="toc-text">重载递增递减运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E8%BD%BD%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%EF%BC%88%E4%B8%80%EF%BC%89"><span class="toc-number">8.5.</span> <span class="toc-text">重载内存分配（一）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E8%BD%BD%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%EF%BC%88%E4%BA%8C%EF%BC%89"><span class="toc-number">8.6.</span> <span class="toc-text">重载内存分配（二）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#new%E5%92%8Cdelete%E9%87%8D%E8%BD%BD"><span class="toc-number">8.7.</span> <span class="toc-text">new和delete重载</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-%E7%AC%AC-25-%E7%AB%A0-%E7%BB%A7%E6%89%BF%C2%B7%E7%B3%BB%E7%BB%9F%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="toc-number">9.</span> <span class="toc-text">C++ 第 25 章 继承·系统学习笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E7%9A%84%E7%BB%A7%E6%89%BF"><span class="toc-number">9.1.</span> <span class="toc-text">类的继承</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E7%9A%84%E7%BB%A7%E6%89%BF%E8%AE%BF%E9%97%AE%E5%B1%9E%E6%80%A7"><span class="toc-number">9.2.</span> <span class="toc-text">类的继承访问属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%A7%E6%89%BF%E4%B8%AD%E7%9A%84%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E9%97%AE%E9%A2%98"><span class="toc-number">9.3.</span> <span class="toc-text">继承中的构造函数问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0%E4%B8%8E%E6%88%90%E5%91%98%E9%87%8D%E5%A4%8D%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">9.4.</span> <span class="toc-text">析构函数与成员重复的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E9%87%8D%E7%BB%A7%E6%89%BF%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">9.5.</span> <span class="toc-text">多重继承的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E5%86%85%E5%AD%98%E7%9A%84%E8%A7%92%E5%BA%A6%E7%90%86%E8%A7%A3%E7%BB%A7%E6%89%BF"><span class="toc-number">9.6.</span> <span class="toc-text">从内存的角度理解继承</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%84%E5%BD%95%EF%BC%9A%E4%B8%80%E7%AB%A0%E6%80%BB%E5%8F%A3%E8%AF%80"><span class="toc-number">9.7.</span> <span class="toc-text">附录：一章总口诀</span></a></li></ol></li></ol></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-24gl-folderOpen"></i>分类</h3><div class="archive_lists"><ul class="category-list"></ul></div></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-tag"></i>标签</h3></div></div></div><footer class="footer"> <div class="footer_bottom"><div class="footer_box"><div class="copy"><span>主题</span><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn">Hexo</a><span>模板</span><a href="/">Hexo</a></div><div class="copy"><span>© 2022<a href="/">Hexo</a>鲁ICP备2022003990号</span></div></div></div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"> </script><script src="/assets/lib/prettify/prettify.js"> </script><script src="/assets/lib/fancybox/fancybox.js"> </script><script src="/assets/js/app.js"> </script></div></body></html>
