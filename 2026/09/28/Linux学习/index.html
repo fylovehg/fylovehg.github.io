@@ -57,32 +57,20 @@
 <li>r：读取权限（read）。</li>
 <li>文件名：需要修改权限的文件。<br>例如：<br>chmod +r test.txt</li>
 </ul>
-<p>表示：给 test.txt 文件增加读取权限。<br>2. Linux 常见权限<br>符号	含义	数字<br>r	读取（read）	4<br>w	写入（write）	2<br>x	执行（execute）	1<br>常见命令：<br>chmod +r test.txt    # 增加读取权限<br>chmod +w test.txt    # 增加写入权限<br>chmod +x test.sh     # 增加执行权限<br>chmod -r test.txt    # 取消读取权限<br>chmod 777 test.txt   # 所有人拥有读、写、执行权限</p>
+<p>表示：给 test.txt 文件增加读取权限。<br>2. Linux 常见权限</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">符号	含义	数字</span><br><span class="line">r	读取（read）	4</span><br><span class="line">w	写入（write）	2</span><br><span class="line">x	执行（execute）	1</span><br><span class="line">常见命令：</span><br><span class="line">chmod +r test.txt    # 增加读取权限</span><br><span class="line">chmod +w test.txt    # 增加写入权限</span><br><span class="line">chmod +x test.sh     # 增加执行权限</span><br><span class="line">chmod -r test.txt    # 取消读取权限</span><br><span class="line">chmod 777 test.txt   # 所有人拥有读、写、执行权限</span><br></pre></td></tr></table></figure>
+
 <ol start="3">
 <li>如何查看文件权限？<br>输入：<br>ls -l test.txt</li>
 </ol>
 <p>例如显示：<br>-rwxr–r– 1 root root 100 Oct 10 12:00 test.txt</p>
-<p>其中：</p>
-<ul>
-<li>rwx r– r–<br>│   │   │<br>│   │   └── 其他用户权限<br>│   └────── 所属组权限<br>└────────── 文件所有者权限</li>
-</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">其中：</span><br><span class="line">- rwx r-- r--</span><br><span class="line">  │   │   │</span><br><span class="line">  │   │   └── 其他用户权限</span><br><span class="line">  │   └────── 所属组权限</span><br><span class="line">  └────────── 文件所有者权限</span><br></pre></td></tr></table></figure>
+
 <ol start="4">
 <li>注意区别<br>chmod +r 默认给所有用户类别增加读取权限，但受系统 umask 等规则影响。<br>如果只想给文件所有者添加读取权限：<br>chmod u+r test.txt</li>
 </ol>
 <p>如果给所有用户明确添加读取权限：<br>chmod a+r test.txt</p>
-<p>记忆口诀：</p>
-<ul>
-<li><ul>
-<li>添加权限</li>
-</ul>
-</li>
-<li><ul>
-<li>删除权限</li>
-</ul>
-</li>
-<li>&#x3D; 设置权限</li>
-<li>r 读、w 写、x 执行<br>如果你正在学习 Linux 基础命令，下一步建议掌握 chmod 755、chmod 644 和 chmod 777 的区别，这几个是考试和实际操作中非常常见的权限设置。</li>
-</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">记忆口诀：</span><br><span class="line">- + 添加权限</span><br><span class="line">- - 删除权限</span><br><span class="line">- = 设置权限</span><br><span class="line">- r 读、w 写、x 执行</span><br><span class="line">如果你正在学习 Linux 基础命令，下一步建议掌握 chmod 755、chmod 644 和 chmod 777 的区别，这几个是考试和实际操作中非常常见的权限设置。</span><br></pre></td></tr></table></figure>
 <h2 id="cp命令"><a href="#cp命令" class="headerlink" title="cp命令"></a>cp命令</h2><ul>
 <li><strong>copy复制的缩写</strong></li>
 <li>命令用法：cp[参数]源文件&#x2F;文件夹 目标文件&#x2F;文件夹<br>  []表示可选</li>
@@ -90,13 +78,13 @@
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-a:带属性复制</span><br><span class="line">（此选项通常在复制目录的时候使用，它保留链接、文件属性，并复制目录下的所有内容。起作用相当于dpR参数组合）</span><br><span class="line">-d:复制时保留连接</span><br><span class="line">（这里所说的链接相当于Windows系统中的快捷方式）</span><br><span class="line">-f:强制覆盖</span><br><span class="line">（覆盖已经存在的目标文件而不给出提示）</span><br></pre></td></tr></table></figure>
 </div><div class="article_tags"><span> <i class="yufont icon-tag"></i> 标签: </span></div></article><div class="article-copyright"><p>标题: <a href="/2026/09/28/Linux%E5%AD%A6%E4%B9%A0/">Linux学习</a></p><p> 链接: <a href="/2026/09/28/Linux%E5%AD%A6%E4%B9%A0/">http://example.com/2026/09/28/Linux%E5%AD%A6%E4%B9%A0/</a></p><p> 版权声明: 若无特殊标注皆为 FY 原创版权, 转载请以链接形式注明作者及原始出处</p><p>最后编辑时间: 2026-10-10</p></div><div class="page_turning"><a class="page_up" href="/2026/09/12/c%E8%AF%AD%E8%A8%80%E4%B8%8Ec++%E8%81%94%E5%90%88%E7%BC%96%E7%A8%8B/"
-  style="background-image:url(/assets/images/random/34.jpg)">
+  style="background-image:url(/assets/images/random/17.jpg)">
   <div class="inner"><span>上一篇:</span>
     <p>c++与c语言进阶</p>
   </div>
 </a>
 <a class="page_down" href="javascript:;"
-style="background-image:url(/assets/images/random/3.jpg)">
+style="background-image:url(/assets/images/random/7.jpg)">
 <div class="inner"><span>下一篇:</span>
   <p>已经没有下一篇了</p>
 </div>
