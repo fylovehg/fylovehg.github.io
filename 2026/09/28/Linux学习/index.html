@@ -88,52 +88,392 @@
 <h1 id="Linux基本操作"><a href="#Linux基本操作" class="headerlink" title="Linux基本操作"></a>Linux基本操作</h1><h2 id="gcc的安装"><a href="#gcc的安装" class="headerlink" title="gcc的安装"></a>gcc的安装</h2><p>gcc 安装</p>
 <p><strong>命令:</strong><br>1 设置root密码:sudo passwd root<br>注意,请记住这个密码,后面还需要使用<br>2 进入root账户 su<br>3 安装编译器:apt-get install gccg++<br>4 查看当前的gccg++版本<br>gcc – version<br>g++ – version<br>5 验证一下<br>g++-o test main.cpp<br>.&#x2F;test</p>
 <h2 id="ssh服务的安装"><a href="#ssh服务的安装" class="headerlink" title="ssh服务的安装"></a>ssh服务的安装</h2><p>命令:<br>1 安装服务程序:sudo apt install ofenssh-serverdwa31ax<br>2 安装客户端程序:sudo apt install openssh-client<br>3 修改配置文件<br>LoginGraceTime 2m<br><strong>PermitRootLogin</strong> yes<br>PubkeyAuthentication yes<br>PasswordAuthentication yes<br>ChallengeResponseAuthentication no<br>UsePAM yes<br>X11Forwarding yes<br>PrintMotd no<br>AcceptEnv LANG LC _*<br>Subsystem sftp &#x2F;usr&#x2F;lib&#x2F;openssh&#x2F;sftp-server<br>红色内容是要修改的地方<br>其他地方请自行比对<br>如果不一致,请参考上面的文</p>
-<h1 id="网络编程基础"><a href="#网络编程基础" class="headerlink" title="网络编程基础"></a>网络编程基础</h1><h2 id="网络中的地址"><a href="#网络中的地址" class="headerlink" title="网络中的地址"></a>网络中的地址</h2><p><img src="/images/12.png"><br>一、单播、广播和组播<br>通信方式	含义	举例<br>单播（Unicast）	一对一通信	PC1 向 PC2 发送数据<br>广播（Broadcast）	一对所有设备通信（同一广播域内）	ARP 请求<br>组播（Multicast）	一对多通信，只发送给加入指定组播组的接收者	IPTV、视频会议</p>
+<h1 id="网络编程基础"><a href="#网络编程基础" class="headerlink" title="网络编程基础"></a>网络编程基础</h1><h2 id="网络中的地址"><a href="#网络中的地址" class="headerlink" title="网络中的地址"></a>网络中的地址</h2><p><img src="/images/12.png"></p>
+<p><strong>一、单播、广播和组播</strong></p>
+<ul>
+<li><ol>
+<li>基本概念</li>
+</ol>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>通信方式</th>
+<th>英文名称</th>
+<th>含义</th>
+<th>举例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>单播</td>
+<td>Unicast</td>
+<td>一对一通信</td>
+<td>PC1 向 PC2 发送数据</td>
+</tr>
+<tr>
+<td>广播</td>
+<td>Broadcast</td>
+<td>一对同一广播域内所有设备通信</td>
+<td>ARP 请求</td>
+</tr>
+<tr>
+<td>组播</td>
+<td>Multicast</td>
+<td>一对多通信，向指定组播组发送数据</td>
+<td>IPTV、视频会议</td>
+</tr>
+</tbody></table>
+<ul>
+<li><ol start="2">
+<li>组播的工作原理</li>
+</ol>
+</li>
+</ul>
+<p>组播是一种网络层提供的一对多通信方式。</p>
+<p>注意：组播不是 TCP&#x2F;UDP 上面的广播，而是 IP 层的一种通信方式。</p>
+<ul>
+<li>TCP：主要提供可靠的一对一通信，不直接支持 IP 组播。</li>
+<li>UDP：常与 IP 组播配合使用。</li>
+<li>IP 组播：向特定组播地址发送数据，由网络设备根据组播成员关系转发。</li>
+</ul>
+<p><strong>举例</strong></p>
+<p>假设有 100 台电脑需要观看同一个直播。</p>
+<p><strong>单播方式：</strong></p>
+<p>服务器需要分别向 100 台电脑发送数据。</p>
+<p>如果每路直播需要 5 Mbps：</p>
+<p>服务器总发送带宽约为：</p>
+<p>100 × 5 Mbps &#x3D; 500 Mbps</p>
+<p><strong>组播方式：</strong></p>
+<p>服务器只需要向组播组发送一份数据，网络设备根据需要复制并转发。</p>
+<p>服务器发送该直播流所需的带宽约为 5 Mbps。</p>
+<p>注意：组播并不意味着整个网络中只有一份数据，而是避免在共享链路上重复发送相同的数据。</p>
+<p><strong>结论：组播可以有效减少重复传输，节约网络带宽。</strong></p>
+<ul>
+<li><ol start="3">
+<li>组播的缺点</li>
+</ol>
+</li>
+</ul>
+<p>组播如果配置不当，可能出现组播泛洪问题。</p>
+<p><strong>广播风暴</strong></p>
+<p>大量广播帧持续在网络中传播，导致网络拥塞，严重时影响正常通信。</p>
+<p><strong>组播泛洪</strong></p>
+<p>交换机不知道哪些端口需要接收组播数据时，可能把组播流量转发到不需要的端口。</p>
+<p><strong>解决方法</strong></p>
+<p>启用 IGMP Snooping。</p>
+<p>作用：</p>
+<ul>
+<li>监听组播成员关系信息。</li>
+<li>判断哪些端口存在组播接收者。</li>
+<li>减少不必要的组播流量转发。</li>
+<li>提高网络带宽利用率。</li>
+</ul>
+<p>注意：</p>
+<p><strong>组播泛洪不等于广播风暴，组播本身也不一定导致网络风暴。</strong></p>
+<hr>
+<p><strong>二、IPv4 地址分类</strong></p>
+<p>IPv4 地址在传统分类编址中分为 A、B、C、D、E 五类。</p>
+<ul>
+<li><ol>
+<li>A、B、C、D、E 类地址</li>
+</ol>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>地址范围</th>
+<th>主要用途</th>
+<th>默认子网掩码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A 类</td>
+<td>1.0.0.0～126.255.255.255</td>
+<td>传统大型网络</td>
+<td>255.0.0.0</td>
+</tr>
+<tr>
+<td>B 类</td>
+<td>128.0.0.0～191.255.255.255</td>
+<td>传统中型网络</td>
+<td>255.255.0.0</td>
+</tr>
+<tr>
+<td>C 类</td>
+<td>192.0.0.0～223.255.255.255</td>
+<td>传统小型网络</td>
+<td>255.255.255.0</td>
+</tr>
+<tr>
+<td>D 类</td>
+<td>224.0.0.0～239.255.255.255</td>
+<td>组播</td>
+<td>无</td>
+</tr>
+<tr>
+<td>E 类</td>
+<td>240.0.0.0～255.255.255.255</td>
+<td>保留、实验用途</td>
+<td>无</td>
+</tr>
+</tbody></table>
+<p>注意：</p>
 <ol>
-<li>组播可以理解为 TCP&#x2F;UDP 上面的广播吗？<br>不完全正确。<br>组播是 IP 网络层提供的一种一对多传输方式，并不是 TCP&#x2F;UDP 上面的广播。</li>
+<li>A 类、B 类、C 类主要用于传统单播网络编址。</li>
+<li>D 类用于组播，不等于广播。</li>
+<li>E 类主要为保留用途，不是通常意义上的私有网络地址。</li>
+<li>255.255.255.255 是特殊的受限广播地址。</li>
+<li>现代网络主要使用 CIDR 无类别编址，不再依赖 A、B、C 类默认掩码。</li>
 </ol>
 <ul>
-<li>TCP：主要用于可靠的一对一通信，不直接支持 IP 组播。</li>
-<li>UDP：经常配合 IP 组播使用。</li>
-<li>IP 组播：数据发送到一个组播地址，由网络设备根据组播成员关系转发。<br>例如：100 台电脑观看同一个直播。<br>单播可能需要服务器分别发送 100 份数据，而组播可以让服务器发送一份数据，由支持组播的网络设备按需复制和转发。<br>因此，组播能够显著节约带宽，尤其适合一对多的数据传输。</li>
-</ul>
-<ol start="2">
-<li>组播容易形成网络风暴吗？<br>需要区分：</li>
+<li><ol start="2">
+<li>私有 IP 地址</li>
 </ol>
+</li>
+</ul>
+<p>私有 IP 地址主要用于局域网。</p>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>私有地址范围</th>
+<th>CIDR 表示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A 类范围</td>
+<td>10.0.0.0～10.255.255.255</td>
+<td>10.0.0.0&#x2F;8</td>
+</tr>
+<tr>
+<td>B 类范围</td>
+<td>172.16.0.0～172.31.255.255</td>
+<td>172.16.0.0&#x2F;12</td>
+</tr>
+<tr>
+<td>C 类范围</td>
+<td>192.168.0.0～192.168.255.255</td>
+<td>192.168.0.0&#x2F;16</td>
+</tr>
+</tbody></table>
+<p>常见例子：</p>
 <ul>
-<li>广播风暴：大量广播帧在网络中传播，可能造成网络拥塞。</li>
-<li>组播泛洪：交换机不知道哪些端口需要组播数据时，可能将数据转发到多个不必要的端口。</li>
-<li>组播本身不一定会产生网络风暴。<br>常见解决方法包括启用 IGMP Snooping，让交换机只向需要组播数据的端口转发。</li>
+<li>192.168.1.1：家庭路由器常用地址。</li>
+<li>192.168.1.100：局域网电脑可能使用的地址。</li>
+<li>10.0.0.1：企业内部网络常见地址。</li>
 </ul>
-<p>二、IPv4 地址的 A、B、C、D、E 类<br>类别	地址范围	主要用途<br>A 类	1.0.0.0～126.255.255.255	传统大型网络<br>B 类	128.0.0.0～191.255.255.255	传统中型网络<br>C 类	192.0.0.0～223.255.255.255	传统小型网络<br>D 类	224.0.0.0～239.255.255.255	组播<br>E 类	240.0.0.0～255.255.255.255	保留、实验用途<br>注意：</p>
-<ol>
-<li>A、B、C 类是传统分类编址方法，现代网络主要采用 CIDR 无类别编址。</li>
-<li>D 类专门用于 IP 组播，不能简单等同于广播。</li>
-<li>E 类并不是通常意义上的私有 IP 地址。</li>
-<li>255.255.255.255 是受限广播地址。</li>
-<li>0.0.0.0&#x2F;8 和 127.0.0.0&#x2F;8 属于特殊用途地址范围。<br>常见私有 IP 地址范围如下：<br>类别	私有 IP 地址范围<br>A 类范围内	10.0.0.0&#x2F;8<br>B 类范围内	172.16.0.0&#x2F;12<br>C 类范围内	192.168.0.0&#x2F;16<br>三、特殊 IP 地址</li>
-<li>0.0.0.0<br>0.0.0.0 在不同场景下具有不同含义。<br>场景一：服务器监听<br>例如服务器执行：<br>server.bind((“0.0.0.0”, 8080))</li>
+<p>注意：</p>
+<p>私有 IP 地址不能直接在公网中进行普通路由转发。</p>
+<p>家庭网络通常通过 NAT 技术访问互联网。</p>
+<hr>
+<p><strong>三、特殊 IP 地址</strong></p>
+<p>除了传统 A、B、C、D、E 类地址，还需要掌握一些特殊用途的 IP 地址。</p>
+<ul>
+<li><ol>
+<li>0.0.0.0</li>
 </ol>
-<p>意思是服务器在本机所有 IPv4 网络接口地址上监听 8080 端口。<br>假设服务器有两个 IP：</p>
+</li>
+</ul>
+<p>0.0.0.0 在不同场景下具有不同含义。</p>
+<p><strong>场景一：服务器监听</strong></p>
+<p>服务器可能同时拥有多个 IP 地址。</p>
+<p>例如：</p>
 <ul>
 <li>192.168.1.10</li>
-<li>10.0.0.10<br>绑定 0.0.0.0:8080 后，服务器可以通过这两个 IP 接收连接请求，前提是网络可达、防火墙允许。<br>场景二：默认路由<br>0.0.0.0&#x2F;0</li>
+<li>10.0.0.10</li>
 </ul>
-<p>表示默认路由，用于匹配没有被更具体路由覆盖的目的 IP 地址。<br>2. 127.0.0.1<br>127.0.0.1 称为 回环地址（Loopback Address）。<br>它表示本机，主要用于测试本机网络协议栈以及访问本机服务。<br>例如：<br>ping 127.0.0.1</p>
-<p>数据不会通过物理网卡发送到外部网络，而是在本机网络协议栈内部处理。<br>注意：并不是发送任何数据都会原样返回。ping 能收到回复，是因为本机的 ICMP 协议栈对 Echo Request 进行了响应。<br>整个 127.0.0.0&#x2F;8 都是保留的回环地址范围，不只有 127.0.0.1。<br>四、考试重点总结<br>知识点	需要记住的内容<br>单播	一对一<br>广播	一对同一广播域内所有设备<br>组播	一对多，按组接收<br>组播的优势	减少重复传输，节约带宽<br>组播的问题	可能发生组播泛洪<br>D 类地址	224.0.0.0～239.255.255.255<br>E 类地址	保留和实验用途<br>0.0.0.0	可表示监听所有本机 IPv4 地址，也用于特殊路由表示<br>127.0.0.1	本机回环地址<br>255.255.255.255	受限广播地址<br>最容易考的三个区别：</p>
+<p>如果服务器绑定：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server.bind((<span class="string">&quot;0.0.0.0&quot;</span>, <span class="number">8080</span>))</span><br></pre></td></tr></table></figure>
+
+<p>表示：</p>
+<p><strong>服务器在本机所有 IPv4 网络接口地址上监听 8080 端口。</strong></p>
+<p>因此，客户端可以通过以下地址访问服务：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">192.168.1.10:8080</span><br><span class="line">10.0.0.10:8080</span><br></pre></td></tr></table></figure>
+
+<p>前提是网络连通，且防火墙允许访问。</p>
+<p><strong>场景二：默认路由</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0.0.0.0/0</span><br></pre></td></tr></table></figure>
+
+<p>表示默认路由。</p>
+<p>当路由器没有找到更具体的路由时，可以使用默认路由转发数据。</p>
+<p><strong>总结</strong></p>
 <ul>
-<li>0.0.0.0：在服务器绑定场景中表示所有本机 IPv4 地址。</li>
-<li>127.0.0.1：访问本机。</li>
-<li>255.255.255.255：向本地网络进行受限广播。<br>另外，组播不等于广播，组播泛洪也不等于广播风暴，这两个区别在计算机网络考试和实际网络配置中都很重要。</li>
+<li><p>0.0.0.0 用于服务器绑定时：表示本机所有 IPv4 地址。</p>
+</li>
+<li><p>0.0.0.0&#x2F;0 用于路由表时：表示默认路由。</p>
+</li>
+<li><p>0.0.0.0 也可能在设备尚未获得 IP 地址时作为源地址使用。</p>
+</li>
+<li><ol start="2">
+<li>127.0.0.1</li>
+</ol>
+</li>
 </ul>
+<p>127.0.0.1 称为回环地址（Loopback Address）。</p>
+<p>主要用于本机通信和测试。</p>
+<p><strong>举例</strong></p>
+<p>在 Windows CMD 或 Linux 终端执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping 127.0.0.1</span><br></pre></td></tr></table></figure>
+
+<p>如果本机网络协议栈正常且允许 ICMP 回应，通常可以收到回复。</p>
+<p><strong>工作原理</strong></p>
+<p>当数据发送到 127.0.0.1 时：</p>
+<ol>
+<li>操作系统识别目标地址为回环地址。</li>
+<li>数据在本机网络协议栈内部处理。</li>
+<li>数据不经过物理网卡发送到外部网络。</li>
+<li>如果目标服务或协议能够响应，则产生相应回复。</li>
+</ol>
+<p>注意：</p>
+<p><strong>并不是向 127.0.0.1 发送任何数据都会原样返回。</strong></p>
+<p>例如，ping 能收到回复，是因为 ICMP 协议栈对 Echo Request 进行了响应。</p>
+<p><strong>回环地址范围</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.0/8</span><br></pre></td></tr></table></figure>
+
+<p>整个地址段都属于回环地址范围。</p>
+<p>127.0.0.1 是最常使用的回环地址。</p>
+<ul>
+<li><ol start="3">
+<li>255.255.255.255</li>
+</ol>
+</li>
+</ul>
+<p>255.255.255.255 是受限广播地址。</p>
+<p>作用：</p>
+<p>向本地网络进行广播。</p>
+<p>特点：</p>
+<ul>
+<li>广播域内的设备可以接收相应广播数据。</li>
+<li>路由器不会把这种受限广播转发到其他网络。</li>
+</ul>
+<p>常见应用：</p>
+<p>DHCP 客户端在尚未获得 IP 地址时发送广播请求。</p>
+<hr>
+<p><strong>四、0.0.0.0、127.0.0.1 和 255.255.255.255 的区别</strong></p>
+<table>
+<thead>
+<tr>
+<th>IP 地址</th>
+<th>名称或作用</th>
+<th>主要用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0.0.0.0</td>
+<td>未指定地址</td>
+<td>服务器绑定所有 IPv4 地址等</td>
+</tr>
+<tr>
+<td>0.0.0.0&#x2F;0</td>
+<td>默认路由</td>
+<td>匹配没有更具体路由的目的地址</td>
+</tr>
+<tr>
+<td>127.0.0.1</td>
+<td>回环地址</td>
+<td>访问本机、测试网络协议栈</td>
+</tr>
+<tr>
+<td>255.255.255.255</td>
+<td>受限广播地址</td>
+<td>本地广播</td>
+</tr>
+</tbody></table>
+<p><strong>记忆方法</strong></p>
+<p><strong>0.0.0.0：所有本机 IPv4 地址（服务器绑定场景）</strong></p>
+<p><strong>127.0.0.1：我自己</strong></p>
+<p><strong>255.255.255.255：本地所有设备（受限广播）</strong></p>
+<hr>
+<p><strong>五、考试重点总结</strong></p>
+<ul>
+<li><ol>
+<li>三种通信方式</li>
+</ol>
+</li>
+<li><p>单播：一对一。</p>
+</li>
+<li><p>广播：一对同一广播域内所有设备。</p>
+</li>
+<li><p>组播：一对多，按组接收。</p>
+</li>
+<li><ol start="2">
+<li>组播的特点</li>
+</ol>
+</li>
+</ul>
+<p>优点：</p>
+<ul>
+<li>节约带宽。</li>
+<li>减少重复数据传输。</li>
+<li>适合视频直播等一对多业务。</li>
+</ul>
+<p>问题：</p>
+<ul>
+<li>配置不当可能出现组播泛洪。</li>
+<li>需要网络设备支持相关组播功能。</li>
+</ul>
+<p>常见优化技术：</p>
+<p>IGMP Snooping。</p>
+<ul>
+<li><ol start="3">
+<li>IPv4 地址分类</li>
+</ol>
+</li>
+<li><p>A 类：传统大型网络。</p>
+</li>
+<li><p>B 类：传统中型网络。</p>
+</li>
+<li><p>C 类：传统小型网络。</p>
+</li>
+<li><p>D 类：组播。</p>
+</li>
+<li><p>E 类：保留、实验用途。</p>
+</li>
+<li><ol start="4">
+<li>必须记住的地址</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">0.0.0.0           未指定地址</span><br><span class="line">0.0.0.0/0         默认路由</span><br><span class="line">127.0.0.1         本机回环地址</span><br><span class="line">127.0.0.0/8       回环地址段</span><br><span class="line">224.0.0.0/4       D 类组播地址段</span><br><span class="line">240.0.0.0/4       E 类保留地址段</span><br><span class="line">255.255.255.255   受限广播地址</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><ol start="5">
+<li>容易出错的知识点</li>
+</ol>
+</li>
+</ul>
+<p><strong>错误一：组播就是 TCP&#x2F;UDP 上面的广播。</strong></p>
+<p>正确：组播属于 IP 层的通信方式，通常与 UDP 配合使用。</p>
+<p><strong>错误二：组播一定会产生网络风暴。</strong></p>
+<p>正确：组播本身不一定产生网络风暴，配置不当可能导致组播泛洪。</p>
+<p><strong>错误三：E 类地址是私有 IP 地址。</strong></p>
+<p>正确：E 类地址主要为保留用途，常见私有地址位于 A、B、C 类传统地址范围内。</p>
+<p><strong>错误四：127.0.0.1 会把任何数据原样返回。</strong></p>
+<p>正确：数据在本机网络协议栈内部处理，是否收到回复取决于相应协议或服务。</p>
+<p><strong>错误五：0.0.0.0 永远表示所有 IP 地址。</strong></p>
+<p>正确：0.0.0.0 的含义取决于使用场景，服务器监听与默认路由的含义不同。</p>
+<hr>
+<p><strong>六、一句话记忆</strong></p>
+<blockquote>
+<p>单播找一个，广播找全部，组播找一组。</p>
+</blockquote>
+<blockquote>
+<p>A、B、C 用于传统网络编址，D 用于组播，E 用于保留用途。</p>
+</blockquote>
+<blockquote>
+<p>0.0.0.0 监听所有本机 IPv4 地址，127.0.0.1 访问本机，255.255.255.255 本地广播。</p>
+</blockquote>
 </div><div class="article_tags"><span> <i class="yufont icon-tag"></i> 标签: </span></div></article><div class="article-copyright"><p>标题: <a href="/2026/09/28/Linux%E5%AD%A6%E4%B9%A0/">Linux学习</a></p><p> 链接: <a href="/2026/09/28/Linux%E5%AD%A6%E4%B9%A0/">http://example.com/2026/09/28/Linux%E5%AD%A6%E4%B9%A0/</a></p><p> 版权声明: 若无特殊标注皆为 FY 原创版权, 转载请以链接形式注明作者及原始出处</p><p>最后编辑时间: 2026-10-15</p></div><div class="page_turning"><a class="page_up" href="/2026/09/12/c%E8%AF%AD%E8%A8%80%E4%B8%8Ec++%E8%81%94%E5%90%88%E7%BC%96%E7%A8%8B/"
-  style="background-image:url(/assets/images/random/34.jpg)">
+  style="background-image:url(/assets/images/random/1.jpg)">
   <div class="inner"><span>上一篇:</span>
     <p>c++与c语言进阶</p>
   </div>
 </a>
 <a class="page_down" href="javascript:;"
-style="background-image:url(/assets/images/random/19.jpg)">
+style="background-image:url(/assets/images/random/7.jpg)">
 <div class="inner"><span>下一篇:</span>
   <p>已经没有下一篇了</p>
 </div>
