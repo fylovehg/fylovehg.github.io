@@ -942,16 +942,375 @@
 <blockquote>
 <p>HTTP 默认 80，HTTPS 默认 443，SSH 默认 22，DNS 默认 53。</p>
 </blockquote>
+<h2 id="网络协议（Protocol）"><a href="#网络协议（Protocol）" class="headerlink" title="网络协议（Protocol）"></a>网络协议（Protocol）</h2><p><strong>一、什么是协议</strong></p>
+<p>协议（Protocol）是计算机之间进行网络通信时必须遵守的一套规则。</p>
+<p>简单理解：</p>
+<p><strong>协议就是规定计算机之间如何进行通信。</strong></p>
+<p>例如，两个人打电话需要遵守一定的规则：</p>
+<ol>
+<li>双方使用能够理解的语言。</li>
+<li>一方发送信息，另一方接收信息。</li>
+<li>没听清楚时可以要求重复。</li>
+<li>通信结束后挂断电话。</li>
+</ol>
+<p>计算机之间通信同样需要规则。</p>
+<p>网络协议主要规定：</p>
+<ul>
+<li>数据采用什么格式。</li>
+<li>数据如何发送。</li>
+<li>接收方如何识别和处理数据。</li>
+<li>数据丢失时如何处理。</li>
+<li>如何建立和结束通信。</li>
+</ul>
+<p>注意：不同协议负责不同的功能，并不是所有协议都提供重传、连接建立等机制。</p>
+<hr>
+<p><strong>二、常见的网络协议</strong></p>
+<table>
+<thead>
+<tr>
+<th>协议</th>
+<th>中文名称</th>
+<th>主要作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IP</td>
+<td>网际协议</td>
+<td>IP 寻址和数据包转发</td>
+</tr>
+<tr>
+<td>TCP</td>
+<td>传输控制协议</td>
+<td>可靠、有序传输数据</td>
+</tr>
+<tr>
+<td>UDP</td>
+<td>用户数据报协议</td>
+<td>无连接的数据报传输</td>
+</tr>
+<tr>
+<td>HTTP</td>
+<td>超文本传输协议</td>
+<td>网页访问</td>
+</tr>
+<tr>
+<td>HTTPS</td>
+<td>安全的 HTTP</td>
+<td>加密保护网页通信</td>
+</tr>
+<tr>
+<td>FTP</td>
+<td>文件传输协议</td>
+<td>文件传输</td>
+</tr>
+<tr>
+<td>DNS</td>
+<td>域名系统</td>
+<td>域名解析</td>
+</tr>
+<tr>
+<td>DHCP</td>
+<td>动态主机配置协议</td>
+<td>自动分配 IP 等网络参数</td>
+</tr>
+<tr>
+<td>SSH</td>
+<td>安全外壳协议</td>
+<td>安全远程登录</td>
+</tr>
+<tr>
+<td>SMTP</td>
+<td>简单邮件传输协议</td>
+<td>邮件发送与传输</td>
+</tr>
+<tr>
+<td>ICMP</td>
+<td>网际控制报文协议</td>
+<td>网络差错报告和诊断</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>三、TCP 和 UDP 协议</strong></p>
+<p>TCP 和 UDP 都属于传输层协议。</p>
+<ul>
+<li><ol>
+<li>TCP（Transmission Control Protocol）</li>
+</ol>
+</li>
+</ul>
+<p>中文名称：传输控制协议。</p>
+<p>TCP 是一种面向连接、可靠的传输层协议。</p>
+<p>主要特点：</p>
+<ol>
+<li>通信前需要建立连接。</li>
+<li>通过确认、序列号和重传等机制实现可靠传输。</li>
+<li>保证数据按顺序交付给应用程序。</li>
+<li>提供流量控制。</li>
+<li>具有拥塞控制机制。</li>
+</ol>
+<p>常见应用：</p>
+<ul>
+<li>HTTP&#x2F;1.1、HTTP&#x2F;2</li>
+<li>传统 HTTPS</li>
+<li>FTP</li>
+<li>SSH</li>
+<li>SMTP</li>
+</ul>
+<p>举例：</p>
+<p>TCP 类似于打电话。</p>
+<p>双方先建立连接，然后进行通信。</p>
+<p>如果传输过程中发生数据丢失，TCP 可以通过重传机制恢复数据。</p>
+<ul>
+<li><ol start="2">
+<li>UDP（User Datagram Protocol）</li>
+</ol>
+</li>
+</ul>
+<p>中文名称：用户数据报协议。</p>
+<p>UDP 是一种无连接的传输层协议。</p>
+<p>主要特点：</p>
+<ol>
+<li>通信前不需要建立传输层连接。</li>
+<li>不保证数据一定送达。</li>
+<li>不保证数据按顺序到达。</li>
+<li>不提供 TCP 那样的内置重传机制。</li>
+<li>协议头部较小，开销较低。</li>
+</ol>
+<p>常见应用：</p>
+<ul>
+<li>DNS 查询</li>
+<li>DHCP</li>
+<li>实时音视频</li>
+<li>网络游戏</li>
+<li>QUIC（HTTP&#x2F;3 使用的传输协议）</li>
+</ul>
+<p>举例：</p>
+<p>UDP 类似于寄明信片。</p>
+<p>发送方直接发送数据，不需要事先建立连接。</p>
+<p>但不能保证数据一定到达。</p>
+<p>注意：</p>
+<p>UDP 本身不保证可靠性，但应用程序可以在 UDP 之上自行实现确认、重传等可靠传输机制。</p>
+<ul>
+<li><ol start="3">
+<li>TCP 和 UDP 的区别</li>
+</ol>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>对比项目</th>
+<th>TCP</th>
+<th>UDP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>是否面向连接</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>是否可靠传输</td>
+<td>是</td>
+<td>不保证</td>
+</tr>
+<tr>
+<td>是否保证顺序</td>
+<td>是</td>
+<td>否</td>
+</tr>
+<tr>
+<td>是否有内置重传机制</td>
+<td>有</td>
+<td>没有</td>
+</tr>
+<tr>
+<td>协议开销</td>
+<td>相对较大</td>
+<td>相对较小</td>
+</tr>
+<tr>
+<td>传输形式</td>
+<td>字节流</td>
+<td>数据报</td>
+</tr>
+<tr>
+<td>常见应用</td>
+<td>网页、文件传输、SSH</td>
+<td>DNS、音视频、游戏</td>
+</tr>
+</tbody></table>
+<p>注意：</p>
+<p>不能简单认为 UDP 一定比 TCP 快。</p>
+<p>实际性能取决于网络环境、应用设计和传输机制。</p>
+<hr>
+<p><strong>四、网络协议的分层</strong></p>
+<p>计算机网络中，不同协议负责不同的工作。</p>
+<p>常见的 TCP&#x2F;IP 四层模型：</p>
+<table>
+<thead>
+<tr>
+<th>层次</th>
+<th>名称</th>
+<th>常见协议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>第四层</td>
+<td>应用层</td>
+<td>HTTP、HTTPS、DNS、FTP、SSH</td>
+</tr>
+<tr>
+<td>第三层</td>
+<td>传输层</td>
+<td>TCP、UDP</td>
+</tr>
+<tr>
+<td>第二层</td>
+<td>网际层</td>
+<td>IP、ICMP</td>
+</tr>
+<tr>
+<td>第一层</td>
+<td>网络接口层</td>
+<td>Ethernet、Wi-Fi</td>
+</tr>
+</tbody></table>
+<p><strong>举例：访问网页</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">应用层</span><br><span class="line">HTTP</span><br><span class="line">规定网页请求与响应</span><br><span class="line">        |</span><br><span class="line">        v</span><br><span class="line">传输层</span><br><span class="line">TCP</span><br><span class="line">可靠传输数据</span><br><span class="line">        |</span><br><span class="line">        v</span><br><span class="line">网际层</span><br><span class="line">IP</span><br><span class="line">寻址与路由转发</span><br><span class="line">        |</span><br><span class="line">        v</span><br><span class="line">网络接口层</span><br><span class="line">Ethernet / Wi-Fi</span><br><span class="line">通过实际网络传输数据</span><br></pre></td></tr></table></figure>
+
+<p>这是传统 HTTP over TCP 的简化示意。</p>
+<p>如果使用 HTTPS，还需要 TLS 加密机制。</p>
+<p>HTTP&#x2F;3 通常使用 QUIC 和 UDP。</p>
+<hr>
+<p><strong>五、协议的作用</strong></p>
+<p>网络协议主要解决以下问题：</p>
+<ul>
+<li><ol>
+<li>数据格式</li>
+</ol>
+</li>
+</ul>
+<p>规定数据应该采用什么格式。</p>
+<p>例如：</p>
+<p>HTTP 规定请求和响应消息的格式与语义。</p>
+<ul>
+<li><ol start="2">
+<li>数据传输</li>
+</ol>
+</li>
+</ul>
+<p>规定数据如何从发送方传输到接收方。</p>
+<p>例如：</p>
+<p>TCP 提供可靠、有序的字节流传输。</p>
+<ul>
+<li><ol start="3">
+<li>数据寻址</li>
+</ol>
+</li>
+</ul>
+<p>规定如何确定数据的目标地址。</p>
+<p>例如：</p>
+<p>IP 协议使用 IP 地址进行寻址和路由转发。</p>
+<ul>
+<li><ol start="4">
+<li>错误处理</li>
+</ol>
+</li>
+</ul>
+<p>规定如何检测或处理通信错误。</p>
+<p>例如：</p>
+<p>TCP 可以通过确认和重传机制处理数据丢失。</p>
+<ul>
+<li><ol start="5">
+<li>通信控制</li>
+</ol>
+</li>
+</ul>
+<p>规定通信双方如何协调数据传输。</p>
+<p>例如：</p>
+<p>TCP 使用流量控制和拥塞控制机制。</p>
+<hr>
+<p><strong>六、考试重点总结</strong></p>
+<ul>
+<li><ol>
+<li>协议的定义</li>
+</ol>
+</li>
+</ul>
+<p>协议是计算机网络通信双方必须遵守的一套规则。</p>
+<ul>
+<li><ol start="2">
+<li>常见协议分类</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li>应用层：HTTP、HTTPS、FTP、DNS、SSH。</li>
+<li>传输层：TCP、UDP。</li>
+<li>网际层：IP、ICMP。</li>
+<li>网络接口层：Ethernet、Wi-Fi。</li>
+</ul>
+<ul>
+<li><ol start="3">
+<li>TCP 和 UDP</li>
+</ol>
+</li>
+</ul>
+<p>TCP：</p>
+<ul>
+<li>面向连接。</li>
+<li>可靠传输。</li>
+<li>按序交付。</li>
+<li>具有确认和重传机制。</li>
+</ul>
+<p>UDP：</p>
+<ul>
+<li>无连接。</li>
+<li>不保证可靠性。</li>
+<li>不保证顺序。</li>
+<li>协议开销较低。</li>
+</ul>
+<ul>
+<li><ol start="4">
+<li>容易出错的知识点</li>
+</ol>
+</li>
+</ul>
+<p><strong>错误一：所有协议都保证可靠传输。</strong></p>
+<p>正确：不同协议提供的功能不同，例如 TCP 提供可靠传输，而 UDP 不保证可靠性。</p>
+<p><strong>错误二：TCP 和 UDP 属于应用层协议。</strong></p>
+<p>正确：TCP 和 UDP 属于传输层协议。</p>
+<p><strong>错误三：UDP 一定比 TCP 快。</strong></p>
+<p>正确：UDP 协议开销较低，但实际性能取决于具体情况。</p>
+<p><strong>错误四：HTTP 和 TCP 属于同一层。</strong></p>
+<p>正确：HTTP 属于应用层，TCP 属于传输层。</p>
+<p><strong>错误五：HTTPS 只能使用 TCP。</strong></p>
+<p>正确：传统 HTTPS 使用 TCP 和 TLS，HTTP&#x2F;3 使用 QUIC 和 UDP。</p>
+<hr>
+<p><strong>七、一句话记忆</strong></p>
+<blockquote>
+<p>协议就是计算机之间通信的规则。</p>
+</blockquote>
+<blockquote>
+<p>TCP 可靠、有序，UDP 简单、无连接。</p>
+</blockquote>
+<blockquote>
+<p>HTTP 负责网页通信规则，TCP 负责可靠传输，IP 负责寻址和转发。</p>
+</blockquote>
+<blockquote>
+<p>不同层次的协议相互配合，共同完成网络通信。</p>
+</blockquote>
 </div><div class="article_tags"><span> <i class="yufont icon-tag"></i> 标签: </span></div></article><div class="article-copyright"><p>标题: <a href="/2026/09/28/Linux%E5%AD%A6%E4%B9%A0/">Linux学习</a></p><p> 链接: <a href="/2026/09/28/Linux%E5%AD%A6%E4%B9%A0/">http://example.com/2026/09/28/Linux%E5%AD%A6%E4%B9%A0/</a></p><p> 版权声明: 若无特殊标注皆为 FY 原创版权, 转载请以链接形式注明作者及原始出处</p><p>最后编辑时间: 2026-10-15</p></div><div class="page_turning"><a class="page_up" href="/2026/09/12/c%E8%AF%AD%E8%A8%80%E4%B8%8Ec++%E8%81%94%E5%90%88%E7%BC%96%E7%A8%8B/"
-  style="background-image:url(/assets/images/random/27.jpg)">
+  style="background-image:url(/assets/images/random/32.jpg)">
   <div class="inner"><span>上一篇:</span>
     <p>c++与c语言进阶</p>
   </div>
 </a>
 <a class="page_down" href="javascript:;"
-style="background-image:url(/assets/images/random/11.jpg)">
+style="background-image:url(/assets/images/random/18.jpg)">
 <div class="inner"><span>下一篇:</span>
   <p>已经没有下一篇了</p>
 </div>
 </a>
-</div></div></div><div class="article_sidebar left"><div class="author_sidebar sidebar_container"><div class="author_info"><div class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/></div><div class="author_name"><h3><a href="/about">FY</a></h3><p>不断学习，不断提升！</p></div></div><div class="author_data"><ul><li> <div> <span>7</span><p>文章</p></div></li><li> <div> <span>0</span><p>分类</p></div></li><li> <div> <span>0</span><p>标签</p></div></li></ul></div></div><div class="catalogue sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-feiji"></i>目录</h3><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">Linux系统命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ls%E5%91%BD%E4%BB%A4"><span class="toc-number">1.1.</span> <span class="toc-text">ls命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pwd%E5%91%BD%E4%BB%A4"><span class="toc-number">1.2.</span> <span class="toc-text">pwd命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cd%E6%8C%87%E4%BB%A4"><span class="toc-number">1.3.</span> <span class="toc-text">cd指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#echo%E5%91%BD%E4%BB%A4"><span class="toc-number">1.4.</span> <span class="toc-text">echo命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#head%E5%91%BD%E4%BB%A4"><span class="toc-number">1.5.</span> <span class="toc-text">head命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cat%E5%91%BD%E4%BB%A4"><span class="toc-number">1.6.</span> <span class="toc-text">cat命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tail%E5%91%BD%E4%BB%A4"><span class="toc-number">1.7.</span> <span class="toc-text">tail命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ps%E5%91%BD%E4%BB%A4"><span class="toc-number">1.8.</span> <span class="toc-text">ps命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#chmod%E5%91%BD%E4%BB%A4"><span class="toc-number">1.9.</span> <span class="toc-text">chmod命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cp%E5%91%BD%E4%BB%A4"><span class="toc-number">1.10.</span> <span class="toc-text">cp命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rm%E5%91%BD%E4%BB%A4"><span class="toc-number">1.11.</span> <span class="toc-text">rm命令</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">Linux基本操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#gcc%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-number">2.1.</span> <span class="toc-text">gcc的安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ssh%E6%9C%8D%E5%8A%A1%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-number">2.2.</span> <span class="toc-text">ssh服务的安装</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80"><span class="toc-number">3.</span> <span class="toc-text">网络编程基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E5%9C%B0%E5%9D%80"><span class="toc-number">3.1.</span> <span class="toc-text">网络中的地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E7%AB%AF%E5%8F%A3"><span class="toc-number">3.2.</span> <span class="toc-text">网络端口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%B8%AD-1234-%E5%BA%94%E6%9B%BF%E6%8D%A2%E4%B8%BA%E5%AE%9E%E9%99%85-PID%E3%80%82"><span class="toc-number">3.3.</span> <span class="toc-text">其中 1234 应替换为实际 PID。</span></a></li></ol></li></ol></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-24gl-folderOpen"></i>分类</h3><div class="archive_lists"><ul class="category-list"></ul></div></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-tag"></i>标签</h3></div></div></div><footer class="footer"> <div class="footer_bottom"><div class="footer_box"><div class="copy"><span>主题</span><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn">Hexo</a><span>模板</span><a href="/">Hexo</a></div><div class="copy"><span>© 2022<a href="/">Hexo</a>鲁ICP备2022003990号</span></div></div></div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"> </script><script src="/assets/lib/prettify/prettify.js"> </script><script src="/assets/lib/fancybox/fancybox.js"> </script><script src="/assets/js/app.js"> </script></div></body></html>
+</div></div></div><div class="article_sidebar left"><div class="author_sidebar sidebar_container"><div class="author_info"><div class="avatar"><img class="yu13_img_rotate" src="/assets/imgs/avatar.png" alt=""/></div><div class="author_name"><h3><a href="/about">FY</a></h3><p>不断学习，不断提升！</p></div></div><div class="author_data"><ul><li> <div> <span>7</span><p>文章</p></div></li><li> <div> <span>0</span><p>分类</p></div></li><li> <div> <span>0</span><p>标签</p></div></li></ul></div></div><div class="catalogue sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-feiji"></i>目录</h3><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux%E7%B3%BB%E7%BB%9F%E5%91%BD%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">Linux系统命令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ls%E5%91%BD%E4%BB%A4"><span class="toc-number">1.1.</span> <span class="toc-text">ls命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pwd%E5%91%BD%E4%BB%A4"><span class="toc-number">1.2.</span> <span class="toc-text">pwd命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cd%E6%8C%87%E4%BB%A4"><span class="toc-number">1.3.</span> <span class="toc-text">cd指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#echo%E5%91%BD%E4%BB%A4"><span class="toc-number">1.4.</span> <span class="toc-text">echo命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#head%E5%91%BD%E4%BB%A4"><span class="toc-number">1.5.</span> <span class="toc-text">head命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cat%E5%91%BD%E4%BB%A4"><span class="toc-number">1.6.</span> <span class="toc-text">cat命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#tail%E5%91%BD%E4%BB%A4"><span class="toc-number">1.7.</span> <span class="toc-text">tail命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ps%E5%91%BD%E4%BB%A4"><span class="toc-number">1.8.</span> <span class="toc-text">ps命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#chmod%E5%91%BD%E4%BB%A4"><span class="toc-number">1.9.</span> <span class="toc-text">chmod命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cp%E5%91%BD%E4%BB%A4"><span class="toc-number">1.10.</span> <span class="toc-text">cp命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#rm%E5%91%BD%E4%BB%A4"><span class="toc-number">1.11.</span> <span class="toc-text">rm命令</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Linux%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">Linux基本操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#gcc%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-number">2.1.</span> <span class="toc-text">gcc的安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ssh%E6%9C%8D%E5%8A%A1%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-number">2.2.</span> <span class="toc-text">ssh服务的安装</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80"><span class="toc-number">3.</span> <span class="toc-text">网络编程基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E5%9C%B0%E5%9D%80"><span class="toc-number">3.1.</span> <span class="toc-text">网络中的地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E7%AB%AF%E5%8F%A3"><span class="toc-number">3.2.</span> <span class="toc-text">网络端口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%B8%AD-1234-%E5%BA%94%E6%9B%BF%E6%8D%A2%E4%B8%BA%E5%AE%9E%E9%99%85-PID%E3%80%82"><span class="toc-number">3.3.</span> <span class="toc-text">其中 1234 应替换为实际 PID。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%EF%BC%88Protocol%EF%BC%89"><span class="toc-number">3.4.</span> <span class="toc-text">网络协议（Protocol）</span></a></li></ol></li></ol></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-24gl-folderOpen"></i>分类</h3><div class="archive_lists"><ul class="category-list"></ul></div></div><div class="sidebar_tags sidebar_container"><h3 class="sidebar_title"><i class="yufont icon-tag"></i>标签</h3></div></div></div><footer class="footer"> <div class="footer_bottom"><div class="footer_box"><div class="copy"><span>主题</span><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn">Hexo</a><span>模板</span><a href="/">Hexo</a></div><div class="copy"><span>© 2022<a href="/">Hexo</a>鲁ICP备2022003990号</span></div></div></div></footer><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"> </script><script src="/assets/lib/prettify/prettify.js"> </script><script src="/assets/lib/fancybox/fancybox.js"> </script><script src="/assets/js/app.js"> </script></div></body></html>
