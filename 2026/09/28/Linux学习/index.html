@@ -2640,7 +2640,9 @@
 <blockquote>
 <p>创建 Socket 不等于建立 TCP 连接。</p>
 </blockquote>
-<h3 id="bind-函数"><a href="#bind-函数" class="headerlink" title="bind()函数"></a>bind()函数</h3><p><strong>1. bind() 的作用</strong></p>
+<h3 id="bind-函数"><a href="#bind-函数" class="headerlink" title="bind()函数"></a>bind()函数</h3><p style="color: #FF0000;">使用需要加入`#include<sys/socket.h>`</p>
+**1. bind() 的作用**
+
 <p><code>bind()</code> 用于将 Socket 绑定到本地 IP 地址和端口号。</p>
 <p>通常用于 TCP&#x2F;UDP 服务器。</p>
 <p><strong>2. 函数原型（Linux）</strong></p>
@@ -2685,7 +2687,7 @@
 <p><strong>5. TCP 服务器流程</strong></p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">socket() → bind() → listen() → accept() → recv()/send() → close()</span><br></pre></td></tr></table></figure>
 <hr>
-<p><strong>Struct地址信息表示</strong></p>
+<p><strong>Struct地址信息表示(使用需要加<code>#include&lt;arpa/inet.h&gt;</code>)</strong></p>
 <table>
 <thead>
 <tr>
@@ -2737,13 +2739,13 @@
 <p><strong>通过函数名应该能掌握其功能,只需了解以下细节。</strong><br>htons中的h代表主机(host)字节序。<br>htons中的4代表网络(network)字节序。</p>
 <p style="color: #FF0000;">ntohs可以解释为把short型数据从网络字节序转化为主机字节序</p>
 </div><div class="article_tags"><span> <i class="yufont icon-tag"></i> 标签: </span></div></article><div class="article-copyright"><p>标题: <a href="/2026/09/28/Linux%E5%AD%A6%E4%B9%A0/">Linux学习</a></p><p> 链接: <a href="/2026/09/28/Linux%E5%AD%A6%E4%B9%A0/">http://example.com/2026/09/28/Linux%E5%AD%A6%E4%B9%A0/</a></p><p> 版权声明: 若无特殊标注皆为 FY 原创版权, 转载请以链接形式注明作者及原始出处</p><p>最后编辑时间: 2026-10-16</p></div><div class="page_turning"><a class="page_up" href="/2026/09/12/c%E8%AF%AD%E8%A8%80%E4%B8%8Ec++%E8%81%94%E5%90%88%E7%BC%96%E7%A8%8B/"
-  style="background-image:url(/assets/images/random/17.jpg)">
+  style="background-image:url(/assets/images/random/15.jpg)">
   <div class="inner"><span>上一篇:</span>
     <p>c++与c语言进阶</p>
   </div>
 </a>
 <a class="page_down" href="javascript:;"
-style="background-image:url(/assets/images/random/10.jpg)">
+style="background-image:url(/assets/images/random/16.jpg)">
 <div class="inner"><span>下一篇:</span>
   <p>已经没有下一篇了</p>
 </div>
