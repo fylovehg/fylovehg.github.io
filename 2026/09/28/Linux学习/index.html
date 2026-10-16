@@ -2714,6 +2714,11 @@
 <td>保存 32 位 IPv4 地址</td>
 <td><code>htonl(INADDR_ANY)</code></td>
 </tr>
+<tr>
+<td><code>s_addr=inet_addr(&quot;192.168.0.1&quot;)</code> 将字符串形式的 IPv4 地址转换为网络字节序的二进制地址。区别<code>htons</code>是将无符号整型转换成网络字节序</td>
+<td></td>
+<td></td>
+</tr>
 </tbody></table>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">sockaddr_in</span> &#123;</span><br><span class="line">    <span class="type">sa_family_t</span> sin_family;  <span class="comment">// 地址族：AF_INET</span></span><br><span class="line">    <span class="type">in_port_t</span> sin_port;      <span class="comment">// 端口号（网络字节序）</span></span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">in_addr</span> sin_addr; <span class="comment">// IPv4 地址</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
@@ -2732,13 +2737,13 @@
 <p><strong>通过函数名应该能掌握其功能,只需了解以下细节。</strong><br>htons中的h代表主机(host)字节序。<br>htons中的4代表网络(network)字节序。</p>
 <p style="color: #FF0000;">ntohs可以解释为把short型数据从网络字节序转化为主机字节序</p>
 </div><div class="article_tags"><span> <i class="yufont icon-tag"></i> 标签: </span></div></article><div class="article-copyright"><p>标题: <a href="/2026/09/28/Linux%E5%AD%A6%E4%B9%A0/">Linux学习</a></p><p> 链接: <a href="/2026/09/28/Linux%E5%AD%A6%E4%B9%A0/">http://example.com/2026/09/28/Linux%E5%AD%A6%E4%B9%A0/</a></p><p> 版权声明: 若无特殊标注皆为 FY 原创版权, 转载请以链接形式注明作者及原始出处</p><p>最后编辑时间: 2026-10-16</p></div><div class="page_turning"><a class="page_up" href="/2026/09/12/c%E8%AF%AD%E8%A8%80%E4%B8%8Ec++%E8%81%94%E5%90%88%E7%BC%96%E7%A8%8B/"
-  style="background-image:url(/assets/images/random/19.jpg)">
+  style="background-image:url(/assets/images/random/17.jpg)">
   <div class="inner"><span>上一篇:</span>
     <p>c++与c语言进阶</p>
   </div>
 </a>
 <a class="page_down" href="javascript:;"
-style="background-image:url(/assets/images/random/2.jpg)">
+style="background-image:url(/assets/images/random/10.jpg)">
 <div class="inner"><span>下一篇:</span>
   <p>已经没有下一篇了</p>
 </div>
